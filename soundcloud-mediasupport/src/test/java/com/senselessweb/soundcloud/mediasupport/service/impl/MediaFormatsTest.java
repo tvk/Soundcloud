@@ -1,22 +1,25 @@
 package com.senselessweb.soundcloud.mediasupport.service.impl;
 
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
+import org.gstreamer.Bus;
+import org.gstreamer.Format;
 import org.gstreamer.Gst;
+import org.gstreamer.GstObject;
+import org.gstreamer.Message;
 import org.gstreamer.Pipeline;
 import org.gstreamer.State;
+import org.junit.Before;
 import org.junit.Test;
 
 
 public class MediaFormatsTest
 {
-
-	@Test
-	public void playOgg() throws Exception
+	
+	@Before
+	public void before()
 	{
-		
-		// WOW Somehow works with all formsts
-		
 		Gst.init();
 		Executors.newSingleThreadExecutor().execute(new Runnable() {
 			
@@ -24,15 +27,23 @@ public class MediaFormatsTest
 			{
 				Gst.main();
 			}
-		});
+		});		
+	}
 
-		Pipeline pipeline = Pipeline.launch("filesrc name=src ! decodebin ! equalizer-10bands name=equalizer ! alsasink");
+	@Test
+	public void playOgg() throws Exception
+	{
+		
+		// WOW Somehow works with all formsts
+		
+
+		Pipeline pipeline = Pipeline.launch("souphttpsrc name=src ! decodebin ! audioconvert ! equalizer-10bands name=equalizer ! alsasink");
         pipeline.getElementByName("src").set("location", 
-			"/home/thomas/development/eclipse-workspace/soundcloud-mediasupport/src/test/resources/soundfiles/test2.mp3");
+			"http://ubuntu.hbr1.com:19800/trance.ogg");
 
         pipeline.play();
         
-        Thread.sleep(5000);
+        Thread.sleep(15000);
         System.out.println(pipeline.queryPosition());
         pipeline.stop();
         pipeline.getElementByName("src").set("location", 
@@ -55,6 +66,57 @@ public class MediaFormatsTest
         
         Thread.sleep(5000);
         pipeline.setState(State.NULL);
+	}
+	
+	@Test
+	public void tryToRecognizeEndOfFile() throws Exception
+	{
+		Pipeline pipeline = Pipeline.launch("filesrc name=src ! decodebin ! audioconvert ! equalizer-10bands name=equalizer ! alsasink");
+        pipeline.getElementByName("src").set("location", 
+			"/home/thomas/development/eclipse-workspace/soundcloud-mediasupport/src/test/resources/soundfiles/test3.wav");
+
+        pipeline.getBus().connect(new Bus.MESSAGE() {
+			
+			public void busMessage(Bus bus, Message message)
+			{
+				System.out.println("" + bus + message.getStructure());
+				
+			}
+		});
+        pipeline.getBus().connect(new Bus.EOS() {
+			
+			public void endOfStream(GstObject source)
+			{
+				System.out.println(source);
+			}
+		});
+        pipeline.play();
+        Thread.sleep(10000);
+	}
+	
+	@Test
+	public void jumpForwardAndBackward() throws Exception
+	{
+		Pipeline pipeline = Pipeline.launch("filesrc name=src ! decodebin ! audioconvert ! equalizer-10bands name=equalizer ! alsasink");
+        pipeline.getElementByName("src").set("location", 
+			"/home/thomas/development/eclipse-workspace/soundcloud-mediasupport/src/test/resources/soundfiles/test2.mp3");
+		
+        pipeline.play();
+        Thread.sleep(5000);
+        
+        System.out.println(pipeline.queryPosition());
+        System.out.println(pipeline.queryDuration());
+        
+        pipeline.seek(60, TimeUnit.SECONDS);
+
+        Thread.sleep(5000);
+        
+        System.out.println(pipeline.queryPosition());
+        System.out.println(pipeline.queryDuration());
+
+        pipeline.seek(30, TimeUnit.SECONDS);
+
+        Thread.sleep(5000);
 	}
 	
 

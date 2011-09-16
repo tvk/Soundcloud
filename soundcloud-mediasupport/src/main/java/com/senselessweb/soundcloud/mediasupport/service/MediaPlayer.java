@@ -1,6 +1,7 @@
 package com.senselessweb.soundcloud.mediasupport.service;
 
 import java.io.File;
+import java.net.URL;
 
 /**
  * Service interface that defines the methods the mediaplayer offers.
@@ -10,7 +11,6 @@ import java.io.File;
  */
 public interface MediaPlayer
 {
-
 	
 	/**
 	 * Plays the given media file.
@@ -21,15 +21,23 @@ public interface MediaPlayer
 	
 	
 	/**
+	 * Plays the mediastream represented by the given {@link URL}.
+	 * 
+	 * @param url The {@link URL} to play. Must not be null.
+	 */
+	public void play(URL url);
+	
+	
+	/**
 	 * Stops the playback.
 	 */
 	public void stop();
 	
 	
 	/**
-	 * Sets the sound volume.
+	 * Return the volume control that can be used to control the volume.
 	 * 
-	 * @param volume The volume. Must be a value between 0.0 and 1.0.
+	 * @return The {@link VolumeControl}. 
 	 */
-	public void setVolume(double volume);
+	public VolumeControl getVolumeControl();
 }
