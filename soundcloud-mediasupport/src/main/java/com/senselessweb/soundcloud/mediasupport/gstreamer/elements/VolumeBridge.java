@@ -13,6 +13,7 @@ public class VolumeBridge extends AbstractElementBridge implements VolumeControl
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.VolumeControl#setVolume(double)
 	 */
+	@Override
 	public void setVolume(final double volume)
 	{
 		if (volume < 0.0 || volume > 1.0)
@@ -24,6 +25,7 @@ public class VolumeBridge extends AbstractElementBridge implements VolumeControl
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.VolumeControl#setMute(boolean)
 	 */
+	@Override
 	public void setMute(final boolean mute)
 	{
 		this.set("mute", mute);
@@ -32,6 +34,7 @@ public class VolumeBridge extends AbstractElementBridge implements VolumeControl
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.VolumeControl#getVolume()
 	 */
+	@Override
 	public double getVolume()
 	{
 		return this.get("volume", 1.0);
@@ -40,6 +43,7 @@ public class VolumeBridge extends AbstractElementBridge implements VolumeControl
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.VolumeControl#getMute()
 	 */
+	@Override
 	public boolean getMute()
 	{
 		return this.get("mute", false);

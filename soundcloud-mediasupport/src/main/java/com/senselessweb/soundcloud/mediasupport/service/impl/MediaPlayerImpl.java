@@ -10,9 +10,11 @@ import org.gstreamer.Gst;
 import org.gstreamer.Pipeline;
 
 import com.senselessweb.soundcloud.mediasupport.gstreamer.PipelineBridge;
+import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.EqualizerBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.VolumeBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.pipeline.FileSrcPipeline;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.pipeline.StreamSourcePipeline;
+import com.senselessweb.soundcloud.mediasupport.service.Equalizer;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
 import com.senselessweb.soundcloud.mediasupport.service.VolumeControl;
 
@@ -39,6 +41,11 @@ public class MediaPlayerImpl implements MediaPlayer
 	 */
 	private final VolumeBridge volume = new VolumeBridge();
 	
+	/**
+	 * The equalizer brigde
+	 */
+	private final EqualizerBridge equalizer = new EqualizerBridge();
+	
 	
 	/**
 	 * Constructor
@@ -58,10 +65,12 @@ public class MediaPlayerImpl implements MediaPlayer
 		
 		Executors.newSingleThreadExecutor().execute(new Runnable() {
 			
+			@Override
 			public void run()
 			{
 				log.debug("Calling Gst.main()");
 				Gst.main();
+				log.debug("Gst.main() terminated");
 			}
 		});
 	}
@@ -70,12 +79,13 @@ public class MediaPlayerImpl implements MediaPlayer
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.MediaPlayer#play(java.io.File)
 	 */
+	@Override
 	public synchronized void play(final File file)
 	{
 		if (file == null || !file.isFile()) throw new IllegalArgumentException("File " + file + " does not exist.");
 		
 		this.stop();
-		this.pipeline = new FileSrcPipeline(file, this.volume);
+		this.pipeline = new FileSrcPipeline(file, this.volume, this.equalizer);
 		this.pipeline.play();
 	}
 	
@@ -83,12 +93,13 @@ public class MediaPlayerImpl implements MediaPlayer
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.MediaPlayer#play(java.net.URL)
 	 */
+	@Override
 	public synchronized void play(final URL url)
 	{
 		if (url == null) throw new IllegalArgumentException("url must not be null.");
 		
 		this.stop();
-		this.pipeline = new StreamSourcePipeline(url, this.volume);
+		this.pipeline = new StreamSourcePipeline(url, this.volume, this.equalizer);
 		this.pipeline.play();
 	}
 	
@@ -96,6 +107,7 @@ public class MediaPlayerImpl implements MediaPlayer
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.MediaPlayer#stop()
 	 */
+	@Override
 	public synchronized void stop()
 	{
 		if (this.pipeline != null) this.pipeline.stop();
@@ -105,9 +117,32 @@ public class MediaPlayerImpl implements MediaPlayer
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.MediaPlayer#getVolumeControl()
 	 */
+	@Override
 	public synchronized VolumeControl getVolumeControl()
 	{
 		return this.volume;
+	}
+	
+	
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MediaPlayer#getEqualizer()
+	 */
+	@Override
+	public Equalizer getEqualizer()
+	{
+		return this.equalizer;
+	}
+
+	
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MediaPlayer#shutdown()
+	 */
+	@Override
+	public synchronized void shutdown()
+	{
+		log.debug("Shutdown called");
+		if (this.pipeline != null) this.pipeline.stop();
+		Gst.quit();
 	}
 	
 }

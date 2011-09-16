@@ -40,4 +40,18 @@ public interface MediaPlayer
 	 * @return The {@link VolumeControl}. 
 	 */
 	public VolumeControl getVolumeControl();
+	
+	
+	/**
+	 * Returns the equalizer control.
+	 * 
+	 * @return The {@link Equalizer}.
+	 */
+	public Equalizer getEqualizer();
+
+
+	/**
+	 * Shutdown the music service and deallocate all resources.
+	 */
+	public void shutdown();
 }

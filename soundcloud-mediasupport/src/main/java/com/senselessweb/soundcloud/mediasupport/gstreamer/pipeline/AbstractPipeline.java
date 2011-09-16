@@ -1,9 +1,12 @@
 package com.senselessweb.soundcloud.mediasupport.gstreamer.pipeline;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.gstreamer.Element;
 import org.gstreamer.Pipeline;
 
 import com.senselessweb.soundcloud.mediasupport.gstreamer.PipelineBridge;
+import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.EqualizerBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.VolumeBridge;
 import com.senselessweb.soundcloud.mediasupport.service.VolumeControl;
 
@@ -18,6 +21,11 @@ public abstract class AbstractPipeline implements PipelineBridge
 {
 
 	/**
+	 * Logger
+	 */
+	static final Log log = LogFactory.getLog(AbstractPipeline.class);
+	
+	/**
 	 * The actual pipeline
 	 */
 	protected final Pipeline pipeline;
@@ -28,17 +36,26 @@ public abstract class AbstractPipeline implements PipelineBridge
 	private final VolumeBridge volume;
 	
 	/**
+	 * The current equalizer control
+	 */
+	private final EqualizerBridge equalizer;
+	
+	/**
 	 * Constructor
 	 * 
 	 * @param pipeline The {@link Pipeline} to use.
 	 * @param volume The current {@link VolumeControl}.
+	 * @param equalizer The current {@link EqualizerBridge}.
 	 */
-	public AbstractPipeline(final Pipeline pipeline, final VolumeBridge volume)
+	public AbstractPipeline(final Pipeline pipeline, final VolumeBridge volume, final EqualizerBridge equalizer)
 	{
 		this.pipeline = pipeline;
 		
 		this.volume = volume;
 		this.volume.initElement(pipeline.getElementByName("volume"));
+		
+		this.equalizer = equalizer;
+		this.equalizer.initElement(pipeline.getElementByName("equalizer"));
 	}
 	
 	/**
@@ -64,16 +81,20 @@ public abstract class AbstractPipeline implements PipelineBridge
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.gstreamer.PipelineBridge#play()
 	 */
+	@Override
 	public void play()
 	{
+		log.debug("Playing " + this);
 		this.pipeline.play();
 	}
 	
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.gstreamer.PipelineBridge#stop()
 	 */
+	@Override
 	public void stop()
 	{
+		log.debug("Stopping " + this);
 		this.pipeline.stop();
 	}
 }
