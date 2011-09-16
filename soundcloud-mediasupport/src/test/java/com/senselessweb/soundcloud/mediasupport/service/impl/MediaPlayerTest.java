@@ -4,10 +4,15 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.senselessweb.soundcloud.mediasupport.domain.FileSource;
+import com.senselessweb.soundcloud.mediasupport.domain.MediaSource;
+import com.senselessweb.soundcloud.mediasupport.domain.StreamSource;
 import com.senselessweb.soundcloud.mediasupport.service.Equalizer.Band;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
 
@@ -21,14 +26,24 @@ public class MediaPlayerTest
 {
 	
 	/**
+	 * The logger
+	 */
+	private static final Log log = LogFactory.getLog(MediaPlayerTest.class);
+	
+	/**
 	 * A demo file
 	 */
-	private File file;
+	private MediaSource file;
+	
+	/**
+	 * A second demo file
+	 */
+	private MediaSource wavFile;
 	
 	/**
 	 * A demo internet radio stream
 	 */
-	private URL url; 
+	private MediaSource url; 
 	
 	/**
 	 * The media player to test
@@ -45,8 +60,9 @@ public class MediaPlayerTest
 	{
 		this.mediaPlayer = new MediaPlayerImpl();
 		
-		this.url = new URL("http://ubuntu.hbr1.com:19800/trance.ogg");
-		this.file = new File("src/test/resources/soundfiles/test.mp3");
+		this.url = new StreamSource(new URL("http://ubuntu.hbr1.com:19800/trance.ogg"));
+		this.file = new FileSource(new File("src/test/resources/soundfiles/test.mp3"));
+		this.wavFile = new FileSource(new File("src/test/resources/soundfiles/test3.wav"));
 	}
 	
 	/**
@@ -57,10 +73,13 @@ public class MediaPlayerTest
 	@Test
 	public void testPlayDifferentSources() throws Exception
 	{
-		this.mediaPlayer.play(this.file);
+		this.mediaPlayer.getCurrentPlaylist().add(this.file);
+		this.mediaPlayer.getCurrentPlaylist().add(this.url);
+		
+		this.mediaPlayer.play();
 		Thread.sleep(5000);
 		
-		this.mediaPlayer.play(this.url);
+		this.mediaPlayer.next();
 		Thread.sleep(5000);
 	}
 
@@ -72,7 +91,8 @@ public class MediaPlayerTest
 	@Test
 	public void testSetVolume() throws Exception
 	{
-		this.mediaPlayer.play(this.file);
+		this.mediaPlayer.getCurrentPlaylist().add(this.file);
+		this.mediaPlayer.play();
 		Thread.sleep(5000);
 		
 		this.mediaPlayer.getVolumeControl().setVolume(0.1);
@@ -90,13 +110,66 @@ public class MediaPlayerTest
 	@Test
 	public void testEqualizer() throws Exception
 	{
-		this.mediaPlayer.play(this.url);
+		this.mediaPlayer.getCurrentPlaylist().add(this.url);
+		this.mediaPlayer.play();
 		Thread.sleep(5000);
 
 		this.mediaPlayer.getEqualizer().setValue(Band.BAND5, -24.0);
 		Thread.sleep(5000);
 		
 		this.mediaPlayer.getEqualizer().setValue(Band.BAND5, 12.0);
+		Thread.sleep(5000);
+	}
+	
+	/**
+	 * Simple test of the playlist functionality
+	 * 
+	 * @throws Exception 
+	 */
+	@Test
+	public void testPlaylistSimple() throws Exception
+	{
+		this.mediaPlayer.getCurrentPlaylist().add(this.wavFile);
+		this.mediaPlayer.getCurrentPlaylist().add(this.file);
+		
+		this.mediaPlayer.play();
+		log.debug("Playlist: " + this.mediaPlayer.getCurrentPlaylist());
+		Thread.sleep(10000);
+		log.debug("Playlist: " + this.mediaPlayer.getCurrentPlaylist());
+	}
+	
+	
+	/**
+	 * Test the playlist functionality
+	 * 
+	 * @throws Exception 
+	 */
+	@Test
+	public void testPlaylist() throws Exception
+	{
+		this.mediaPlayer.getCurrentPlaylist().add(this.file);
+		this.mediaPlayer.getCurrentPlaylist().add(this.wavFile);
+		
+		// Should play file
+		this.mediaPlayer.play();
+		log.debug("Playlist: " + this.mediaPlayer.getCurrentPlaylist());
+		Thread.sleep(5000);
+		
+		// Jump to wavFile
+		this.mediaPlayer.next();
+		log.debug("Playlist: " + this.mediaPlayer.getCurrentPlaylist());
+		Thread.sleep(2000);
+		
+		// Should do nothing
+		this.mediaPlayer.next();
+		log.debug("Playlist: " + this.mediaPlayer.getCurrentPlaylist());
+		Thread.sleep(5000);
+		
+		// Should play file
+		this.mediaPlayer.getCurrentPlaylist().add(this.file);
+		log.debug("Playlist: " + this.mediaPlayer.getCurrentPlaylist());
+		this.mediaPlayer.next();
+		log.debug("Playlist: " + this.mediaPlayer.getCurrentPlaylist());
 		Thread.sleep(5000);
 	}
 	

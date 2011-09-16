@@ -2,6 +2,7 @@ package com.senselessweb.soundcloud.mediasupport.gstreamer.pipeline;
 
 import java.io.File;
 
+import com.senselessweb.soundcloud.mediasupport.gstreamer.EndOfStreamListener;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.EqualizerBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.VolumeBridge;
 import com.senselessweb.soundcloud.mediasupport.service.VolumeControl;
@@ -11,7 +12,7 @@ import com.senselessweb.soundcloud.mediasupport.service.VolumeControl;
  * 
  * @author thomas
  */
-public class FileSrcPipeline extends AbstractPipeline
+class FileSrcPipeline extends AbstractPipeline
 {
 
 	/**
@@ -20,10 +21,11 @@ public class FileSrcPipeline extends AbstractPipeline
 	 * @param file The file that is used as source.
 	 * @param volume The {@link VolumeControl}.
 	 * @param equalizer The current {@link EqualizerBridge}.
+	 * @param eosListener The {@link EndOfStreamListener} gets notified when the strem ends.
 	 */
-	public FileSrcPipeline(final File file, final VolumeBridge volume, final EqualizerBridge equalizer)
+	public FileSrcPipeline(final File file, final VolumeBridge volume, final EqualizerBridge equalizer, final EndOfStreamListener eosListener)
 	{
-		super(createDefaultPipeline("filesrc"), volume, equalizer);
+		super(createDefaultPipeline("filesrc"), volume, equalizer, eosListener);
 		this.pipeline.getElementByName("src").set("location", file.getAbsolutePath());
 	}
 }

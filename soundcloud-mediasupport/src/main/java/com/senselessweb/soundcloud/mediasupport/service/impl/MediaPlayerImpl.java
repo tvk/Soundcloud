@@ -1,21 +1,19 @@
 package com.senselessweb.soundcloud.mediasupport.service.impl;
 
-import java.io.File;
-import java.net.URL;
-import java.util.concurrent.Executors;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.gstreamer.Gst;
 import org.gstreamer.Pipeline;
 
+import com.senselessweb.soundcloud.mediasupport.domain.MediaSource;
+import com.senselessweb.soundcloud.mediasupport.gstreamer.EndOfStreamListener;
+import com.senselessweb.soundcloud.mediasupport.gstreamer.GstreamerSupport;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.PipelineBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.EqualizerBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.VolumeBridge;
-import com.senselessweb.soundcloud.mediasupport.gstreamer.pipeline.FileSrcPipeline;
-import com.senselessweb.soundcloud.mediasupport.gstreamer.pipeline.StreamSourcePipeline;
+import com.senselessweb.soundcloud.mediasupport.gstreamer.pipeline.PipelineFactory;
 import com.senselessweb.soundcloud.mediasupport.service.Equalizer;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
+import com.senselessweb.soundcloud.mediasupport.service.Playlist;
 import com.senselessweb.soundcloud.mediasupport.service.VolumeControl;
 
 /**
@@ -23,7 +21,7 @@ import com.senselessweb.soundcloud.mediasupport.service.VolumeControl;
  * 
  * @author thomas
  */
-public class MediaPlayerImpl implements MediaPlayer
+public class MediaPlayerImpl implements MediaPlayer, EndOfStreamListener
 {
 
 	/**
@@ -32,17 +30,22 @@ public class MediaPlayerImpl implements MediaPlayer
 	static final Log log = LogFactory.getLog(MediaPlayerImpl.class);
 	
 	/**
-	 * The currently used pipeline  
+	 * The current playlist
+	 */
+	private Playlist playlist = new DefaultPlaylist();
+	
+	/**
+	 * The currently used pipeline. Is rebuilt everytime a new song is played.  
 	 */
 	private PipelineBridge pipeline; 
 	
 	/**
-	 * The volume brigde
+	 * The volume brigde. Is reused for every build pipeline.
 	 */
 	private final VolumeBridge volume = new VolumeBridge();
 	
 	/**
-	 * The equalizer brigde
+	 * The equalizer brigde. Is reused for every build pipeline.
 	 */
 	private final EqualizerBridge equalizer = new EqualizerBridge();
 	
@@ -52,55 +55,22 @@ public class MediaPlayerImpl implements MediaPlayer
 	 */
 	public MediaPlayerImpl()
 	{
-		this.init();
-	}
-
-	/**
-	 * Initializes the gstreamer media framework
-	 */
-	private void init()
-	{
-		log.debug("Calling Gst.init()");
-		Gst.init("MediaPlayer", new String[0]);
-		
-		Executors.newSingleThreadExecutor().execute(new Runnable() {
-			
-			@Override
-			public void run()
-			{
-				log.debug("Calling Gst.main()");
-				Gst.main();
-				log.debug("Gst.main() terminated");
-			}
-		});
-	}
-
-
-	/**
-	 * @see com.senselessweb.soundcloud.mediasupport.service.MediaPlayer#play(java.io.File)
-	 */
-	@Override
-	public synchronized void play(final File file)
-	{
-		if (file == null || !file.isFile()) throw new IllegalArgumentException("File " + file + " does not exist.");
-		
-		this.stop();
-		this.pipeline = new FileSrcPipeline(file, this.volume, this.equalizer);
-		this.pipeline.play();
+		GstreamerSupport.initGst();
 	}
 	
-	
 	/**
-	 * @see com.senselessweb.soundcloud.mediasupport.service.MediaPlayer#play(java.net.URL)
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MediaPlayer#play()
 	 */
 	@Override
-	public synchronized void play(final URL url)
+	public synchronized void play()
 	{
-		if (url == null) throw new IllegalArgumentException("url must not be null.");
+		if (this.pipeline == null)
+		{
+			final MediaSource next = this.playlist.getNext();
+			if (next != null) this.pipeline = PipelineFactory.createPipeline(next, this.volume, this.equalizer, this);
+		}
 		
-		this.stop();
-		this.pipeline = new StreamSourcePipeline(url, this.volume, this.equalizer);
-		this.pipeline.play();
+		if (this.pipeline != null) this.pipeline.play();
 	}
 	
 	
@@ -112,13 +82,65 @@ public class MediaPlayerImpl implements MediaPlayer
 	{
 		if (this.pipeline != null) this.pipeline.stop();
 	}
+	
+	
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MediaPlayer#pause()
+	 */
+	@Override
+	public synchronized void pause()
+	{
+		if (this.pipeline != null) this.pipeline.pause();
+	}
+	
+
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MediaPlayer#next()
+	 */
+	@Override
+	public void next()
+	{
+		final MediaSource next = this.playlist.getNext();
+		if (next != null)
+		{
+			log.debug("Starting next source: " + next);
+			if (this.pipeline != null) this.pipeline.stop();
+			this.pipeline = PipelineFactory.createPipeline(next, this.volume, this.equalizer, this);
+			this.pipeline.play();
+		}
+		else
+		{
+			log.debug("next() was called, but no next song available");
+		}
+	}	
+	
+
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.gstreamer.EndOfStreamListener#streamEnded()
+	 */
+	@Override
+	public void streamEnded()
+	{
+		this.pipeline = null;
+		this.next();
+	}	
+
+	
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MediaPlayer#getCurrentPlaylist()
+	 */
+	@Override
+	public Playlist getCurrentPlaylist()
+	{
+		return this.playlist;
+	}
 
 	
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.MediaPlayer#getVolumeControl()
 	 */
 	@Override
-	public synchronized VolumeControl getVolumeControl()
+	public VolumeControl getVolumeControl()
 	{
 		return this.volume;
 	}
@@ -142,7 +164,6 @@ public class MediaPlayerImpl implements MediaPlayer
 	{
 		log.debug("Shutdown called");
 		if (this.pipeline != null) this.pipeline.stop();
-		Gst.quit();
+		GstreamerSupport.shutdown();
 	}
-	
 }

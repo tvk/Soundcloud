@@ -1,7 +1,5 @@
 package com.senselessweb.soundcloud.mediasupport.service;
 
-import java.io.File;
-import java.net.URL;
 
 /**
  * Service interface that defines the methods the mediaplayer offers.
@@ -13,25 +11,34 @@ public interface MediaPlayer
 {
 	
 	/**
-	 * Plays the given media file.
-	 * 
-	 * @param file The media file to play. Must be an existing file.
+	 * Starts the playback
 	 */
-	public void play(File file);
-	
-	
-	/**
-	 * Plays the mediastream represented by the given {@link URL}.
-	 * 
-	 * @param url The {@link URL} to play. Must not be null.
-	 */
-	public void play(URL url);
+	public void play();
 	
 	
 	/**
 	 * Stops the playback.
 	 */
 	public void stop();
+	
+	/**
+	 * Play the next song of the current playlist.
+	 */
+	public void next();
+	
+	
+	/**
+	 * Pauses the playback.
+	 */
+	public void pause();
+	
+	
+	/**
+	 * Returns the current playlist.
+	 * 
+	 * @return The current playlist. Never null.
+	 */
+	public Playlist getCurrentPlaylist();
 	
 	
 	/**
