@@ -11,17 +11,37 @@ public interface Playlist
 {
 
 	/**
-	 * Adds a {@link MediaSource} to the end of the playlist
+	 * Jump to the next {@link MediaSource}. Is called when the 
+	 * last {@link MediaSource} ended.
 	 * 
-	 * @param mediaSource The {@link MediaSource} to add. Must not be null.
+	 * @return If there was a next song to jump to. 
 	 */
-	public void add(final MediaSource mediaSource);
+	public boolean next();
+
+	
+	/**
+	 * Jump to the previous {@link MediaSource}. 
+	 * 
+	 * @return If there was a previous song to jump to. 
+	 */
+	public boolean previous();
 	
 	
 	/**
-	 * Returns the next {@link MediaSource} to play.
+	 * Return the current playlist entry.
 	 * 
-	 * @return The next {@link MediaSource} to play. May be null.
+	 * @return The current playlist entry. May be null if there 
+	 * is no next entry.
 	 */
-	public MediaSource getNext();
+	public MediaSource getCurrent();
+	
+	/**
+	 * Adds a new entry to the playlist.
+	 * 
+	 * @param mediaSource The {@link MediaSource} to add.
+	 */
+	public void add(MediaSource mediaSource);
+
+	
+	
 }

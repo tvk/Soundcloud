@@ -46,7 +46,7 @@ public class GstreamerSupport
 	 */	
 	public static void shutdown()
 	{
-		Gst.deinit();
+		//Gst.deinit();
 		Gst.quit();
 	}
 }

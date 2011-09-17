@@ -1,0 +1,40 @@
+* {
+	position: relative;
+	font-size: 14px;
+}
+
+body {
+	background: url("dark-hive/images/ui-bg_loop_25_000000_21x21.png") repeat;
+}
+
+.panel {
+	
+}
+
+#leftPanel, #mainPanel {
+	height: 300px;
+	float: left;
+} 
+
+
+#leftPanel {
+	width: 30%;
+}
+
+
+#mainPanel {
+	width: 70%;
+}
+
+#mainPanel #headline {
+	font-family: 'Monoton', cursive;
+	font-size: 60px;
+  padding: 5px 15px;
+  color: #fff;
+}
+
+#leftPanel #eq {
+	height: 200px;
+	width: 200px;
+}
+

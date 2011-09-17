@@ -58,7 +58,7 @@ abstract class AbstractElementBridge
 	 */
 	protected void set(final String key, final Object value)
 	{
-		log.debug("Setting [" + key + ":" + value + "] to " + this.getClass().getName() + " (Element: " + this.element + ")");
+		log.debug("Setting [" + key + ":" + value + "] to " + this.getClass().getSimpleName() + " (Element: " + this.element + ")");
 		this.properties.put(key, value);
 		if (this.element != null) this.element.set(key, value);
 	}

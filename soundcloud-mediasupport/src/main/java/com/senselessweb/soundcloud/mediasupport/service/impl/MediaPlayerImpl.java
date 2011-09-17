@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gstreamer.Pipeline;
 
+import com.senselessweb.soundcloud.mediasupport.domain.DefaultPlaylist;
 import com.senselessweb.soundcloud.mediasupport.domain.MediaSource;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.GstreamerSupport;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.MessageListener;
@@ -27,7 +28,7 @@ public class MediaPlayerImpl implements MediaPlayer, MessageListener
 	/**
 	 * Logger
 	 */
-	static final Log log = LogFactory.getLog(MediaPlayerImpl.class);
+	private static final Log log = LogFactory.getLog(MediaPlayerImpl.class);
 	
 	/**
 	 * The current playlist
@@ -77,15 +78,8 @@ public class MediaPlayerImpl implements MediaPlayer, MessageListener
 	@Override
 	public synchronized void play()
 	{
-		if (this.pipeline == null)
-		{
-			final MediaSource next = this.playlist.getNext();
-			if (next != null) 
-			{
-				this.current = next;
-				this.pipeline = this.pipelineBuilder.createPipeline(next);
-			}
-		}
+		if (this.pipeline == null && this.playlist.getCurrent() != null)
+			this.pipeline = this.pipelineBuilder.createPipeline(this.playlist.getCurrent());
 		
 		if (this.pipeline != null) this.pipeline.play();
 	}
@@ -97,7 +91,11 @@ public class MediaPlayerImpl implements MediaPlayer, MessageListener
 	@Override
 	public synchronized void stop()
 	{
-		if (this.pipeline != null) this.pipeline.stop();
+		if (this.pipeline != null) 
+		{
+			this.pipeline.stop();
+			this.pipeline = null;
+		}
 	}
 	
 	
@@ -117,18 +115,24 @@ public class MediaPlayerImpl implements MediaPlayer, MessageListener
 	@Override
 	public void next()
 	{
-		final MediaSource next = this.playlist.getNext();
-		if (next != null)
+		if (this.playlist.next())
 		{
-			log.debug("Starting next source: " + next);
-			if (this.pipeline != null) this.pipeline.stop();
-			this.pipeline = this.pipelineBuilder.createPipeline(next);
-			this.current = next;
-			this.pipeline.play();
+			this.stop();
+			this.play();
 		}
-		else
+	}	
+	
+
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MediaPlayer#previous()
+	 */
+	@Override
+	public void previous()
+	{
+		if (this.playlist.previous())
 		{
-			log.debug("next() was called, but no next song available");
+			this.stop();
+			this.play();
 		}
 	}	
 	

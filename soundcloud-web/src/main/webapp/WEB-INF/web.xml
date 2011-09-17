@@ -15,7 +15,7 @@
 
 	<servlet-mapping>
 		<servlet-name>springServlet</servlet-name>
-		<url-pattern>/</url-pattern>
+		<url-pattern>/controller/*</url-pattern>
 	</servlet-mapping>
 	  
 </web-app>

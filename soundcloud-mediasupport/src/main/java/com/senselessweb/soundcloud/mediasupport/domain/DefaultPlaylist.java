@@ -1,10 +1,12 @@
-package com.senselessweb.soundcloud.mediasupport.service.impl;
+package com.senselessweb.soundcloud.mediasupport.domain;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.senselessweb.soundcloud.mediasupport.domain.MediaSource;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.senselessweb.soundcloud.mediasupport.service.Playlist;
 
 /**
@@ -14,6 +16,12 @@ import com.senselessweb.soundcloud.mediasupport.service.Playlist;
  */
 public class DefaultPlaylist implements Playlist
 {
+	
+
+	/**
+	 * Logger
+	 */
+	static final Log log = LogFactory.getLog(DefaultPlaylist.class);
 	
 	/**
 	 * ID Generator for the playlist entries
@@ -26,9 +34,12 @@ public class DefaultPlaylist implements Playlist
 	private final List<PlaylistEntry> playlist = new ArrayList<PlaylistEntry>();
 	
 	/**
-	 * A pointer pointing to the current source in the playlist.
+	 * A pointer pointing to the current source in the playlist. This is only null 
+	 * when the playlist is empty. Otherwise this is always a valid entry inside the playlist.
 	 */
 	private PlaylistEntry current = null;
+
+
 
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.Playlist#add(com.senselessweb.soundcloud.mediasupport.domain.MediaSource)
@@ -36,41 +47,61 @@ public class DefaultPlaylist implements Playlist
 	@Override
 	public void add(final MediaSource mediaSource)
 	{
-		this.playlist.add(new PlaylistEntry(this.entryIdGenerator.incrementAndGet(), mediaSource));
+		final PlaylistEntry entry = new PlaylistEntry(this.entryIdGenerator.incrementAndGet(), mediaSource); 
+		this.playlist.add(entry);
+		if (this.current == null) this.current = entry; 
+		
+		log.debug("Added " + mediaSource);
+		log.debug("Playlist is now: " + this);
 	}
-
+	
+	
 	/**
-	 * @see com.senselessweb.soundcloud.mediasupport.service.Playlist#getNext()
+	 * @see com.senselessweb.soundcloud.mediasupport.service.Playlist#next()
 	 */
 	@Override
-	public MediaSource getNext()
+	public boolean next()
 	{
-		if (this.playlist.isEmpty()) return null;
-		
-		final PlaylistEntry next;
-		if (this.current == null) 
+		final int currentIndex = this.playlist.indexOf(this.current);
+		if (currentIndex >= 0 && currentIndex < this.playlist.size() - 1)
 		{
-			// No source returned yet
-			next = this.playlist.get(0);
+			this.current = this.playlist.get(currentIndex + 1);
+			return true;
 		}
 		else
 		{
-			final int currentIndex = this.playlist.indexOf(this.current);
-			if (currentIndex == -1 || currentIndex == this.playlist.size() - 1) 
-			{
-				// The current was the last source in the playlist
-				return null;
-			}
-			else
-			{
-				// Return the next source
-				next = this.playlist.get(currentIndex + 1);
-			}
+			return false;
 		}
-		
-		this.current = next;
-		return next == null ? null : next.getMediaSource();
-	} 
+	}
+	
+
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.Playlist#previous()
+	 */
+	@Override
+	public boolean previous()
+	{
+		final int currentIndex = this.playlist.indexOf(this.current);
+		if (currentIndex > 0)
+		{
+			this.current = this.playlist.get(currentIndex - 1);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}	
+
+	
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.Playlist#getCurrent()
+	 */
+	@Override
+	public MediaSource getCurrent()
+	{
+		return this.current != null ? this.current.getMediaSource() : null;
+	}
 	
 	/**
 	 * @see java.lang.Object#toString()
@@ -88,6 +119,8 @@ public class DefaultPlaylist implements Playlist
 		}
 		return sb.append("]").toString();
 	}
+
+
 }
 
 
@@ -137,7 +170,7 @@ class PlaylistEntry
 	@Override
 	public String toString()
 	{
-		return "[" + this.id + ":" + this.mediaSource + "]";
+		return this.id + ":" + this.mediaSource;
 	}
 	
 	/**

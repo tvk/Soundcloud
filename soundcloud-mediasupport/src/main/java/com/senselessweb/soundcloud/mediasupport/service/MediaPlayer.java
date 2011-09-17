@@ -26,6 +26,12 @@ public interface MediaPlayer
 	 */
 	public void next();
 	
+
+	/**
+	 * Play the previous song of the current playlist.
+	 */
+	public void previous();
+	
 	
 	/**
 	 * Pauses the playback.
@@ -61,4 +67,6 @@ public interface MediaPlayer
 	 * Shutdown the music service and deallocate all resources.
 	 */
 	public void shutdown();
+
+
 }
