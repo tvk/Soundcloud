@@ -3,6 +3,7 @@
 	<groupId>com.senselessweb.soundcloud</groupId>
 	<artifactId>soundcloud-mediasupport</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	
 	<build>
 		<plugins>
 			<plugin>
@@ -15,6 +16,7 @@
 			</plugin>
 		</plugins>
 	</build>
+	
 	<dependencies>
 		<dependency>
 			<groupId>com.googlecode.gstreamer-java</groupId>
@@ -45,6 +47,13 @@
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>r09</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.9</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>

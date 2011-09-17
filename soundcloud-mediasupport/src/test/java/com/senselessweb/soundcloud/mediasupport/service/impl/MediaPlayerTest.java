@@ -92,12 +92,19 @@ public class MediaPlayerTest
 	public void testSetVolume() throws Exception
 	{
 		this.mediaPlayer.getCurrentPlaylist().add(this.file);
+		this.mediaPlayer.getCurrentPlaylist().add(this.url);
 		this.mediaPlayer.play();
+		Thread.sleep(5000);
+		
+		this.mediaPlayer.getVolumeControl().setVolume(0.5);
 		Thread.sleep(5000);
 		
 		this.mediaPlayer.getVolumeControl().setVolume(0.1);
 		Thread.sleep(5000);
 		
+		this.mediaPlayer.next();
+		Thread.sleep(5000);
+
 		this.mediaPlayer.getVolumeControl().setVolume(1.0);
 		Thread.sleep(5000);
 	}

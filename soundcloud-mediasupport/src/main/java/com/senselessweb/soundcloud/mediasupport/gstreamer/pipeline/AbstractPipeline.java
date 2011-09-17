@@ -7,7 +7,7 @@ import org.gstreamer.Element;
 import org.gstreamer.GstObject;
 import org.gstreamer.Pipeline;
 
-import com.senselessweb.soundcloud.mediasupport.gstreamer.EndOfStreamListener;
+import com.senselessweb.soundcloud.mediasupport.gstreamer.MessageListener;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.PipelineBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.EqualizerBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.VolumeBridge;
@@ -49,10 +49,10 @@ public abstract class AbstractPipeline implements PipelineBridge
 	 * @param pipeline The {@link Pipeline} to use.
 	 * @param volume The current {@link VolumeControl}.
 	 * @param equalizer The current {@link EqualizerBridge}.
-	 * @param eosListener The {@link EndOfStreamListener} gets notified when the strem ends.
+	 * @param eosListener The {@link MessageListener} gets notified when the strem ends.
 	 */
 	public AbstractPipeline(final Pipeline pipeline, final VolumeBridge volume, final EqualizerBridge equalizer, 
-			final EndOfStreamListener eosListener)
+			final MessageListener eosListener)
 	{
 		this.pipeline = pipeline;
 		
@@ -73,7 +73,15 @@ public abstract class AbstractPipeline implements PipelineBridge
 				@Override
 				public void endOfStream(final GstObject source)
 				{
-					eosListener.streamEnded();
+					eosListener.endofStream();
+				}
+			});
+			this.pipeline.getBus().connect(new Bus.ERROR() {
+				
+				@Override
+				public void errorMessage(GstObject source, int code, String message)
+				{
+					eosListener.error(code, message);
 				}
 			});
 		}

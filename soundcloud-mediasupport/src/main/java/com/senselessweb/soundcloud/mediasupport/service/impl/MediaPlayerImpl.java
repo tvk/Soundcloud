@@ -5,12 +5,12 @@ import org.apache.commons.logging.LogFactory;
 import org.gstreamer.Pipeline;
 
 import com.senselessweb.soundcloud.mediasupport.domain.MediaSource;
-import com.senselessweb.soundcloud.mediasupport.gstreamer.EndOfStreamListener;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.GstreamerSupport;
+import com.senselessweb.soundcloud.mediasupport.gstreamer.MessageListener;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.PipelineBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.EqualizerBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.VolumeBridge;
-import com.senselessweb.soundcloud.mediasupport.gstreamer.pipeline.PipelineFactory;
+import com.senselessweb.soundcloud.mediasupport.gstreamer.pipeline.PipelineBuilder;
 import com.senselessweb.soundcloud.mediasupport.service.Equalizer;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
 import com.senselessweb.soundcloud.mediasupport.service.Playlist;
@@ -21,7 +21,7 @@ import com.senselessweb.soundcloud.mediasupport.service.VolumeControl;
  * 
  * @author thomas
  */
-public class MediaPlayerImpl implements MediaPlayer, EndOfStreamListener
+public class MediaPlayerImpl implements MediaPlayer, MessageListener
 {
 
 	/**
@@ -40,6 +40,11 @@ public class MediaPlayerImpl implements MediaPlayer, EndOfStreamListener
 	private PipelineBridge pipeline; 
 	
 	/**
+	 * The current mediasource
+	 */
+	private MediaSource current;
+	
+	/**
 	 * The volume brigde. Is reused for every build pipeline.
 	 */
 	private final VolumeBridge volume = new VolumeBridge();
@@ -48,6 +53,14 @@ public class MediaPlayerImpl implements MediaPlayer, EndOfStreamListener
 	 * The equalizer brigde. Is reused for every build pipeline.
 	 */
 	private final EqualizerBridge equalizer = new EqualizerBridge();
+	
+	/**
+	 * The preconfigured pipeline builder. 
+	 */
+	private final PipelineBuilder pipelineBuilder = new PipelineBuilder().
+		withEqualizer(this.equalizer).
+		withMessageListener(this).
+		withVolume(this.volume);
 	
 	
 	/**
@@ -67,7 +80,11 @@ public class MediaPlayerImpl implements MediaPlayer, EndOfStreamListener
 		if (this.pipeline == null)
 		{
 			final MediaSource next = this.playlist.getNext();
-			if (next != null) this.pipeline = PipelineFactory.createPipeline(next, this.volume, this.equalizer, this);
+			if (next != null) 
+			{
+				this.current = next;
+				this.pipeline = this.pipelineBuilder.createPipeline(next);
+			}
 		}
 		
 		if (this.pipeline != null) this.pipeline.play();
@@ -105,7 +122,8 @@ public class MediaPlayerImpl implements MediaPlayer, EndOfStreamListener
 		{
 			log.debug("Starting next source: " + next);
 			if (this.pipeline != null) this.pipeline.stop();
-			this.pipeline = PipelineFactory.createPipeline(next, this.volume, this.equalizer, this);
+			this.pipeline = this.pipelineBuilder.createPipeline(next);
+			this.current = next;
 			this.pipeline.play();
 		}
 		else
@@ -116,10 +134,10 @@ public class MediaPlayerImpl implements MediaPlayer, EndOfStreamListener
 	
 
 	/**
-	 * @see com.senselessweb.soundcloud.mediasupport.gstreamer.EndOfStreamListener#streamEnded()
+	 * @see com.senselessweb.soundcloud.mediasupport.gstreamer.MessageListener#endofStream()
 	 */
 	@Override
-	public void streamEnded()
+	public void endofStream()
 	{
 		this.pipeline = null;
 		this.next();
@@ -165,5 +183,25 @@ public class MediaPlayerImpl implements MediaPlayer, EndOfStreamListener
 		log.debug("Shutdown called");
 		if (this.pipeline != null) this.pipeline.stop();
 		GstreamerSupport.shutdown();
+	}
+
+	
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.gstreamer.MessageListener#error(int, java.lang.String)
+	 */
+	@Override
+	public void error(final int errorcode, final String message)
+	{
+		if (this.pipeline.resetInErrorCase())
+		{
+			log.debug("Trying to restart the pipeline");
+			this.pipeline = this.pipelineBuilder.createPipeline(this.current);
+			this.pipeline.play();
+		}
+		else
+		{
+			this.stop();
+			// TODO Delegate error to calling application
+		}
 	}
 }
