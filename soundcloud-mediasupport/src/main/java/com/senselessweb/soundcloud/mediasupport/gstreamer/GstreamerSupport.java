@@ -43,10 +43,12 @@ public class GstreamerSupport
 	
 	/**
 	 * Shutdown the gstreamer media framework
+	 * 
+	 * @param deinit If true, deinit is called 
 	 */	
-	public static void shutdown()
+	public static void shutdown(final boolean deinit)
 	{
-		//Gst.deinit();
+		if (deinit) Gst.deinit();
 		Gst.quit();
 	}
 }

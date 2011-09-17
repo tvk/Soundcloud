@@ -1,5 +1,7 @@
 package com.senselessweb.soundcloud.mediasupport.service;
 
+import java.util.List;
+
 import com.senselessweb.soundcloud.mediasupport.domain.MediaSource;
 
 /**
@@ -35,12 +37,21 @@ public interface Playlist
 	 */
 	public MediaSource getCurrent();
 	
+	
 	/**
 	 * Adds a new entry to the playlist.
 	 * 
 	 * @param mediaSource The {@link MediaSource} to add.
 	 */
 	public void add(MediaSource mediaSource);
+	
+	
+	/**
+	 * Returns the current playlist entries.
+	 * 
+	 * @return A copy of the current playlist entries.
+	 */
+	public List<MediaSource> getAll();
 
 	
 	

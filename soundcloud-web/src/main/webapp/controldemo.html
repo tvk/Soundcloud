@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Insert title here</title>
+	
+	<script type="text/javascript" src="js/libraries/jquery-1.6.2.min.js"></script>
+	<script type="text/javascript" src="js/mediaplayer/controls/playlistControl.js"></script>
+	<script type="text/javascript" src="js/mediaplayer/controls/playbackControl.js"></script>
+	<script type="text/javascript" src="js/mediaplayer/mediaPlayer.js"></script>
+	
+	<script type="text/javascript">
+		var mediaplayer;
+		$(document).ready(function() {
+			mediaplayer = new MediaPlayer();
+		});
+	</script>
+	
+</head>
+
+<body>
+
+<div>
+	<h3>Playback control</h3>
+	<a href="#" onclick="mediaplayer.getPlaybackControl().play()">Play</a><br/>
+	<a href="#" onclick="mediaplayer.getPlaybackControl().stop()">Stop</a><br/>
+</div>
+
+
+<div>
+	<h3>Playlist control</h3>
+	<a href="#" onclick="mediaplayer.getPlaylistControl().addUrl('http://wdr-2.akacast.akamaistream.net/7/48/119436/v1/gnl.akacast.akamaistream.net/wdr-2')">Add WDR 2</a><br/>
+</div>
+
+</body>
+</html>

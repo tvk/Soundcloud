@@ -179,18 +179,6 @@ public class MediaPlayerImpl implements MediaPlayer, MessageListener
 
 	
 	/**
-	 * @see com.senselessweb.soundcloud.mediasupport.service.MediaPlayer#shutdown()
-	 */
-	@Override
-	public synchronized void shutdown()
-	{
-		log.debug("Shutdown called");
-		if (this.pipeline != null) this.pipeline.stop();
-		GstreamerSupport.shutdown();
-	}
-
-	
-	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.gstreamer.MessageListener#error(int, java.lang.String)
 	 */
 	@Override
@@ -208,4 +196,30 @@ public class MediaPlayerImpl implements MediaPlayer, MessageListener
 			// TODO Delegate error to calling application
 		}
 	}
+	
+	
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MediaPlayer#shutdown()
+	 */
+	@Override
+	public synchronized void shutdown()
+	{
+		log.debug("Shutdown called");
+		if (this.pipeline != null) this.pipeline.stop();
+		GstreamerSupport.shutdown(false);
+	}
+
+	
+	/**
+	 * The deinit() Method may not be called from inside junit.
+	 * (No idea why...)
+	 * This method is used as destroy method by spring.  
+	 */
+	public synchronized void deinitAndShutdown()
+	{
+		log.debug("Shutdown called");
+		if (this.pipeline != null) this.pipeline.stop();
+		GstreamerSupport.shutdown(true);
+	}
+
 }

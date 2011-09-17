@@ -7,6 +7,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 import com.senselessweb.soundcloud.mediasupport.service.Playlist;
 
 /**
@@ -102,6 +104,26 @@ public class DefaultPlaylist implements Playlist
 	{
 		return this.current != null ? this.current.getMediaSource() : null;
 	}
+	
+
+
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.Playlist#getAll()
+	 */
+	@Override
+	public List<MediaSource> getAll()
+	{
+		return new ArrayList<MediaSource>(
+				Collections2.transform(this.playlist, new Function<PlaylistEntry, MediaSource>() {
+			
+			@Override
+			public MediaSource apply(final PlaylistEntry input)
+			{
+				return input.getMediaSource();
+			}
+		}));
+	}
+	
 	
 	/**
 	 * @see java.lang.Object#toString()
