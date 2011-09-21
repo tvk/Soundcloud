@@ -53,7 +53,7 @@ public class PlaylistController
 	 */
 	@RequestMapping("/addFile")
 	@ResponseStatus(HttpStatus.OK)
-	public void addUrl(final @RequestParam File file) 
+	public void addFile(final @RequestParam File file) 
 	{
 		final MediaSource mediaSource = new FileSource(file);
 		this.mediaPlayer.getCurrentPlaylist().add(mediaSource);

@@ -11,7 +11,7 @@
 	
 	<!-- CSS -->	
 	<link rel="stylesheet" type="text/css" href="css/main.css">
-	<link href='http://fonts.googleapis.com/css?family=Monoton' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="css/mediaplayer.css">
 	
 	<script>
 	
@@ -30,6 +30,26 @@
 				});
 			});
 			
+			$( "#master" ).slider({
+				value: 100,
+				orientation: "horizontal",
+				range: "min",
+				animate: true,
+				change: function(event, ui) { 
+					$.ajax({
+						  url: "controller/volume/setVolume?volume=" + (ui.value / 100.0),
+						  success: function()
+						  {
+						    
+						  },
+						  error: function(jqXHR, textStatus, errorThrown)
+						  {
+							  
+						  }
+						});	
+				}
+			});
+			
 		});
 		
 	</script>
@@ -41,16 +61,18 @@
 	<div id="leftPanel" class="panel">
 	
 		<div id="playbackPanel" class="panel"></div>
-	
-	<div id="eq">
-		<span>88</span>
-		<span>77</span>
-		<span>55</span>
-		<span>33</span>
-		<span>40</span>
-		<span>45</span>
-		<span>70</span>
-	</div>
+		
+		<div id="master" style="width:260px; margin:15px;"></div>
+
+		<div id="eq">
+			<span>88</span>
+			<span>77</span>
+			<span>55</span>
+			<span>33</span>
+			<span>40</span>
+			<span>45</span>
+			<span>70</span>
+		</div>
 
 	</div>
 

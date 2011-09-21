@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
 
 /**
- * Controller for the playback control
+ * Web controller interface for the playback control
  * 
  * @author thomas
  */

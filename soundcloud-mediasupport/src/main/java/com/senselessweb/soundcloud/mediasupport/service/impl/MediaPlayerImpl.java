@@ -147,6 +147,16 @@ public class MediaPlayerImpl implements MediaPlayer, MessageListener
 		this.next();
 	}	
 
+
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MediaPlayer#getState()
+	 */
+	@Override
+	public synchronized State getState()
+	{
+		return this.pipeline != null ? this.pipeline.getState() : State.STOPPED;
+	}
+	
 	
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.MediaPlayer#getCurrentPlaylist()

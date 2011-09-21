@@ -1,5 +1,7 @@
 package com.senselessweb.soundcloud.mediasupport.gstreamer;
 
+import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer.State;
+
 
 /**
  * Encapsulates the gstreamer pipeline and contains basic methods to 
@@ -32,6 +34,14 @@ public interface PipelineBridge
 	
 	
 	/**
+	 * Returns the current playback state
+	 * 
+	 * @return The current playback state. Never null.
+	 */
+	public State getState();
+	
+	
+	/**
 	 * If an error occurs during the playback, should this pipeline just 
 	 * be recreated? This may be helpful when playing stream sources (that
 	 * somtimes just crashes wihtout reason...)
@@ -39,5 +49,7 @@ public interface PipelineBridge
 	 * @return True if this source should be resetted in error case, false otherwise.
 	 */
 	public boolean resetInErrorCase();
+
+
 	
 }

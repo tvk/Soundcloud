@@ -21,3 +21,19 @@ PlaylistControl.prototype.addUrl = function(url)
 		  }
 		});	
 };
+
+
+PlaylistControl.prototype.send = function(command)
+{
+	$.ajax({
+		  url: this.controllerUrl + command,
+		  success: function()
+		  {
+		    
+		  },
+		  error: function(jqXHR, textStatus, errorThrown)
+		  {
+			  
+		  }
+		});	
+};

@@ -12,18 +12,5 @@
 	<context:component-scan base-package="com.senselessweb.soundcloud.web" />
 	<context:annotation-config/> 
 
-
-	<!-- View resolver definitions -->
-	
-	
-
-
-	<!-- Fallback view resolver
-  <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-  	<property name="prefix" value="/WEB-INF/jsp/" />
-  	<property name="suffix" value=".jsp" />
-  	<property name="order" value="99" />
-  </bean>
-   -->		  
 		  
 </beans>

@@ -1,0 +1,35 @@
+
+
+/* Volume Control */
+
+#volume .volumeControlSlider,
+#volume #volumeMuteButton
+{
+	float: left;
+}
+
+#volume .volumeControlSlider
+{
+	width: 80%;
+	margin-right: 15px;
+}
+
+#volume .volumeMuteButtonLabel .ui-button-text 
+{
+	padding: 5px;
+}
+
+
+/* Equalizer */
+
+#equalizer  
+{
+	height: 120px;
+}
+
+#equalizer span  
+{
+	height: 100%;
+	float: left; 
+	margin: 3.5%;
+}

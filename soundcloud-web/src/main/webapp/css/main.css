@@ -1,14 +1,14 @@
 * {
 	position: relative;
-	font-size: 14px;
 }
 
 body {
 	background: url("dark-hive/images/ui-bg_loop_25_000000_21x21.png") repeat;
+	font-size: 10px;
 }
 
 .panel {
-	
+	margin: 15px;
 }
 
 #leftPanel, #mainPanel {
@@ -34,7 +34,9 @@ body {
 }
 
 #leftPanel #eq {
-	height: 200px;
-	width: 200px;
 }
+
+#eq span {
+		height:100%; float:left; margin:15px
+	}
 

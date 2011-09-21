@@ -12,6 +12,7 @@ import com.senselessweb.soundcloud.mediasupport.gstreamer.PipelineBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.EqualizerBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.VolumeBridge;
 import com.senselessweb.soundcloud.mediasupport.service.VolumeControl;
+import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer.State;
 
 /**
  * Bridge that contains the gstreamer {@link Pipeline} and contains references 
@@ -135,6 +136,21 @@ public abstract class AbstractPipeline implements PipelineBridge
 	{
 		log.debug("Stopping " + this);
 		this.pipeline.stop();
+	}
+	
+	
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.gstreamer.PipelineBridge#getState()
+	 */
+	@Override
+	public State getState()
+	{
+		switch (this.pipeline.getState())
+		{
+			case PAUSED: return State.PAUSED;
+			case PLAYING: return State.PLAYING;
+			default: return State.STOPPED;
+		}
 	}
 	
 	/**

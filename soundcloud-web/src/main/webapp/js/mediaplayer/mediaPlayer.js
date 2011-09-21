@@ -3,8 +3,14 @@ var playbackControl;
 
 var playlistControl;
 
-function MediaPlayer()
+var volumeControl;
+
+var equalizerControl;
+
+function MediaPlayer(volumeControlElement, equalizerControlElement)
 {
+	this.volumeControl = new VolumeControl(volumeControlElement);
+	this.equalizerControl = new EqualizerControl(equalizerControlElement);
 	this.playbackControl = new PlaybackControl();
 	this.playlistControl = new PlaylistControl();
 }

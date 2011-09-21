@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Soundcloud</title>
+
+		<!-- jquery -->
+		<script type="text/javascript" src="js/libraries/jquery-1.6.2.min.js"></script>
+		<script type="text/javascript" src="js/libraries/jquery-ui-1.8.16.custom.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/dark-hive/jquery-ui-1.8.16.custom.css">
+		
+		<!-- CSS -->
+		<link rel="stylesheet" type="text/css" href="css/main.css">
+		<link rel="stylesheet" type="text/css" href="css/mediaplayer.css">
+		
+		<!-- Media Player -->
+		<script type="text/javascript" src="js/mediaplayer/controls/playbackControl.js"></script>
+		<script type="text/javascript" src="js/mediaplayer/controls/equalizerControl.js"></script>
+		<script type="text/javascript" src="js/mediaplayer/controls/playlistControl.js"></script>
+		<script type="text/javascript" src="js/mediaplayer/controls/volumeControl.js"></script>
+		<script type="text/javascript" src="js/mediaplayer/mediaPlayer.js"></script>
+		
+		<script>
+		
+			var mediaPlayer;
+			
+			$(document).ready(function() {
+				mediaPlayer = new MediaPlayer($('#volume'), $('#equalizer'));
+			})
+		
+		</script>
+		
+	</head>
+	<body>
+	
+		<div id="leftPanel" class="panel">
+			<div id="volume"></div>
+			<div id="equalizer"></div>
+		</div>
+	
+	</body>
+</html>
+	
