@@ -16,6 +16,7 @@ import com.senselessweb.soundcloud.mediasupport.service.Equalizer;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
 import com.senselessweb.soundcloud.mediasupport.service.Playlist;
 import com.senselessweb.soundcloud.mediasupport.service.VolumeControl;
+import com.senselessweb.storage.PersistencyService;
 
 /**
  * {@link MediaPlayer} implementation based on a gstreamer {@link Pipeline}.
@@ -48,12 +49,17 @@ public class MediaPlayerImpl implements MediaPlayer, MessageListener
 	/**
 	 * The volume brigde. Is reused for every build pipeline.
 	 */
-	private final VolumeBridge volume = new VolumeBridge();
+	private final VolumeBridge volume = new VolumeBridge(this.persistencyService);
 	
 	/**
 	 * The equalizer brigde. Is reused for every build pipeline.
 	 */
-	private final EqualizerBridge equalizer = new EqualizerBridge();
+	private final EqualizerBridge equalizer = new EqualizerBridge(this.persistencyService);
+	
+	/**
+	 * The persistency service. Is used to store and restore pipeline properties.
+	 */
+	private final PersistencyService persistencyService;
 	
 	/**
 	 * The preconfigured pipeline builder. 
@@ -63,13 +69,24 @@ public class MediaPlayerImpl implements MediaPlayer, MessageListener
 		withMessageListener(this).
 		withVolume(this.volume);
 	
-	
 	/**
 	 * Constructor
 	 */
 	public MediaPlayerImpl()
 	{
+		this(null);
+	}
+	
+	/**
+	 * Constructor
+	 * 
+	 * @param persistencyService The persistency service to use.  
+	 */
+	public MediaPlayerImpl(final PersistencyService persistencyService)
+	{
 		GstreamerSupport.initGst();
+		
+		this.persistencyService = persistencyService;
 	}
 	
 	/**

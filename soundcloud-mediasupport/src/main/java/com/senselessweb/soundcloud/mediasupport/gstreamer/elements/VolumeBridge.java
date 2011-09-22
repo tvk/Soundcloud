@@ -1,6 +1,7 @@
 package com.senselessweb.soundcloud.mediasupport.gstreamer.elements;
 
 import com.senselessweb.soundcloud.mediasupport.service.VolumeControl;
+import com.senselessweb.storage.PersistencyService;
 
 /**
  * Bridge that forwards to the volume pipeline element.
@@ -11,6 +12,30 @@ public class VolumeBridge extends AbstractElementBridge implements VolumeControl
 {
 	
 	/**
+	 * The {@link PersistencyService}
+	 */
+	private final PersistencyService persistencyService;
+
+	
+	/**
+	 * Constructor
+	 * 
+	 * @param persistencyService The {@link PersistencyService} to store and restore properties.
+	 */
+	public VolumeBridge(final PersistencyService persistencyService)
+	{
+		this.persistencyService = persistencyService;
+		
+		if (this.persistencyService != null)
+		{
+			if (this.persistencyService.contains("volume.mute")) 
+				this.setMute(Boolean.valueOf(this.persistencyService.get("volume.mute")));
+			if (this.persistencyService.contains("volume.volume")) 
+				this.setMute(Boolean.valueOf(this.persistencyService.get("volume.volume")));
+		}
+	}
+
+	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.VolumeControl#setVolume(double)
 	 */
 	@Override
@@ -20,6 +45,7 @@ public class VolumeBridge extends AbstractElementBridge implements VolumeControl
 			throw new IllegalArgumentException("Illegal volume value: " + volume);
 		
 		this.set("volume", volume);
+		if (this.persistencyService != null) this.persistencyService.put("volume.volume", String.valueOf(volume));		
 	}
 	
 	/**
@@ -29,6 +55,7 @@ public class VolumeBridge extends AbstractElementBridge implements VolumeControl
 	public void setMute(final boolean mute)
 	{
 		this.set("mute", mute);
+		if (this.persistencyService != null) this.persistencyService.put("volume.mute", String.valueOf(mute));		
 	}
 
 	/**
