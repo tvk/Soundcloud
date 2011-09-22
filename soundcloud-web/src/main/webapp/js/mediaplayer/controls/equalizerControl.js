@@ -37,7 +37,7 @@ function initEqualizer(equalizerControlElement, data)
 			range: "min",
 			animate: true,
 			orientation: "vertical",
-			change: function(event, ui)
+			slide: function(event, ui)
 			{
 				var request = "controller/equalizer/setData?";
 				for (var j = 0; j < 10; j++)
