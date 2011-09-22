@@ -10,14 +10,28 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
+import com.senselessweb.soundcloud.mediasupport.service.VolumeControl;
 
+/**
+ * Web interface to control the {@link VolumeControl}.
+ * 
+ * @author thomas
+ */
 @Controller
 @RequestMapping("/volume/*")
 public class VolumeController
 {
-	
+
+	/**
+	 * The media player
+	 */
 	@Autowired MediaPlayer mediaPlayer;
 
+	/**
+	 * Sets the volume.
+	 * 
+	 * @param volume The volume.
+	 */
 	@RequestMapping("/setVolume")
 	@ResponseStatus(HttpStatus.OK)
 	public void setVolume(final @RequestParam("volume") double volume)
@@ -25,7 +39,11 @@ public class VolumeController
 		this.mediaPlayer.getVolumeControl().setVolume(volume);
 	}
 	
-
+	/**
+	 * Sets the mute value.
+	 * 
+	 * @param mute The mute value. 
+	 */
 	@RequestMapping("/setMute")
 	@ResponseStatus(HttpStatus.OK)
 	public void setMute(final @RequestParam("mute") boolean mute)
@@ -34,7 +52,13 @@ public class VolumeController
 	}
 	
 	
-	
+	/**
+	 * Returns the initial data.
+	 * 
+	 * @param model The current model.
+	 * 
+	 * @return The initial data.
+	 */
 	@RequestMapping("/getData")
 	@ResponseBody
 	public Model getData(final Model model)
