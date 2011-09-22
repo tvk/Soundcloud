@@ -1,47 +1,82 @@
 
 
-var controllerUrl;
-
-function PlaybackControl()
+/**
+ * Creates a new playback control element
+ * 
+ * @param playbackControlElement The playback control element
+ */
+function PlaybackControl(playbackControlElement)
 {
-	this.controllerUrl = "controller/playback/";
+	$.getJSON('controller/playback/getData', function(data) {
+		initPlaybackControlMenu(playbackControlElement, data);
+	});
 }
 
-PlaybackControl.prototype.play = function()
+/**
+ * Initializes the control buttons.
+ * 
+ * @param playbackControlElement The parent element
+ * 
+ * @param data The initial data
+ */
+function initPlaybackControlMenu(playbackControlElement, data)
 {
-	this.send("play");
-};
+	// The previous button
+	appendButton(playbackControlElement, 'previous', 'ui-icon-seek-prev');
+	
+	// The pause button
+	appendCheckbox(playbackControlElement, 'pause', 'ui-icon-pause', data.state == 'PAUSED');
+	
+	// The play button
+	appendCheckbox(playbackControlElement, 'play', 'ui-icon-play', data.state == 'PLAYING');
+	
+	// The stop button
+	appendCheckbox(playbackControlElement, 'stop', 'ui-icon-stop', data.state == 'STOPPED');
+	
+	// The next button
+	appendButton(playbackControlElement, 'next', 'ui-icon-seek-next');
+}
 
-
-PlaybackControl.prototype.stop = function()
+/**
+ * Appends a new button
+ * 
+ * @param playbackControlElement The parent playback element
+ * @param command The command of this button. Is used as servlet request.
+ * @param icon The icon to use.
+ */
+function appendButton(playbackControlElement, command, icon)
 {
-	this.send("stop");
-};
+	playbackControlElement.append('<button class="' + command + ' playback-control-button"></button>');
+	$('.' + command, playbackControlElement).button({icons: {primary: icon}, text: false}).click(function() {
+		$(this).blur();
+		$.ajax({
+			  url: "controller/playback/" + command,
+			  error: function(jqXHR, textStatus, errorThrown) {
+				  
+			  }
+			});
+	});
+}
 
-
-PlaybackControl.prototype.next = function()
+/**
+ * Appends a new checkbox. Note that all appended checkboxes are attached to the group 'state'
+ * 
+ * @param playbackControlElement The parent playback element
+ * @param command The command of this button. Is used as servlet request.
+ * @param icon The icon to use.
+ */
+function appendCheckbox(playbackControlElement, command, icon, initalState)
 {
-	this.send("next");
-};
+	playbackControlElement.append('<input type="radio" name="state" id="button-' + command + '" ' + (initalState ? 'checked="true"' : '') + '/>');
+	playbackControlElement.append('<label for="button-' + command + '" class="playback-control-button"></label>');
 
-
-PlaybackControl.prototype.previous = function()
-{
-	this.send("previous");
-};
-
-
-PlaybackControl.prototype.send = function(command)
-{
-	$.ajax({
-		  url: this.controllerUrl + command,
-		  success: function()
-		  {
-		    
-		  },
-		  error: function(jqXHR, textStatus, errorThrown)
-		  {
-			  
-		  }
-		});	
-};
+	$('#button-' + command, playbackControlElement).button({icons: {primary: icon}, text: false}).click(function() {
+			$(this).blur();
+			$.ajax({
+				  url: "controller/playback/" + command,
+				  error: function(jqXHR, textStatus, errorThrown) {
+					  
+				  }
+				});
+	});	
+}

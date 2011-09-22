@@ -25,7 +25,7 @@
 			var mediaPlayer;
 			
 			$(document).ready(function() {
-				mediaPlayer = new MediaPlayer($('#volume'), $('#equalizer'));
+				mediaPlayer = new MediaPlayer($('#playback'), $('#volume'), $('#equalizer'));
 			})
 		
 		</script>
@@ -34,6 +34,7 @@
 	<body>
 
 		<div id="leftPanel" class="panel">
+			<div id="playback"></div>
 			<div id="volume"></div>
 			<div id="equalizer"></div>
 		</div>

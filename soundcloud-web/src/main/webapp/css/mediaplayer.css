@@ -1,34 +1,48 @@
 
 
+/* Playback control button */
+
+#playback {
+	margin: 10px;
+}
+
+#playback .playback-control-button 
+{
+	margin: 0 5px; 
+}
+
+#playback .playback-control-button .ui-button-text {
+	width: 2.6em;
+}
+
+#playback .playback-control-button .ui-button-text {
+	padding: 15px;
+}
+
 /* Volume Control */
 
 #volume .volumeControlSlider,
-#volume #volumeMuteButton
-{
+#volume #volumeMuteButton {
 	float: left;
 }
 
-#volume .volumeControlSlider
-{
+#volume .volumeControlSlider {
 	width: 80%;
 	margin-right: 15px;
 }
 
-#volume .volumeMuteButtonLabel .ui-button-text 
-{
+#volume .volumeMuteButtonLabel .ui-button-text {
 	padding: 5px;
 }
 
 
 /* Equalizer */
 
-#equalizer  
-{
+#equalizer {
 	height: 120px;
 }
 
-#equalizer span  
-{
+#equalizer span {
 	height: 100%;
 	float: left; 
 	margin: 3%;

@@ -3,7 +3,9 @@ package com.senselessweb.soundcloud.web.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
@@ -73,6 +75,19 @@ public class PlaybackController
 		this.mediaPlayer.next();
 	}
 	
-	
+	/**
+	 * Returns the current playback values.
+	 * 
+	 * @param model The current model.
+	 * 
+	 * @return A map with the current initial data.
+	 */
+	@RequestMapping("/getData")
+	@ResponseBody
+	public Model getData(final Model model)
+	{
+		model.addAttribute("state", this.mediaPlayer.getState());
+		return model;
+	}
 	
 }

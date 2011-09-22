@@ -27,7 +27,7 @@ function initVolumeSlider(volumeControlElement, volume)
 		value: volume * 100,
 		orientation: "horizontal",
 		range: "min",
-		change: function(event, ui) { 
+		slide: function(event, ui) { 
 			$(this).blur();
 			$.ajax({
 				  url: "controller/volume/setVolume?volume=" + (ui.value / 100.0),

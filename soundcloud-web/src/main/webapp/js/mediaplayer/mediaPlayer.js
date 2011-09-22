@@ -7,21 +7,10 @@ var volumeControl;
 
 var equalizerControl;
 
-function MediaPlayer(volumeControlElement, equalizerControlElement)
+function MediaPlayer(playbackControlElement, volumeControlElement, equalizerControlElement)
 {
+	this.playbackControl = new PlaybackControl(playbackControlElement);
 	this.volumeControl = new VolumeControl(volumeControlElement);
 	this.equalizerControl = new EqualizerControl(equalizerControlElement);
-	this.playbackControl = new PlaybackControl();
 	this.playlistControl = new PlaylistControl();
 }
-
-MediaPlayer.prototype.getPlaybackControl = function()
-{
-	return this.playbackControl;
-};
-
-
-MediaPlayer.prototype.getPlaylistControl = function()
-{
-	return this.playlistControl;
-};
