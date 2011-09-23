@@ -1,7 +1,5 @@
 package com.senselessweb.soundcloud.domain;
 
-import java.net.URL;
-
 import com.senselessweb.soundcloud.util.IdentityUtils;
 
 /**
@@ -12,20 +10,45 @@ import com.senselessweb.soundcloud.util.IdentityUtils;
  */
 public class StreamSource implements MediaSource
 {
+	
+	/**
+	 * The name of this stream source.
+	 */
+	private final String name;
+
+	/**
+	 * The genres of this stream source.
+	 */
+	private final String[] genres;
 
 	/**
 	 * The url 
 	 */
-	private final URL url;
+	private final String url;
 	
 	/**
+	 * @param name The name of this stream source.
 	 * @param url The url of this stream
+	 * @param genres The genres of this stream source.
 	 */
-	public StreamSource(final URL url)
+	public StreamSource(final String name, final String url, final String[] genres)
 	{
 		if (url == null) 
 			throw new IllegalArgumentException("url must not be null");
+		
+		this.name = name;
 		this.url = url;
+		this.genres = genres;
+	}
+	
+	/**
+	 * Returns the name.
+	 * 
+	 * @return The name.
+	 */
+	public String getName()
+	{
+		return this.name;
 	}
 	
 	/**
@@ -33,7 +56,7 @@ public class StreamSource implements MediaSource
 	 * 
 	 * @return The url. Never null.
 	 */
-	public URL getUrl()
+	public String getUrl()
 	{
 		return this.url;
 	}
@@ -44,7 +67,7 @@ public class StreamSource implements MediaSource
 	@Override
 	public String toString()
 	{
-		return "StreamSource[" + this.url + "]";
+		return "StreamSource[" + this.name + "," + this.url + "]";
 	}
 	
 	/**
@@ -55,7 +78,7 @@ public class StreamSource implements MediaSource
 	{
 		if (!(obj instanceof StreamSource)) return false;
 		final StreamSource other = (StreamSource) obj;
-		return IdentityUtils.areEqual(this.url, other.url);
+		return IdentityUtils.areEqual(this.name, other.name, this.url, other.url, this.genres, other.genres);
 	}
 
 	/**

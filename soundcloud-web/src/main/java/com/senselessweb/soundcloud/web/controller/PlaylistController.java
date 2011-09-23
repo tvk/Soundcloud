@@ -2,8 +2,8 @@ package com.senselessweb.soundcloud.web.controller;
 
 import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URL;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -34,15 +34,17 @@ public class PlaylistController
 	/**
 	 * Adds an url to the playlist
 	 * 
+	 * @param name 
 	 * @param url The url.
+	 * @param genres 
 	 * 
 	 * @throws MalformedURLException 
 	 */
 	@RequestMapping("/addUrl")
 	@ResponseStatus(HttpStatus.OK)
-	public void addUrl(final @RequestParam URL url) throws MalformedURLException
+	public void addUrl(final @RequestParam String name, final @RequestParam String url, final @RequestParam String genres) throws MalformedURLException
 	{
-		final MediaSource mediaSource = new StreamSource(url);
+		final MediaSource mediaSource = new StreamSource(name, url, StringUtils.isBlank(genres) ? null : genres.split(","));
 		this.mediaPlayer.getCurrentPlaylist().add(mediaSource);
 	}
 	

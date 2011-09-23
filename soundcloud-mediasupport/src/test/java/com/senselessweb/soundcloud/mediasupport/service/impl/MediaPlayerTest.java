@@ -1,8 +1,6 @@
 package com.senselessweb.soundcloud.mediasupport.service.impl;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -52,15 +50,13 @@ public class MediaPlayerTest
 	
 	/**
 	 * Initialize the {@link MediaPlayer} and create some source files.
-	 * 
-	 * @throws MalformedURLException
 	 */
 	@Before
-	public void setUp() throws MalformedURLException
+	public void setUp() 
 	{
 		this.mediaPlayer = new MediaPlayerImpl();
 		
-		this.url = new StreamSource(new URL("http://ubuntu.hbr1.com:19800/trance.ogg"));
+		this.url = new StreamSource("Trance", "http://ubuntu.hbr1.com:19800/trance.ogg", new String[0]);
 		this.file = new FileSource(new File("src/test/resources/soundfiles/test.mp3"));
 		this.wavFile = new FileSource(new File("src/test/resources/soundfiles/test3.wav"));
 	}
