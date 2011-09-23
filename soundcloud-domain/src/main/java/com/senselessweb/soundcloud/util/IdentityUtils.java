@@ -1,4 +1,4 @@
-package com.senselessweb.soundcloud.mediasupport.util;
+package com.senselessweb.soundcloud.util;
 
 /**
  * Contains static methods to check the identity of a class.

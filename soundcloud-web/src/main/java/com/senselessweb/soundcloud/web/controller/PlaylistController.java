@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.senselessweb.soundcloud.mediasupport.domain.FileSource;
-import com.senselessweb.soundcloud.mediasupport.domain.MediaSource;
-import com.senselessweb.soundcloud.mediasupport.domain.StreamSource;
+import com.senselessweb.soundcloud.domain.FileSource;
+import com.senselessweb.soundcloud.domain.MediaSource;
+import com.senselessweb.soundcloud.domain.StreamSource;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
 
 /**

@@ -1,8 +1,8 @@
 package com.senselessweb.soundcloud.mediasupport.gstreamer.pipeline;
 
-import com.senselessweb.soundcloud.mediasupport.domain.FileSource;
-import com.senselessweb.soundcloud.mediasupport.domain.MediaSource;
-import com.senselessweb.soundcloud.mediasupport.domain.StreamSource;
+import com.senselessweb.soundcloud.domain.FileSource;
+import com.senselessweb.soundcloud.domain.MediaSource;
+import com.senselessweb.soundcloud.domain.StreamSource;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.MessageListener;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.PipelineBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.EqualizerBridge;

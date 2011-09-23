@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.senselessweb.soundcloud.domain.MediaSource;
 import com.senselessweb.soundcloud.mediasupport.service.Playlist;
 
 /**
@@ -36,7 +37,7 @@ public class DefaultPlaylist implements Playlist
 
 
 	/**
-	 * @see com.senselessweb.soundcloud.mediasupport.service.Playlist#add(com.senselessweb.soundcloud.mediasupport.domain.MediaSource)
+	 * @see com.senselessweb.soundcloud.mediasupport.service.Playlist#add(MediaSource)
 	 */
 	@Override
 	public void add(final MediaSource mediaSource)

@@ -48,9 +48,15 @@
 			<artifactId>guava</artifactId>
 			<version>r09</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>com.senselessweb.soundcloud</groupId>
 			<artifactId>soundcloud-storage</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.senselessweb.soundcloud</groupId>
+			<artifactId>soundcloud-domain</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		

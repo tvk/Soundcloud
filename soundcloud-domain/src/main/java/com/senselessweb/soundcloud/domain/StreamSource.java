@@ -1,8 +1,8 @@
-package com.senselessweb.soundcloud.mediasupport.domain;
+package com.senselessweb.soundcloud.domain;
 
 import java.net.URL;
 
-import com.senselessweb.soundcloud.mediasupport.util.IdentityUtils;
+import com.senselessweb.soundcloud.util.IdentityUtils;
 
 /**
  * A media source represented by a stream.
