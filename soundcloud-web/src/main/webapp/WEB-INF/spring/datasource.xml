@@ -10,7 +10,7 @@
 	<mongo:mongo host="127.0.0.1" port="27017" />
   <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
     <constructor-arg ref="mongo"/>
-    <constructor-arg name="databaseName" value="soundcloud_storage_mongodbtest"/>
+    <constructor-arg name="databaseName" value="soundcloud"/>
   </bean>
 
 </beans>

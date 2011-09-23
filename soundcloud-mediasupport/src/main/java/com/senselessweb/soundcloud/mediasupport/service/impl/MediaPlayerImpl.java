@@ -49,12 +49,12 @@ public class MediaPlayerImpl implements MediaPlayer, MessageListener
 	/**
 	 * The volume brigde. Is reused for every build pipeline.
 	 */
-	private final VolumeBridge volume = new VolumeBridge(this.persistencyService);
+	private final VolumeBridge volume;
 	
 	/**
 	 * The equalizer brigde. Is reused for every build pipeline.
 	 */
-	private final EqualizerBridge equalizer = new EqualizerBridge(this.persistencyService);
+	private final EqualizerBridge equalizer;
 	
 	/**
 	 * The persistency service. Is used to store and restore pipeline properties.
@@ -64,10 +64,7 @@ public class MediaPlayerImpl implements MediaPlayer, MessageListener
 	/**
 	 * The preconfigured pipeline builder. 
 	 */
-	private final PipelineBuilder pipelineBuilder = new PipelineBuilder().
-		withEqualizer(this.equalizer).
-		withMessageListener(this).
-		withVolume(this.volume);
+	private final PipelineBuilder pipelineBuilder;
 	
 	/**
 	 * Constructor
@@ -87,6 +84,16 @@ public class MediaPlayerImpl implements MediaPlayer, MessageListener
 		GstreamerSupport.initGst();
 		
 		this.persistencyService = persistencyService;
+		
+		// Initialize the pipeline elements
+		this.volume = new VolumeBridge(this.persistencyService);
+		this.equalizer = new EqualizerBridge(this.persistencyService);
+		
+		// Initialize the pipeline builder
+		this.pipelineBuilder = new PipelineBuilder().
+			withEqualizer(this.equalizer).
+			withMessageListener(this).
+			withVolume(this.volume);
 	}
 	
 	/**

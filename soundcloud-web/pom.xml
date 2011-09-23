@@ -35,7 +35,12 @@
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>1.8.5</version>
 		</dependency>
-
+		<dependency>
+			<groupId>com.senselessweb.soundcloud</groupId>
+			<artifactId>soundcloud-storage-mongodb</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

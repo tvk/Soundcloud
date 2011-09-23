@@ -4,6 +4,8 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 	<!-- The one and only bean is the Mediaplayer service -->
-  <bean id="mediaPlayer" class="com.senselessweb.soundcloud.mediasupport.service.impl.MediaPlayerImpl" destroy-method="deinitAndShutdown" />
+  <bean id="mediaPlayer" class="com.senselessweb.soundcloud.mediasupport.service.impl.MediaPlayerImpl" destroy-method="deinitAndShutdown">
+  	<constructor-arg name="persistencyService" ref="persistencyService" />
+  </bean>
 
 </beans>

@@ -31,7 +31,7 @@ public class VolumeBridge extends AbstractElementBridge implements VolumeControl
 			if (this.persistencyService.contains("volume.mute")) 
 				this.setMute(Boolean.valueOf(this.persistencyService.get("volume.mute")));
 			if (this.persistencyService.contains("volume.volume")) 
-				this.setMute(Boolean.valueOf(this.persistencyService.get("volume.volume")));
+				this.setVolume(Double.valueOf(this.persistencyService.get("volume.volume")));
 		}
 	}
 

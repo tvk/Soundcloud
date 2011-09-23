@@ -11,6 +11,9 @@
         <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/soundcloud-storage/soundcloud-storage">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/soundcloud-storage-mongodb/soundcloud-storage-mongodb">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="soundcloud-web"/>
         <property name="java-output-path" value="/soundcloud-web/target/classes"/>
     </wb-module>

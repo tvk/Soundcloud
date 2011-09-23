@@ -2,37 +2,59 @@ package com.senselessweb.soundcloud.storage.mongodb.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.senselessweb.soundcloud.storage.mongodb.support.SimpleEntry;
 import com.senselessweb.storage.PersistencyService;
 
+/**
+ * Implementation of the {@link PersistencyService} that uses mongodb as storage backend.
+ * 
+ * @author thomas
+ */
 @Service("persistencyService")
 public class PersistencyServiceImpl implements PersistencyService
 {
-	
+
+	/**
+	 * The mongotemplate
+	 */
 	@Autowired MongoTemplate mongoTemplate;
 	
-	private String collectionName = "persistencyServiceCollection";
+	/**
+	 * The collection used by this service.
+	 */
+	private static final String collectionName = "persistencyServiceCollection";
 
+	
+	/**
+	 * @see com.senselessweb.storage.PersistencyService#put(java.lang.String, java.lang.String)
+	 */
 	public void put(String key, String value)
 	{
-		this.mongoTemplate.remove(new Query(Criteria.where("key").is(key)), this.collectionName);
-		this.mongoTemplate.insert(new SimpleEntry(key, value), this.collectionName);
+		this.mongoTemplate.remove(SimpleEntry.createQuery(key), PersistencyServiceImpl.collectionName);
+		this.mongoTemplate.insert(new SimpleEntry(key, value), PersistencyServiceImpl.collectionName);
 	}
 
+	
+	/**
+	 * @see com.senselessweb.storage.PersistencyService#get(java.lang.String)
+	 */
 	public String get(String key)
 	{
 		final SimpleEntry tuple = this.mongoTemplate.findOne(
-				new Query(Criteria.where("key").is(key)), SimpleEntry.class, this.collectionName);
+				SimpleEntry.createQuery(key), SimpleEntry.class, PersistencyServiceImpl.collectionName);
 		return tuple != null ? tuple.getValue() : null;
 	}
 
+	
+	/**
+	 * @see com.senselessweb.storage.PersistencyService#contains(java.lang.String)
+	 */
 	public boolean contains(String key)
 	{
-		return this.mongoTemplate.findOne(new Query(Criteria.where("key=" + key)), SimpleEntry.class, this.collectionName) != null;
+		return this.mongoTemplate.findOne(
+				SimpleEntry.createQuery(key), SimpleEntry.class, PersistencyServiceImpl.collectionName) != null;
 	}
 	
 }
