@@ -33,12 +33,14 @@ public class StreamSource implements MediaSource
 	 */
 	public StreamSource(final String name, final String url, final String[] genres)
 	{
+		if (name == null) 
+			throw new IllegalArgumentException("name must not be null");
 		if (url == null) 
 			throw new IllegalArgumentException("url must not be null");
 		
 		this.name = name;
 		this.url = url;
-		this.genres = genres;
+		this.genres = genres != null ? genres : new String[0];
 	}
 	
 	/**
@@ -59,6 +61,17 @@ public class StreamSource implements MediaSource
 	public String getUrl()
 	{
 		return this.url;
+	}
+	
+	
+	/**
+	 * Returns the genres
+	 * 
+	 * @return The genres
+	 */
+	public String[] getGenres()
+	{
+		return this.genres;
 	}
 	
 	/**

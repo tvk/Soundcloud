@@ -7,25 +7,38 @@
 		<!-- jquery -->
 		<script type="text/javascript" src="js/libraries/jquery-1.6.2.min.js"></script>
 		<script type="text/javascript" src="js/libraries/jquery-ui-1.8.16.custom.min.js"></script>
+		<script type="text/javascript" src="js/libraries/jquery-ui-finder-min.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/dark-hive/jquery-ui-1.8.16.custom.css">
+		<link rel="stylesheet" type="text/css" href="css/ui.finder.css">
 		
 		<!-- CSS -->
 		<link rel="stylesheet" type="text/css" href="css/main.css">
 		<link rel="stylesheet" type="text/css" href="css/mediaplayer.css">
+		<link rel="stylesheet" type="text/css" href="css/medialibrary.css">
 		
 		<!-- Media Player -->
 		<script type="text/javascript" src="js/mediaplayer/controls/playbackControl.js"></script>
 		<script type="text/javascript" src="js/mediaplayer/controls/equalizerControl.js"></script>
 		<script type="text/javascript" src="js/mediaplayer/controls/playlistControl.js"></script>
 		<script type="text/javascript" src="js/mediaplayer/controls/volumeControl.js"></script>
+		<script type="text/javascript" src="js/mediaplayer/library/radioLibrary.js"></script>
+		<script type="text/javascript" src="js/mediaplayer/mediaLibrary.js"></script>
 		<script type="text/javascript" src="js/mediaplayer/mediaPlayer.js"></script>
 		
 		<script>
 		
 			var mediaPlayer;
 			
+			var mediaLibrary;
+			
 			$(document).ready(function() {
+				
+				// Init the media player
 				mediaPlayer = new MediaPlayer($('#playback'), $('#volume'), $('#equalizer'));
+				
+				// Init the media library
+				$("#medialibrary").tabs();
+				mediaLibrary = new MediaLibrary($('#tab-radio'));
 			})
 		
 		</script>
@@ -38,7 +51,21 @@
 			<div id="volume"></div>
 			<div id="equalizer"></div>
 		</div>
-	
+
+		<div id="rightPanel" class="panel">
+			<div id="medialibrary">
+				<ul>
+					<li><a href="#tab-radio">Radio</a></li>
+					<li><a href="#tab-medialibrary">Media Library</a></li>
+				</ul>
+				<div id="tab-radio">
+					
+				</div>
+				<div id="tab-medialibrary">
+				</div>
+			</div>
+		</div>
+			
 	</body>
 </html>
 	

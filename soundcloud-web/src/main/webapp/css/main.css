@@ -8,10 +8,10 @@ body {
 }
 
 .panel {
-	margin: 15px;
+	/*margin: 15px;*/
 }
 
-#leftPanel, #mainPanel {
+#leftPanel, #rightPanel {
 	height: 300px;
 	float: left;
 } 
@@ -22,10 +22,16 @@ body {
 	min-width: 280px;
 }
 
-
-#mainPanel {
-	width: 70%;
+#rightPanel {
+	width: 65%;
+	min-width: 550px;
 }
+
+
+#rightPanel #medialibrary .ui-finder a {
+	font-size: 15px;
+}
+
 
 #mainPanel #headline {
 	font-family: 'Monoton', cursive;
@@ -33,11 +39,3 @@ body {
   padding: 5px 15px;
   color: #fff;
 }
-
-#leftPanel #eq {
-}
-
-#eq span {
-		height:100%; float:left; margin:15px
-	}
-

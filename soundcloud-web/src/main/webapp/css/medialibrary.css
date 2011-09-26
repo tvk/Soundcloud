@@ -1,0 +1,25 @@
+
+#medialibrary .title
+{
+}
+
+#medialibrary .description
+{
+		font-size: 13px;
+		margin: 5px;
+}
+
+#medialibrary tr
+{
+		height: 22px;
+}
+
+#medialibrary td.title
+{
+		font-weight: bold; 
+}
+
+#medialibrary .button
+{
+		margin: 12px;
+}
