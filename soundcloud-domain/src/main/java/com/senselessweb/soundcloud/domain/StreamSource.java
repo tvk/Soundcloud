@@ -121,6 +121,7 @@ public class StreamSource implements MediaSource
 	/**
 	 * @see com.senselessweb.soundcloud.domain.MediaSource#getTitle()
 	 */
+	@Override
 	public String getTitle()
 	{
 		return this.name;

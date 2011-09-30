@@ -42,6 +42,7 @@ public class DisplayDataServiceImpl implements DisplayDataService, MessageListen
 	/**
 	 * @see com.senselessweb.soundcloud.web.service.DisplayDataService#getDisplayData()
 	 */
+	@Override
 	public DisplayData getDisplayData()
 	{
 		return this.currentDisplayData;
@@ -50,6 +51,7 @@ public class DisplayDataServiceImpl implements DisplayDataService, MessageListen
 	/**
 	 * @see com.senselessweb.soundcloud.web.service.DisplayDataService#waitForDisplayData()
 	 */
+	@Override
 	public DisplayData waitForDisplayData()
 	{
 		synchronized (this)
@@ -83,6 +85,7 @@ public class DisplayDataServiceImpl implements DisplayDataService, MessageListen
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#tag(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public void tag(final String tag, final String value) 
 	{ 
 		this.currentDisplayData.set(tag, value);
@@ -92,6 +95,7 @@ public class DisplayDataServiceImpl implements DisplayDataService, MessageListen
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#stateChanged(com.senselessweb.soundcloud.mediasupport.service.MediaPlayer.State)
 	 */
+	@Override
 	public void stateChanged(final State newState) 
 	{  
 		this.currentDisplayData.clear();
@@ -101,6 +105,7 @@ public class DisplayDataServiceImpl implements DisplayDataService, MessageListen
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#newSource(com.senselessweb.soundcloud.domain.MediaSource)
 	 */
+	@Override
 	public void newSource(final MediaSource source)
 	{
 		this.currentDisplayData.set("source", source.getTitle());
@@ -111,6 +116,7 @@ public class DisplayDataServiceImpl implements DisplayDataService, MessageListen
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#error(java.lang.String)
 	 */
+	@Override
 	public void error(final String message) { /* unused */ }
 
 

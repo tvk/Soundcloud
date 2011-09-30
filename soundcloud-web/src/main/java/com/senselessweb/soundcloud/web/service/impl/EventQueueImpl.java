@@ -38,6 +38,7 @@ public class EventQueueImpl implements EventQueue, MessageListener
 	/**
 	 * @see com.senselessweb.soundcloud.web.service.EventQueue#getNextEvent()
 	 */
+	@Override
 	public Event getNextEvent()
 	{
 		try
@@ -53,6 +54,7 @@ public class EventQueueImpl implements EventQueue, MessageListener
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#stateChanged(com.senselessweb.soundcloud.mediasupport.service.MediaPlayer.State)
 	 */
+	@Override
 	public void stateChanged(final State newState)
 	{
 		this.queue.add(new Event("stateChanged", "newState", newState.name()));
@@ -61,6 +63,7 @@ public class EventQueueImpl implements EventQueue, MessageListener
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#error(java.lang.String)
 	 */
+	@Override
 	public void error(final String message)
 	{
 		this.queue.add(new Event("error", "message", message));
@@ -69,6 +72,7 @@ public class EventQueueImpl implements EventQueue, MessageListener
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#tag(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public void tag(final String tag, final String value)
 	{
 		// Unused as long as the DisplayDataController handles all tag request
@@ -79,6 +83,7 @@ public class EventQueueImpl implements EventQueue, MessageListener
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#newSource(com.senselessweb.soundcloud.domain.MediaSource)
 	 */
+	@Override
 	public void newSource(final MediaSource source)
 	{
 		// Unused

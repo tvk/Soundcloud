@@ -30,6 +30,7 @@ public class PersistencyServiceImpl implements PersistencyService
 	/**
 	 * @see com.senselessweb.storage.PersistencyService#put(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public void put(String key, String value)
 	{
 		this.mongoTemplate.remove(SimpleEntry.createQuery(key), PersistencyServiceImpl.collectionName);
@@ -40,6 +41,7 @@ public class PersistencyServiceImpl implements PersistencyService
 	/**
 	 * @see com.senselessweb.storage.PersistencyService#get(java.lang.String)
 	 */
+	@Override
 	public String get(String key)
 	{
 		final SimpleEntry tuple = this.mongoTemplate.findOne(
@@ -51,6 +53,7 @@ public class PersistencyServiceImpl implements PersistencyService
 	/**
 	 * @see com.senselessweb.storage.PersistencyService#contains(java.lang.String)
 	 */
+	@Override
 	public boolean contains(String key)
 	{
 		return this.mongoTemplate.findOne(

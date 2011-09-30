@@ -34,6 +34,7 @@ public class RadioStationStorageServiceImpl implements RadioStationStorageServic
 	/**
 	 * @see com.senselessweb.storage.RadioStationStorageService#createRadioStation(StreamSource)
 	 */
+	@Override
 	public StreamSource createRadioStation(final StreamSource streamSource)
 	{
 		// Remove stations with the same name and location
@@ -51,6 +52,7 @@ public class RadioStationStorageServiceImpl implements RadioStationStorageServic
 	/**
 	 * @see com.senselessweb.storage.RadioStationStorageService#getAllRadioStations()
 	 */
+	@Override
 	public Collection<StreamSource> getAllRadioStations()
 	{
 		return this.mongoTemplate.findAll(StreamSource.class, collectionName);
@@ -60,6 +62,7 @@ public class RadioStationStorageServiceImpl implements RadioStationStorageServic
 	/**
 	 * @see com.senselessweb.storage.RadioStationStorageService#getRadioStation(java.lang.String)
 	 */
+	@Override
 	public StreamSource getRadioStation(final String id)
 	{
 		return this.mongoTemplate.findById(id, StreamSource.class, collectionName);
@@ -69,6 +72,7 @@ public class RadioStationStorageServiceImpl implements RadioStationStorageServic
 	/**
 	 * @see com.senselessweb.storage.RadioStationStorageService#deleteRadioStation(java.lang.String)
 	 */
+	@Override
 	public void deleteRadioStation(final String id)
 	{
 		this.mongoTemplate.remove(new Query(Criteria.where("id").is(id)), collectionName);
