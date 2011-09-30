@@ -1,6 +1,7 @@
 package com.senselessweb.soundcloud.mediasupport.domain;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -47,6 +48,19 @@ public class DefaultPlaylist implements Playlist
 		
 		log.debug("Added " + mediaSource);
 		log.debug("Playlist is now: " + this);
+	}
+	
+	
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.Playlist#set(java.util.Collection)
+	 */
+	@Override
+	public void set(final Collection<? extends MediaSource> playlist)
+	{
+		this.playlist.clear();
+		this.playlist.addAll(playlist);
+		
+		this.current = this.playlist.isEmpty() ? -1 : 0;
 	}
 	
 	

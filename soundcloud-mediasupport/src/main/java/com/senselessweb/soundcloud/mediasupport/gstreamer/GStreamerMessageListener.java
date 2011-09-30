@@ -6,7 +6,7 @@ package com.senselessweb.soundcloud.mediasupport.gstreamer;
  * @author thomas
  *
  */
-public interface MessageListener
+public interface GStreamerMessageListener
 {
 
 	/**

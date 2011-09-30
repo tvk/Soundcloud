@@ -1,6 +1,6 @@
 package com.senselessweb.soundcloud.mediasupport.gstreamer.pipeline;
 
-import com.senselessweb.soundcloud.mediasupport.gstreamer.MessageListener;
+import com.senselessweb.soundcloud.mediasupport.gstreamer.GStreamerMessageListener;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.EqualizerBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.VolumeBridge;
 import com.senselessweb.soundcloud.mediasupport.service.VolumeControl;
@@ -19,11 +19,11 @@ class StreamSourcePipeline extends AbstractPipeline
 	 * @param url The url that is used as source.
 	 * @param volume The {@link VolumeControl}.
 	 * @param equalizer The current {@link EqualizerBridge}.
-	 * @param eosListener The {@link MessageListener} gets notified when the strem ends.
+	 * @param eosListener The {@link GStreamerMessageListener} gets notified when the strem ends.
 	 */
-	public StreamSourcePipeline(final String url, final VolumeBridge volume, final EqualizerBridge equalizer, final MessageListener eosListener)
+	public StreamSourcePipeline(final String url, final VolumeBridge volume, final EqualizerBridge equalizer, final GStreamerMessageListener eosListener)
 	{
-		super(createDefaultPipeline("souphttpsrc"), volume, equalizer, eosListener);
+		super(createDefaultPipeline("souphttpsrc iradio-mode=true "), volume, equalizer, eosListener);
 		this.pipeline.getElementByName("src").set("location", url);
 	}
 	

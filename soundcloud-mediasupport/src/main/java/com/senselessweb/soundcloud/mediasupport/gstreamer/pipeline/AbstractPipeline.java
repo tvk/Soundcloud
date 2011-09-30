@@ -6,13 +6,14 @@ import org.gstreamer.Bus;
 import org.gstreamer.Element;
 import org.gstreamer.GstObject;
 import org.gstreamer.Pipeline;
+import org.gstreamer.TagList;
 
-import com.senselessweb.soundcloud.mediasupport.gstreamer.MessageListener;
+import com.senselessweb.soundcloud.mediasupport.gstreamer.GStreamerMessageListener;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.PipelineBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.EqualizerBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.VolumeBridge;
-import com.senselessweb.soundcloud.mediasupport.service.VolumeControl;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer.State;
+import com.senselessweb.soundcloud.mediasupport.service.VolumeControl;
 
 /**
  * Bridge that contains the gstreamer {@link Pipeline} and contains references 
@@ -50,10 +51,10 @@ public abstract class AbstractPipeline implements PipelineBridge
 	 * @param pipeline The {@link Pipeline} to use.
 	 * @param volume The current {@link VolumeControl}.
 	 * @param equalizer The current {@link EqualizerBridge}.
-	 * @param eosListener The {@link MessageListener} gets notified when the strem ends.
+	 * @param eosListener The {@link GStreamerMessageListener} gets notified when the strem ends.
 	 */
 	public AbstractPipeline(final Pipeline pipeline, final VolumeBridge volume, final EqualizerBridge equalizer, 
-			final MessageListener eosListener)
+			final GStreamerMessageListener eosListener)
 	{
 		this.pipeline = pipeline;
 		
@@ -67,6 +68,7 @@ public abstract class AbstractPipeline implements PipelineBridge
 		this.pipeline.getBus().connect(messageListener.errorMessageListener);
 		this.pipeline.getBus().connect(messageListener.warnMessageListener);
 		this.pipeline.getBus().connect(messageListener.infoMessageListener);
+		this.pipeline.getBus().connect(messageListener.tagMessageListener);
 		
 		if (eosListener != null)
 		{
@@ -101,7 +103,7 @@ public abstract class AbstractPipeline implements PipelineBridge
 	{
 		return Pipeline.launch(
 				src + " name=src ! " +
-				"decodebin ! " +
+				"decodebin2 ! " +
 				"audioconvert ! " +
 				"equalizer-10bands name=equalizer ! " +
 				"volume name=volume ! " +
@@ -206,7 +208,17 @@ class BusMessageListener
 		}
 	};
 	
-
+	/**
+	 * Tag message listener
+	 */
+	Bus.TAG tagMessageListener = new Bus.TAG() {
+		
+		@Override
+		public void tagsFound(final GstObject source, final TagList tagList)
+		{
+			AbstractPipeline.log.info("Tags found : " + tagList);		
+		}
+	};
 	
 }
 

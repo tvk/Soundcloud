@@ -12,6 +12,11 @@ public class StreamSource implements MediaSource
 {
 	
 	/**
+	 * The id of this media source
+	 */
+	private String _id;
+	
+	/**
 	 * The name of this stream source.
 	 */
 	private final String name;
@@ -41,6 +46,16 @@ public class StreamSource implements MediaSource
 		this.name = name;
 		this.url = url;
 		this.genres = genres != null ? genres : new String[0];
+	}
+	
+	/**
+	 * Returns the id of this stream source.
+	 * 
+	 * @return The id.
+	 */
+	public String getId()
+	{
+		return this._id;
 	}
 	
 	/**

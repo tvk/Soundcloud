@@ -6,14 +6,15 @@ import org.gstreamer.Pipeline;
 
 import com.senselessweb.soundcloud.domain.MediaSource;
 import com.senselessweb.soundcloud.mediasupport.domain.DefaultPlaylist;
+import com.senselessweb.soundcloud.mediasupport.gstreamer.GStreamerMessageListener;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.GstreamerSupport;
-import com.senselessweb.soundcloud.mediasupport.gstreamer.MessageListener;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.PipelineBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.EqualizerBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.VolumeBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.pipeline.PipelineBuilder;
 import com.senselessweb.soundcloud.mediasupport.service.Equalizer;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
+import com.senselessweb.soundcloud.mediasupport.service.MessageListener;
 import com.senselessweb.soundcloud.mediasupport.service.Playlist;
 import com.senselessweb.soundcloud.mediasupport.service.VolumeControl;
 import com.senselessweb.storage.PersistencyService;
@@ -23,7 +24,7 @@ import com.senselessweb.storage.PersistencyService;
  * 
  * @author thomas
  */
-public class MediaPlayerImpl implements MediaPlayer, MessageListener
+public class MediaPlayerImpl implements MediaPlayer, GStreamerMessageListener
 {
 
 	/**
@@ -67,6 +68,11 @@ public class MediaPlayerImpl implements MediaPlayer, MessageListener
 	private final PipelineBuilder pipelineBuilder;
 	
 	/**
+	 * The attached {@link MessageListener}s.
+	 */
+	private final MessageMediator messageMediator = new MessageMediator();
+	
+	/**
 	 * Constructor
 	 */
 	public MediaPlayerImpl()
@@ -105,7 +111,11 @@ public class MediaPlayerImpl implements MediaPlayer, MessageListener
 		if (this.pipeline == null && this.playlist.getCurrent() != null)
 			this.pipeline = this.pipelineBuilder.createPipeline(this.playlist.getCurrent());
 		
-		if (this.pipeline != null) this.pipeline.play();
+		if (this.pipeline != null) 
+		{
+			this.pipeline.play();
+			this.messageMediator.stateChanged(State.PLAYING);
+		}
 	}
 	
 	
@@ -119,6 +129,7 @@ public class MediaPlayerImpl implements MediaPlayer, MessageListener
 		{
 			this.pipeline.stop();
 			this.pipeline = null;
+			this.messageMediator.stateChanged(State.STOPPED);
 		}
 	}
 	
@@ -129,7 +140,11 @@ public class MediaPlayerImpl implements MediaPlayer, MessageListener
 	@Override
 	public synchronized void pause()
 	{
-		if (this.pipeline != null) this.pipeline.pause();
+		if (this.pipeline != null) 
+		{
+			this.pipeline.pause();
+			this.messageMediator.stateChanged(State.PAUSED);
+		}
 	}
 	
 
@@ -162,11 +177,12 @@ public class MediaPlayerImpl implements MediaPlayer, MessageListener
 	
 
 	/**
-	 * @see com.senselessweb.soundcloud.mediasupport.gstreamer.MessageListener#endofStream()
+	 * @see com.senselessweb.soundcloud.mediasupport.gstreamer.GStreamerMessageListener#endofStream()
 	 */
 	@Override
 	public void endofStream()
 	{
+		this.stop();
 		this.pipeline = null;
 		this.next();
 	}	
@@ -213,24 +229,33 @@ public class MediaPlayerImpl implements MediaPlayer, MessageListener
 
 	
 	/**
-	 * @see com.senselessweb.soundcloud.mediasupport.gstreamer.MessageListener#error(int, java.lang.String)
+	 * @see com.senselessweb.soundcloud.mediasupport.gstreamer.GStreamerMessageListener#error(int, java.lang.String)
 	 */
 	@Override
 	public void error(final int errorcode, final String message)
 	{
 		if (this.pipeline.resetInErrorCase())
 		{
+			this.stop();
 			log.debug("Trying to restart the pipeline");
 			this.pipeline = this.pipelineBuilder.createPipeline(this.current);
-			this.pipeline.play();
+			this.play();
 		}
 		else
 		{
 			this.stop();
-			// TODO Delegate error to calling application
+			this.messageMediator.error(message);
 		}
 	}
 	
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MediaPlayer#addMessageListener(com.senselessweb.soundcloud.mediasupport.service.MessageListener)
+	 */
+	@Override
+	public void addMessageListener(MessageListener listener)
+	{
+		this.messageMediator.addMessageListener(listener);
+	}
 	
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.MediaPlayer#shutdown()

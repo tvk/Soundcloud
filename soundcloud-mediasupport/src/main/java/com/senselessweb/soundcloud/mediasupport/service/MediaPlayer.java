@@ -86,6 +86,14 @@ public interface MediaPlayer
 	 * @return The {@link Equalizer}.
 	 */
 	public Equalizer getEqualizer();
+	
+	
+	/**
+	 * Attaches a messageListener.
+	 * 
+	 * @param listener The {@link MessageListener}.
+	 */
+	public void addMessageListener(MessageListener listener);
 
 
 	/**

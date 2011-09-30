@@ -3,7 +3,7 @@ package com.senselessweb.soundcloud.mediasupport.gstreamer.pipeline;
 import com.senselessweb.soundcloud.domain.FileSource;
 import com.senselessweb.soundcloud.domain.MediaSource;
 import com.senselessweb.soundcloud.domain.StreamSource;
-import com.senselessweb.soundcloud.mediasupport.gstreamer.MessageListener;
+import com.senselessweb.soundcloud.mediasupport.gstreamer.GStreamerMessageListener;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.PipelineBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.EqualizerBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.VolumeBridge;
@@ -51,13 +51,13 @@ public class PipelineBuilder
 	/**
 	 * The messageListener to use
 	 */
-	private MessageListener messageListener;
+	private GStreamerMessageListener messageListener;
 	
 	/**
 	 * @param messageListener The messageListener to use
 	 * @return This builder.
 	 */
-	public PipelineBuilder withMessageListener(final MessageListener messageListener)
+	public PipelineBuilder withMessageListener(final GStreamerMessageListener messageListener)
 	{
 		this.messageListener = messageListener;
 		return this;
