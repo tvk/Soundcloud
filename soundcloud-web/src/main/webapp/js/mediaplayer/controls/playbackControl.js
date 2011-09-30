@@ -70,13 +70,33 @@ function appendCheckbox(playbackControlElement, command, icon, initalState)
 	playbackControlElement.append('<input type="radio" name="state" id="button-' + command + '" ' + (initalState ? 'checked="true"' : '') + '/>');
 	playbackControlElement.append('<label for="button-' + command + '" class="playback-control-button"></label>');
 
-	$('#button-' + command, playbackControlElement).button({icons: {primary: icon}, text: false}).click(function() {
-			$(this).blur();
-			$.ajax({
-				  url: "controller/playback/" + command,
-				  error: function(jqXHR, textStatus, errorThrown) {
-					  
-				  }
-				});
+	$('#button-' + command, playbackControlElement).button({icons: {primary: icon}, text: false}).click(function(evt) {
+			if (evt.originalEvent != undefined)
+			{
+				$(this).blur();
+				$.ajax({
+					url: "controller/playback/" + command,
+					error: function(jqXHR, textStatus, errorThrown) {
+						
+					}
+				});				
+			}
 	});	
 }
+
+/**
+ * Listens to stateChanged events and changes the current active button
+ * 
+ * @param data 
+ */
+PlaybackControl.prototype.processMessage = function(data)
+{
+	if (data.type == 'stateChanged')
+	{
+		var newState = data.properties['newState'];
+		if (newState == 'PLAYING') $('#button-play').click();
+		if (newState == 'STOPPED') $('#button-stop').click();
+		if (newState == 'PAUSED') $('#button-pause').click();
+	}
+
+};

@@ -6,6 +6,11 @@
 
 #medialibrary #radio-library-selection 
 {
+	vertical-align: top;
+}
+
+#medialibrary #radio-library-selection 
+{
 	width: 150px;
 }
 

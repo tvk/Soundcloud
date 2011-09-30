@@ -7,6 +7,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 
+import com.senselessweb.soundcloud.domain.MediaSource;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer.State;
 import com.senselessweb.soundcloud.mediasupport.service.MessageListener;
 
@@ -58,6 +59,26 @@ public class MessageMediator implements MessageListener
 		log.debug("Error event. Message: " + message);
 		for (final MessageListener listener : this.messageListeners)
 			listener.error(message);
+	}
+
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#tag(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public void tag(final String tag, final String value)
+	{
+		for (final MessageListener listener : this.messageListeners)
+			listener.tag(tag, value);
+	}
+
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#newSource(com.senselessweb.soundcloud.domain.MediaSource)
+	 */
+	@Override
+	public void newSource(final MediaSource source)
+	{
+		for (final MessageListener listener : this.messageListeners)
+			listener.newSource(source);
 	}
 
 }

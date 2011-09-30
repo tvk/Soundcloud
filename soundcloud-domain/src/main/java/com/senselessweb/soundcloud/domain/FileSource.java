@@ -66,4 +66,12 @@ public class FileSource implements MediaSource
 	{
 		return super.hashCode();
 	}
+
+	/**
+	 * @see com.senselessweb.soundcloud.domain.MediaSource#getTitle()
+	 */
+	public String getTitle()
+	{
+		return this.file.getName();
+	}
 }

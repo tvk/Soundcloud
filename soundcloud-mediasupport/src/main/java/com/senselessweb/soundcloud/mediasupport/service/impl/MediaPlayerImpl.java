@@ -98,7 +98,8 @@ public class MediaPlayerImpl implements MediaPlayer, GStreamerMessageListener
 		// Initialize the pipeline builder
 		this.pipelineBuilder = new PipelineBuilder().
 			withEqualizer(this.equalizer).
-			withMessageListener(this).
+			withMessageListener(this.messageMediator).
+			withGStreamerMessageListener(this).
 			withVolume(this.volume);
 	}
 	
@@ -109,11 +110,15 @@ public class MediaPlayerImpl implements MediaPlayer, GStreamerMessageListener
 	public synchronized void play()
 	{
 		if (this.pipeline == null && this.playlist.getCurrent() != null)
-			this.pipeline = this.pipelineBuilder.createPipeline(this.playlist.getCurrent());
+		{
+			this.current = this.playlist.getCurrent();
+			this.pipeline = this.pipelineBuilder.createPipeline(this.current);
+		}
 		
 		if (this.pipeline != null) 
 		{
 			this.pipeline.play();
+			this.messageMediator.newSource(this.current);
 			this.messageMediator.stateChanged(State.PLAYING);
 		}
 	}

@@ -116,5 +116,13 @@ public class StreamSource implements MediaSource
 	public int hashCode()
 	{
 		return super.hashCode();
+	}
+
+	/**
+	 * @see com.senselessweb.soundcloud.domain.MediaSource#getTitle()
+	 */
+	public String getTitle()
+	{
+		return this.name;
 	}	
 }

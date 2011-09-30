@@ -7,6 +7,7 @@ import com.senselessweb.soundcloud.mediasupport.gstreamer.GStreamerMessageListen
 import com.senselessweb.soundcloud.mediasupport.gstreamer.PipelineBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.EqualizerBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.VolumeBridge;
+import com.senselessweb.soundcloud.mediasupport.service.MessageListener;
 
 /**
  * Pipeline factory
@@ -51,15 +52,32 @@ public class PipelineBuilder
 	/**
 	 * The messageListener to use
 	 */
-	private GStreamerMessageListener messageListener;
+	private GStreamerMessageListener gStreamerMessageListener;
 	
 	/**
-	 * @param messageListener The messageListener to use
+	 * @param gStreamerMessageListener The messageListener to use
 	 * @return This builder.
 	 */
-	public PipelineBuilder withMessageListener(final GStreamerMessageListener messageListener)
+	public PipelineBuilder withGStreamerMessageListener(final GStreamerMessageListener gStreamerMessageListener)
 	{
-		this.messageListener = messageListener;
+		this.gStreamerMessageListener = gStreamerMessageListener;
+		return this;
+	}
+	
+	
+
+	/**
+	 * The messageListener to use
+	 */
+	private MessageListener messageListener;
+	
+	/**
+	 * @param MessageListener The messageListener to use
+	 * @return This builder.
+	 */
+	public PipelineBuilder withMessageListener(final MessageListener MessageListener)
+	{
+		this.messageListener = MessageListener;
 		return this;
 	}
 	
@@ -77,12 +95,12 @@ public class PipelineBuilder
 		if (mediaSource instanceof FileSource)
 		{
 			return new FileSrcPipeline(((FileSource) mediaSource).getFile(), 
-					this.volume, this.equalizer, this.messageListener);
+					this.volume, this.equalizer, this.gStreamerMessageListener, this.messageListener);
 		}
 		else if (mediaSource instanceof StreamSource)
 		{
 			return new StreamSourcePipeline(((StreamSource) mediaSource).getUrl(), 
-					this.volume, this.equalizer, this.messageListener);
+					this.volume, this.equalizer, this.gStreamerMessageListener, this.messageListener);
 		}
 		else
 		{

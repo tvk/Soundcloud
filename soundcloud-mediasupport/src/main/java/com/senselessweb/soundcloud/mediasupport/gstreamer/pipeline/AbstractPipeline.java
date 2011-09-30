@@ -1,18 +1,24 @@
 package com.senselessweb.soundcloud.mediasupport.gstreamer.pipeline;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gstreamer.Bus;
 import org.gstreamer.Element;
 import org.gstreamer.GstObject;
 import org.gstreamer.Pipeline;
+import org.gstreamer.Tag;
 import org.gstreamer.TagList;
 
+import com.google.common.collect.Sets;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.GStreamerMessageListener;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.PipelineBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.EqualizerBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.VolumeBridge;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer.State;
+import com.senselessweb.soundcloud.mediasupport.service.MessageListener;
 import com.senselessweb.soundcloud.mediasupport.service.VolumeControl;
 
 /**
@@ -52,9 +58,10 @@ public abstract class AbstractPipeline implements PipelineBridge
 	 * @param volume The current {@link VolumeControl}.
 	 * @param equalizer The current {@link EqualizerBridge}.
 	 * @param eosListener The {@link GStreamerMessageListener} gets notified when the strem ends.
+	 * @param messageListener The {@link MessageListener}.
 	 */
 	public AbstractPipeline(final Pipeline pipeline, final VolumeBridge volume, final EqualizerBridge equalizer, 
-			final GStreamerMessageListener eosListener)
+			final GStreamerMessageListener eosListener, final MessageListener messageListener)
 	{
 		this.pipeline = pipeline;
 		
@@ -64,11 +71,11 @@ public abstract class AbstractPipeline implements PipelineBridge
 		this.equalizer = equalizer;
 		this.equalizer.initElement(this.pipeline.getElementByName("equalizer"));
 		
-		final BusMessageListener messageListener = new BusMessageListener();
-		this.pipeline.getBus().connect(messageListener.errorMessageListener);
-		this.pipeline.getBus().connect(messageListener.warnMessageListener);
-		this.pipeline.getBus().connect(messageListener.infoMessageListener);
-		this.pipeline.getBus().connect(messageListener.tagMessageListener);
+		final BusMessageListener busMessageListener = new BusMessageListener(messageListener);
+		this.pipeline.getBus().connect(busMessageListener.errorMessageListener);
+		this.pipeline.getBus().connect(busMessageListener.warnMessageListener);
+		this.pipeline.getBus().connect(busMessageListener.infoMessageListener);
+		this.pipeline.getBus().connect(busMessageListener.tagMessageListener);
 		
 		if (eosListener != null)
 		{
@@ -172,6 +179,22 @@ public abstract class AbstractPipeline implements PipelineBridge
  */
 class BusMessageListener  
 {
+	
+	/**
+	 * The messageListener
+	 */
+	final MessageListener messageListener;
+	
+	/**
+	 * Constructor
+	 * 
+	 * @param messageListener The {@link MessageListener} to redirect some messages to.
+	 */
+	BusMessageListener(final MessageListener messageListener)
+	{
+		this.messageListener = messageListener;
+	}
+	
 	/**
 	 * Error message listener
 	 */
@@ -213,10 +236,24 @@ class BusMessageListener
 	 */
 	Bus.TAG tagMessageListener = new Bus.TAG() {
 		
+		/**
+		 * The tags that should be sent to the message listener
+		 */
+		private final Set<String> tagsToFilter = Sets.newHashSet(
+				Tag.ARTIST.getId(), Tag.TITLE.getId(), Tag.ALBUM.getId(), 
+				Tag.GENRE.getId(), Tag.BITRATE.getId());
+		
+		
 		@Override
 		public void tagsFound(final GstObject source, final TagList tagList)
 		{
 			AbstractPipeline.log.info("Tags found : " + tagList);		
+			
+			for (final String tag: Sets.intersection(this.tagsToFilter, new HashSet<String>(tagList.getTagNames())))
+			{
+				final Object o = tagList.getValue(tag);
+				BusMessageListener.this.messageListener.tag(tag, o.toString());
+			}
 		}
 	};
 	

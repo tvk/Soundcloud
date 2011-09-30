@@ -7,6 +7,12 @@ package com.senselessweb.soundcloud.domain;
  */
 public interface MediaSource
 {
-
-	// Marker interface
+	
+	/**
+	 * Returns a title for this media source.
+	 * 
+	 * @return The title.
+	 */
+	public String getTitle();
+	
 }

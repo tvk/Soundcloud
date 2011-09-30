@@ -1,4 +1,33 @@
 
+/* The display */
+
+#display
+{
+	color: #fff;
+	margin: 8px;
+} 
+
+#display #display-title,
+#display #display-genre,
+#display #display-bitrate
+{
+	background: #000;
+	margin: 5px;
+	padding: 5px;
+	position: relative;
+}
+
+#display #display-title
+{
+	width: 85%;
+}
+
+#display #display-genre,
+#display #display-bitrate
+{
+	width: 40%;
+	float:left;
+}
 
 /* Playback control button */
 
@@ -21,6 +50,10 @@
 
 /* Volume Control */
 
+#volume {
+	margin: 15px;
+}
+
 #volume .volumeControlSlider,
 #volume #volumeMuteButton {
 	float: left;
@@ -40,6 +73,7 @@
 
 #equalizer {
 	height: 120px;
+	margin-left: 5px;
 }
 
 #equalizer span {

@@ -1,5 +1,6 @@
 package com.senselessweb.soundcloud.mediasupport.service;
 
+import com.senselessweb.soundcloud.domain.MediaSource;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer.State;
 
 
@@ -24,6 +25,21 @@ public interface MessageListener
 	 * @param message The error message.
 	 */
 	public void error(String message);
+
+	/**
+	 * Is called when a new tag is found in the stream.
+	 * 
+	 * @param tag The tag
+	 * @param value The value
+	 */
+	public void tag(String tag, String value);
 	
+	
+	/**
+	 * Is called when a new {@link MediaSource} is started.
+	 * 
+	 * @param source The new media source.
+	 */
+	public void newSource(MediaSource source);
 	
 }

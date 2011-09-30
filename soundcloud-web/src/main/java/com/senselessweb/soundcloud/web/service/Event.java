@@ -1,7 +1,13 @@
 package com.senselessweb.soundcloud.web.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+
 /**
- * Event
+ * Event. Contains a string identifying the event type
+ * and a map of string properties.
  * 
  * @author thomas
  */
@@ -12,27 +18,32 @@ public class Event
 	 * The type
 	 */
 	private final String type;
-
+	
 	/**
-	 * The new state
+	 * The properties
 	 */
-	private final String newState;
+	private final Map<String, String> properties;
 
+	
 	/**
-	 * The message
+	 * Constructor
+	 * 
+	 * @param type The type of this event 
+	 * @param properties The properties as pairs of keys and values.
 	 */
-	private final String message;
-
-	/**
-	 * @param type
-	 * @param newState
-	 * @param message
-	 */
-	public Event(final String type, final String newState, final String message)
+	public Event(final String type, final String... properties)
 	{
+		if (StringUtils.isBlank(type)) throw new IllegalArgumentException("type must not be null");
 		this.type = type;
-		this.newState = newState;
-		this.message = message;
+		
+		this.properties = new HashMap<String, String>();
+		if (properties != null)
+		{
+			if (properties.length % 2 != 0)
+				throw new IllegalArgumentException("properties \"" + properties + "\" are invalid");
+			for (int i = 0; i < properties.length; i += 2)
+				this.properties.put(properties[i], properties[i+1]);
+		}
 	}
 	
 	/**
@@ -46,22 +57,12 @@ public class Event
 	}
 	
 	/**
-	 * Returns the message.
+	 * Returns the properties
 	 * 
-	 * @return The message.
+	 * @return The properties.
 	 */
-	public String getMessage()
+	public Map<String, String> getProperties()
 	{
-		return this.message;
-	}
-	
-	/**
-	 * Returns the new state.
-	 * 
-	 * @return The new state.
-	 */
-	public String getNewState()
-	{
-		return this.newState;
+		return this.properties;
 	}
 }

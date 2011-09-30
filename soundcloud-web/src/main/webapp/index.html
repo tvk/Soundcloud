@@ -19,7 +19,9 @@
 		<script type="text/javascript" src="js/mediaplayer/controls/equalizerControl.js"></script>
 		<script type="text/javascript" src="js/mediaplayer/controls/playlistControl.js"></script>
 		<script type="text/javascript" src="js/mediaplayer/controls/volumeControl.js"></script>
+		<script type="text/javascript" src="js/mediaplayer/controls/display.js"></script>
 		<script type="text/javascript" src="js/mediaplayer/library/radioLibrary.js"></script>
+		<script type="text/javascript" src="js/mediaplayer/messageMediator.js"></script>
 		<script type="text/javascript" src="js/mediaplayer/mediaLibrary.js"></script>
 		<script type="text/javascript" src="js/mediaplayer/mediaPlayer.js"></script>
 		
@@ -32,11 +34,14 @@
 			$(document).ready(function() {
 				
 				// Init the media player
-				mediaPlayer = new MediaPlayer($('#playback'), $('#volume'), $('#equalizer'));
+				mediaPlayer = new MediaPlayer($('#display'), $('#playback'), $('#volume'), $('#equalizer'));
 				
 				// Init the media library
 				$("#medialibrary").tabs();
 				mediaLibrary = new MediaLibrary($('#medialibrary #tab-radio'));
+				
+				// Init the display
+				$("#display")
 			})
 		
 		</script>
@@ -45,8 +50,12 @@
 	<body>
 
 		<div id="leftPanel" class="panel">
+			<div id="display"></div>
+			<div style="clear:both;"></div><hr/>
 			<div id="playback"></div>
+			<div style="clear:both;"></div><hr/>
 			<div id="volume"></div>
+			<div style="clear:both;"></div><hr/>
 			<div id="equalizer"></div>
 		</div>
 
