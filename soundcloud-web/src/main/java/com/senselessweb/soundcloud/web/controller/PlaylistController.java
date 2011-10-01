@@ -1,19 +1,14 @@
 package com.senselessweb.soundcloud.web.controller;
 
-import java.io.File;
-import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.senselessweb.soundcloud.domain.FileSource;
 import com.senselessweb.soundcloud.domain.MediaSource;
-import com.senselessweb.soundcloud.domain.StreamSource;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
 
 /**
@@ -31,33 +26,69 @@ public class PlaylistController
 	 */
 	@Autowired MediaPlayer mediaPlayer;
 
+	
 	/**
-	 * Adds an url to the playlist
+	 * Returns the current playlist
 	 * 
-	 * @param name 
-	 * @param url The url.
-	 * @param genres 
-	 * 
-	 * @throws MalformedURLException 
+	 * @return The current playlist. The boolean value of this map indicates if it is the current song. 
 	 */
-	@RequestMapping("/addUrl")
-	@ResponseStatus(HttpStatus.OK)
-	public void addUrl(final @RequestParam String name, final @RequestParam String url, final @RequestParam String genres) throws MalformedURLException
+	@RequestMapping("/getData")
+	@ResponseBody
+	public List<PlaylistContainer> getData()
 	{
-		final MediaSource mediaSource = new StreamSource(name, url, StringUtils.isBlank(genres) ? null : genres.split(","));
-		this.mediaPlayer.getCurrentPlaylist().add(mediaSource);
+		final List<PlaylistContainer> result = new ArrayList<PlaylistContainer>();
+		for (final MediaSource mediaSource : this.mediaPlayer.getCurrentPlaylist().getAll())
+		{
+			result.add(new PlaylistContainer(mediaSource, mediaSource.equals(this.mediaPlayer.getCurrentPlaylist().getCurrent())));
+		}
+		return result;
+	}
+	
+}
+
+/**
+ * Simple container for a playlist entry
+ * 
+ * @author thomas
+ */
+class PlaylistContainer
+{
+	/**
+	 * The media source
+	 */
+	private final MediaSource mediaSource;
+	
+	/**
+	 * True if this is the current entry
+	 */
+	private final boolean isCurrent;
+	
+	/**
+	 * Constructor
+	 * 
+	 * @param mediaSource The media source
+	 * @param isCurrent True if this is the current entry
+	 */
+	public PlaylistContainer(final MediaSource mediaSource, final boolean isCurrent)
+	{
+		this.mediaSource = mediaSource;
+		this.isCurrent = isCurrent;
 	}
 	
 	/**
-	 * Adds a file to the playlist
-	 * 
-	 * @param file The file.
+	 * @return The media source
 	 */
-	@RequestMapping("/addFile")
-	@ResponseStatus(HttpStatus.OK)
-	public void addFile(final @RequestParam File file) 
+	public MediaSource getMediaSource()
 	{
-		final MediaSource mediaSource = new FileSource(file);
-		this.mediaPlayer.getCurrentPlaylist().add(mediaSource);
+		return this.mediaSource;
+	}
+	
+	/**
+	 * @return True if this is the current entry
+	 */ 
+	public boolean isCurrent()
+	{
+		return this.isCurrent;
 	}
 }
+

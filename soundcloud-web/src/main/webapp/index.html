@@ -34,7 +34,7 @@
 			$(document).ready(function() {
 				
 				// Init the media player
-				mediaPlayer = new MediaPlayer($('#display'), $('#playback'), $('#volume'), $('#equalizer'));
+				mediaPlayer = new MediaPlayer($('#display'), $('#playlist'), $('#playback'), $('#volume'), $('#equalizer'));
 				
 				// Init the media library
 				$("#medialibrary").tabs();
@@ -50,6 +50,7 @@
 	<body>
 
 		<div id="leftPanel" class="panel">
+			<div style="clear:both;"></div><hr/>
 			<div id="display"></div>
 			<div style="clear:both;"></div><hr/>
 			<div id="playback"></div>
@@ -57,6 +58,8 @@
 			<div id="volume"></div>
 			<div style="clear:both;"></div><hr/>
 			<div id="equalizer"></div>
+			<div style="clear:both;"></div><hr/>
+			<div id="playlist"></div>
 			<div style="clear:both;"></div><hr/>
 		</div>
 

@@ -29,7 +29,37 @@
 	float:left;
 }
 
-/* Playback control button */
+/* Playlist */
+
+#playlist 
+{
+	color: #fff;
+	height: 130px;
+	overflow: auto;
+}
+
+#playlist .playlistEntry
+{
+	margin-left: 9px;
+}
+
+#playlist .playlistEntry.current
+{
+	font-weight: bold;
+}
+
+#playlist .playlistEntry button
+{
+	margin-top: 1px;
+}
+
+#playlist .playlistEntry div 
+{
+	float: left;
+	margin: 5px;
+}
+
+/* Playback control buttons */
 
 #playback {
 	margin: 10px;
