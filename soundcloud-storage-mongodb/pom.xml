@@ -28,11 +28,6 @@
 			<artifactId>spring-data-mongodb</artifactId>
 			<version>1.0.0.M4</version>
 		</dependency>
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>r09</version>
-		</dependency>		
 
 		<dependency>
 			<groupId>junit</groupId>
@@ -40,7 +35,7 @@
 			<version>4.9</version>
 			<scope>test</scope>
 		</dependency>
-		
+				
 	</dependencies>
 
 </project>
