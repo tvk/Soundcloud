@@ -7,7 +7,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
-import com.senselessweb.soundcloud.domain.StreamSource;
+import com.senselessweb.soundcloud.domain.library.RadioLibraryItem;
 import com.senselessweb.soundcloud.storage.mongodb.ApplicationContextTestBase;
 import com.senselessweb.storage.RadioStationStorageService;
 
@@ -30,9 +30,9 @@ public class RadioStationStorageServiceImplTest extends ApplicationContextTestBa
 		
 		Assert.assertTrue(service.getAllRadioStations().isEmpty());
 		
-		final StreamSource radio1 = new StreamSource("WDR 2", "https://www.wdr2-radio.de", new String[] {"pop", "schrott", "gelaber", "werbung"});
-		final StreamSource radio2 = new StreamSource("WDR 4", "https://www.wdr4-radio.de", new String[] {"volksmusik", "schrott", "gelaber"});
-		final StreamSource radio2Clone = new StreamSource("WDR 4", "https://www.wdr4-radio.de", new String[] {"volksmusik", "schrott", "unsinn"});
+		final RadioLibraryItem radio1 = new RadioLibraryItem("WDR 2", "https://www.wdr2-radio.de", 0, Lists.newArrayList("pop", "schrott", "gelaber", "werbung"), null);
+		final RadioLibraryItem radio2 = new RadioLibraryItem("WDR 4", "https://www.wdr4-radio.de", 0, Lists.newArrayList("volksmusik", "schrott", "gelaber"), null);
+		final RadioLibraryItem radio2Clone = new RadioLibraryItem("WDR 4", "https://www.wdr4-radio.de", 0, Lists.newArrayList("volksmusik", "schrott", "unsinn"), null);
 		
 		// Add a station
 		service.createRadioStation(radio1);

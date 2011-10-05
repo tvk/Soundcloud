@@ -3,7 +3,7 @@ package com.senselessweb.soundcloud.mediasupport.service;
 import java.util.Collection;
 import java.util.List;
 
-import com.senselessweb.soundcloud.domain.MediaSource;
+import com.senselessweb.soundcloud.domain.sources.MediaSource;
 
 /**
  * Represents a playlist

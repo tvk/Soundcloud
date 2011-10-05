@@ -6,7 +6,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.senselessweb.soundcloud.domain.MediaSource;
+import com.senselessweb.soundcloud.domain.sources.MediaSource;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer.State;
 import com.senselessweb.soundcloud.mediasupport.service.MessageListener;
@@ -81,7 +81,7 @@ public class EventQueueImpl implements EventQueue, MessageListener
 
 	
 	/**
-	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#newSource(com.senselessweb.soundcloud.domain.MediaSource)
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#newSource(com.senselessweb.soundcloud.domain.sources.MediaSource)
 	 */
 	@Override
 	public void newSource(final MediaSource source)

@@ -1,4 +1,4 @@
-package com.senselessweb.soundcloud.domain;
+package com.senselessweb.soundcloud.domain.sources;
 
 import java.io.File;
 
@@ -68,7 +68,7 @@ public class FileSource implements MediaSource
 	}
 
 	/**
-	 * @see com.senselessweb.soundcloud.domain.MediaSource#getTitle()
+	 * @see com.senselessweb.soundcloud.domain.sources.MediaSource#getTitle()
 	 */
 	@Override
 	public String getTitle()

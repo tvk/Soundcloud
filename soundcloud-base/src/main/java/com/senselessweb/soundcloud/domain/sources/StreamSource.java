@@ -1,4 +1,4 @@
-package com.senselessweb.soundcloud.domain;
+package com.senselessweb.soundcloud.domain.sources;
 
 import com.senselessweb.soundcloud.util.IdentityUtils;
 
@@ -119,7 +119,7 @@ public class StreamSource implements MediaSource
 	}
 
 	/**
-	 * @see com.senselessweb.soundcloud.domain.MediaSource#getTitle()
+	 * @see com.senselessweb.soundcloud.domain.sources.MediaSource#getTitle()
 	 */
 	@Override
 	public String getTitle()

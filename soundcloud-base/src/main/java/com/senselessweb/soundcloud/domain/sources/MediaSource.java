@@ -1,4 +1,4 @@
-package com.senselessweb.soundcloud.domain;
+package com.senselessweb.soundcloud.domain.sources;
 
 /**
  * Represents a media source.

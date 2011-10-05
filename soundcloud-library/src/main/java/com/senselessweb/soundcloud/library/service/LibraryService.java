@@ -2,7 +2,7 @@ package com.senselessweb.soundcloud.library.service;
 
 import java.util.Collection;
 
-import com.senselessweb.soundcloud.library.domain.LibraryItem;
+import com.senselessweb.soundcloud.domain.library.LibraryItem;
 
 /**
  * Implementations of this interface manage a media libary.
@@ -18,6 +18,16 @@ public interface LibraryService
 	 * @return All items.
 	 */
 	public Collection<? extends LibraryItem> getAllItems(); 
+	
+
+	/**
+	 * Returns some randomized items of this library.
+	 * 
+	 * @param limit The maximum number of items to return.  
+	 * 
+	 * @return The items.
+	 */
+	public Collection<? extends LibraryItem> getRandomItems(int limit); 
 	
 
 	/**
@@ -40,5 +50,13 @@ public interface LibraryService
 	public Collection<? extends LibraryItem> findByName(String name); 
 	
 	
+	/**
+	 * Finds an item by id.
+	 * 
+	 * @param id The id.
+	 * 
+	 * @return The item or null if there is no such item.
+	 */
+	public LibraryItem findById(String id);
 	
 }

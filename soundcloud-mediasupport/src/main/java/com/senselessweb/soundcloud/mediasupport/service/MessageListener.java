@@ -1,6 +1,6 @@
 package com.senselessweb.soundcloud.mediasupport.service;
 
-import com.senselessweb.soundcloud.domain.MediaSource;
+import com.senselessweb.soundcloud.domain.sources.MediaSource;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer.State;
 
 

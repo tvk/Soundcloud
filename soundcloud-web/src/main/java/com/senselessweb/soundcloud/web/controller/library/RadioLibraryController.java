@@ -3,16 +3,20 @@ package com.senselessweb.soundcloud.web.controller.library;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.senselessweb.soundcloud.domain.StreamSource;
+import com.google.common.collect.Sets;
+import com.senselessweb.soundcloud.domain.library.LibraryItem;
+import com.senselessweb.soundcloud.domain.library.RadioLibraryItem;
+import com.senselessweb.soundcloud.library.service.radio.RemoteRadioLibraryService;
+import com.senselessweb.soundcloud.library.service.radio.UserRadioLibraryService;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
 import com.senselessweb.storage.RadioStationStorageService;
 
@@ -27,10 +31,15 @@ public class RadioLibraryController
 {
 	
 	/**
-	 * The radioStationStorageService
+	 * The UserRadioLibraryService
 	 */
-	@Autowired RadioStationStorageService radioStationStorageService;
+	@Autowired UserRadioLibraryService userRadioLibraryService;
 
+	/**
+	 * The RemoteRadioLibraryService
+	 */
+	@Autowired RemoteRadioLibraryService remoteRadioLibraryService;
+	
 	/**
 	 * The mediaPlayer
 	 */
@@ -40,15 +49,27 @@ public class RadioLibraryController
 	/**
 	 * Returns all user radio stations
 	 * 
-	 * @param model The current model.
-	 * 
 	 * @return All user radio stations.
 	 */
 	@RequestMapping("/getUserStations")
 	@ResponseBody
-	public Collection<StreamSource> getUserStations(final Model model)
+	public Collection<? extends LibraryItem> getUserStations()
 	{
-		return this.radioStationStorageService.getAllRadioStations();
+		return this.userRadioLibraryService.getAllItems();
+	}
+	
+	/**
+	 * Returns icecast radio stations
+	 * 
+	 * @param limit The maximum number of radio stations to return
+	 * 
+	 * @return Some random icecast radio stations.
+	 */
+	@RequestMapping("/getIcecastStations")
+	@ResponseBody
+	public Collection<? extends LibraryItem> getIcecastStations(@RequestParam int limit)
+	{
+		return this.remoteRadioLibraryService.getRandomItems(limit);
 	}
 	
 	
@@ -59,14 +80,13 @@ public class RadioLibraryController
 	 * @param url The url of the new station 
 	 * @param genres The genres of the new station
 	 * 
-	 * @return The created {@link StreamSource} 
+	 * @return The created {@link RadioLibraryItem} 
 	 */
 	@RequestMapping("/create")
 	@ResponseBody
-	public StreamSource create(final @RequestParam String name, final @RequestParam String url, final @RequestParam String genres)
+	public RadioLibraryItem create(final @RequestParam String name, final @RequestParam String url, final @RequestParam String genres)
 	{
-		final StreamSource streamSource = new StreamSource(name, url, genres != null ? genres.split(",") : null);
-		return this.radioStationStorageService.createRadioStation(streamSource);
+		return this.userRadioLibraryService.store(name, url, genres.split(","));
 	}
 	
 	/**
@@ -78,9 +98,9 @@ public class RadioLibraryController
 	@ResponseStatus(HttpStatus.OK)
 	public void play(final @RequestParam String id)
 	{
-		final StreamSource station = this.radioStationStorageService.getRadioStation(id);
+		final LibraryItem station = this.userRadioLibraryService.findById(id);
 		this.mediaPlayer.stop();
-		this.mediaPlayer.getCurrentPlaylist().set(Collections.singleton(station));
+		this.mediaPlayer.getCurrentPlaylist().set(station.asMediaSources());
 		this.mediaPlayer.play();
 	}
 	
@@ -93,6 +113,6 @@ public class RadioLibraryController
 	@ResponseStatus(HttpStatus.OK)
 	public void delete(final @RequestParam String id)
 	{
-		this.radioStationStorageService.deleteRadioStation(id);
+		this.userRadioLibraryService.delete(id);
 	}
 }

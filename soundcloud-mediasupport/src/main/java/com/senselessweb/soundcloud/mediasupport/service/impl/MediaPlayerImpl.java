@@ -4,7 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gstreamer.Pipeline;
 
-import com.senselessweb.soundcloud.domain.MediaSource;
+import com.senselessweb.soundcloud.domain.sources.MediaSource;
 import com.senselessweb.soundcloud.mediasupport.domain.DefaultPlaylist;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.GStreamerMessageListener;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.GstreamerSupport;

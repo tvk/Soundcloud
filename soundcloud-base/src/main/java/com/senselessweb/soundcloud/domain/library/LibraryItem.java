@@ -1,8 +1,8 @@
-package com.senselessweb.soundcloud.library.domain;
+package com.senselessweb.soundcloud.domain.library;
 
 import java.util.Collection;
 
-import com.senselessweb.soundcloud.domain.MediaSource;
+import com.senselessweb.soundcloud.domain.sources.MediaSource;
 
 /**
  * Base interface for all library items.
@@ -18,7 +18,7 @@ public interface LibraryItem
 	 *  
 	 * @return The {@link MediaSource}s. 
 	 */
-	public Collection<? extends MediaSource> getMediaSources();
+	public Collection<? extends MediaSource> asMediaSources();
 	
 	/**
 	 * Returns the genres of this item.
@@ -27,6 +27,12 @@ public interface LibraryItem
 	 */
 	public Collection<String> getGenres();
 	
+	/**
+	 * Returns the id of this item.
+	 * 
+	 * @return The id.
+	 */
+	public String getId();
 	
 	/**
 	 * Returns the name of this item.

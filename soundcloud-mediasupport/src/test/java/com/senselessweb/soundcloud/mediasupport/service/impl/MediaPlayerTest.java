@@ -8,9 +8,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.senselessweb.soundcloud.domain.FileSource;
-import com.senselessweb.soundcloud.domain.MediaSource;
-import com.senselessweb.soundcloud.domain.StreamSource;
+import com.senselessweb.soundcloud.domain.sources.FileSource;
+import com.senselessweb.soundcloud.domain.sources.MediaSource;
+import com.senselessweb.soundcloud.domain.sources.StreamSource;
 import com.senselessweb.soundcloud.mediasupport.service.Equalizer.Band;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
 

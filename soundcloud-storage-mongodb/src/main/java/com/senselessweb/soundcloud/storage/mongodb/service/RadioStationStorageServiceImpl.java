@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import com.senselessweb.soundcloud.domain.StreamSource;
+import com.senselessweb.soundcloud.domain.library.RadioLibraryItem;
 import com.senselessweb.storage.RadioStationStorageService;
 
 /**
@@ -32,14 +32,14 @@ public class RadioStationStorageServiceImpl implements RadioStationStorageServic
 
 	
 	/**
-	 * @see com.senselessweb.storage.RadioStationStorageService#createRadioStation(StreamSource)
+	 * @see com.senselessweb.storage.RadioStationStorageService#createRadioStation(RadioLibraryItem)
 	 */
 	@Override
-	public StreamSource createRadioStation(final StreamSource streamSource)
+	public RadioLibraryItem createRadioStation(final RadioLibraryItem streamSource)
 	{
 		// Remove stations with the same name and location
 		this.mongoTemplate.remove(new Query(
-				Criteria.where("name").is(streamSource.getName()).and("url").is(streamSource.getUrl())), collectionName);
+				Criteria.where("name").is(streamSource.getName())), collectionName);
 		
 		// Store the new station
 		this.mongoTemplate.insert(streamSource, collectionName);
@@ -53,9 +53,9 @@ public class RadioStationStorageServiceImpl implements RadioStationStorageServic
 	 * @see com.senselessweb.storage.RadioStationStorageService#getAllRadioStations()
 	 */
 	@Override
-	public Collection<StreamSource> getAllRadioStations()
+	public Collection<RadioLibraryItem> getAllRadioStations()
 	{
-		return this.mongoTemplate.findAll(StreamSource.class, collectionName);
+		return this.mongoTemplate.findAll(RadioLibraryItem.class, collectionName);
 	}
 
 	
@@ -63,9 +63,9 @@ public class RadioStationStorageServiceImpl implements RadioStationStorageServic
 	 * @see com.senselessweb.storage.RadioStationStorageService#getRadioStation(java.lang.String)
 	 */
 	@Override
-	public StreamSource getRadioStation(final String id)
+	public RadioLibraryItem getRadioStation(final String id)
 	{
-		return this.mongoTemplate.findById(id, StreamSource.class, collectionName);
+		return this.mongoTemplate.findById(id, RadioLibraryItem.class, collectionName);
 	}
 
 

@@ -5,6 +5,8 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.senselessweb.soundcloud.library.service.radio.impl.IcecastRadioService;
+
 
 /**
  * Testcases for the {@link IcecastRadioService}.
