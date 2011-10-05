@@ -36,7 +36,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.senselessweb.soundcloud</groupId>
-			<artifactId>soundcloud-domain</artifactId>
+			<artifactId>soundcloud-base</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		
