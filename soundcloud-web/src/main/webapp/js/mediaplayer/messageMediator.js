@@ -19,7 +19,6 @@ function getNextMessage()
 
 function processMessage(data)
 {
-
 	for (var i = 0; i < listeners.length; i++) 
 	{
 		listeners[i].processMessage(data);

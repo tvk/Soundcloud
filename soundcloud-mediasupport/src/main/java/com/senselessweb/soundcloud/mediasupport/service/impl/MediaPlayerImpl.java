@@ -73,6 +73,11 @@ public class MediaPlayerImpl implements MediaPlayer, GStreamerMessageListener
 	private final MessageMediator messageMediator = new MessageMediator();
 	
 	/**
+	 * The timestamp when the pipeline was restarted the last time
+	 */
+	private long lastPipelineReset = 0;
+	
+	/**
 	 * Constructor
 	 */
 	public MediaPlayerImpl()
@@ -239,16 +244,23 @@ public class MediaPlayerImpl implements MediaPlayer, GStreamerMessageListener
 	@Override
 	public void error(final int errorcode, final String message)
 	{
+		this.stop();
+		
 		if (this.pipeline.resetInErrorCase())
 		{
-			this.stop();
-			log.debug("Trying to restart the pipeline");
-			this.pipeline = this.pipelineBuilder.createPipeline(this.current);
-			this.play();
+			
+			// Restart the pipeline only every 3 seconds 
+			if (this.lastPipelineReset < System.currentTimeMillis() - 3*1000)
+			{
+				this.lastPipelineReset = System.currentTimeMillis();
+				
+				log.debug("Trying to restart the pipeline");
+				this.pipeline = this.pipelineBuilder.createPipeline(this.current);
+				this.play();				
+			}
 		}
 		else
 		{
-			this.stop();
 			this.messageMediator.error(message);
 		}
 	}

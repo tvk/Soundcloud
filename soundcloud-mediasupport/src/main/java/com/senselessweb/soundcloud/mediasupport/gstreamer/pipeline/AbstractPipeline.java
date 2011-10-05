@@ -203,7 +203,8 @@ class BusMessageListener
 		@Override
 		public void errorMessage(final GstObject source, final int code, final String message)
 		{
-			AbstractPipeline.log.error(source + ", " + code + ", " + message);		
+			AbstractPipeline.log.error(source + ", " + code + ", " + message);
+			BusMessageListener.this.messageListener.error(message);
 		}
 	};
 	
