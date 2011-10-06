@@ -68,6 +68,8 @@ public class IcecastRadioService extends AbstractRadioService implements RemoteR
 	{
 		final Collection<LibraryItem> items = new HashSet<LibraryItem>();
 		final Document doc = Jsoup.connect(icecastUrl).get();
+		
+		int i = 0;
 		for (final Element element : doc.select("entry"))
 		{
 			int bitrate = -1;
@@ -82,12 +84,13 @@ public class IcecastRadioService extends AbstractRadioService implements RemoteR
 			final String name = element.select("server_name").text(); 
 			
 			final RadioLibraryItem item = new RadioLibraryItem(
-					name,
+					"remote-" + i, name,
 					element.select("listen_url").text(),
 					bitrate, genres,
 					element.select("current_song").text());
 			
 			items.add(item);
+			i++;
 		}
 		return items;
 	}

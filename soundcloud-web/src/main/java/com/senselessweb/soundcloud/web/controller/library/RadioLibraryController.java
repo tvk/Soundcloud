@@ -55,15 +55,15 @@ public class RadioLibraryController
 	}
 	
 	/**
-	 * Returns icecast radio stations
+	 * Returns remote radio stations
 	 * 
 	 * @param limit The maximum number of radio stations to return
 	 * 
-	 * @return Some random icecast radio stations.
+	 * @return Some random remote radio stations.
 	 */
-	@RequestMapping("/getIcecastStations")
+	@RequestMapping("/getRemoteStations")
 	@ResponseBody
-	public Collection<? extends LibraryItem> getIcecastStations(@RequestParam int limit)
+	public Collection<? extends LibraryItem> getRemoteStations(@RequestParam(defaultValue="25") int limit)
 	{
 		return this.remoteRadioLibraryService.getRandomItems(limit);
 	}
@@ -86,15 +86,35 @@ public class RadioLibraryController
 	}
 	
 	/**
+	 * Stores a remote item in the user storage service.
+	 * 
+	 * @param id The id of the remote item.
+	 * 
+	 * @return The new stored user item.
+	 */
+	@RequestMapping("/store")
+	@ResponseBody
+	public RadioLibraryItem store(final @RequestParam String id)
+	{
+		final RadioLibraryItem item = (RadioLibraryItem) this.remoteRadioLibraryService.findById(id);
+		return this.userRadioLibraryService.store(item.getName(), item.getUrl(), item.getGenres().toArray(new String[0]));
+	}
+	
+	/**
 	 * Plays the user station with the given id.
 	 * 
+	 * @param type The type. Either remote od my-stations
 	 * @param id The id.
 	 */
 	@RequestMapping("/play")
 	@ResponseStatus(HttpStatus.OK)
-	public void play(final @RequestParam String id)
+	public void play(final @RequestParam String type, final @RequestParam String id)
 	{
-		final LibraryItem station = this.userRadioLibraryService.findById(id);
+		final LibraryItem station;
+		
+		if (type.equals("remote")) station = this.remoteRadioLibraryService.findById(id);
+		else station = this.userRadioLibraryService.findById(id);
+		
 		this.mediaPlayer.stop();
 		this.mediaPlayer.getCurrentPlaylist().set(station.asMediaSources());
 		this.mediaPlayer.play();

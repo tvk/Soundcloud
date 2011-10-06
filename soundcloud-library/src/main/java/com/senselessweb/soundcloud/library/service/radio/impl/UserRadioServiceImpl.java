@@ -41,7 +41,7 @@ public class UserRadioServiceImpl extends AbstractRadioService implements UserRa
 	@Override
 	public RadioLibraryItem store(final String name, final String url, final String[] genres)
 	{
-		final RadioLibraryItem newItem = new RadioLibraryItem(name, url, -1, Lists.newArrayList(genres), null);
+		final RadioLibraryItem newItem = new RadioLibraryItem(null, name, url, -1, Lists.newArrayList(genres), null);
 		return this.radioStationStorageService.createRadioStation(newItem);
 	}
 

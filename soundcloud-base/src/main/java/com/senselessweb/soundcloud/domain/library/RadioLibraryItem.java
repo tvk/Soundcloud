@@ -38,16 +38,17 @@ public class RadioLibraryItem extends AbstractLibraryItem
 	/**
 	 * Constructor
 	 * 
+	 * @param id The id of this item.
 	 * @param name The name
 	 * @param url The url
 	 * @param bitrate The bitrate. Supply -1 if no bitrate is known.
 	 * @param genres The genres
 	 * @param currentSong The current playing song.
 	 */
-	public RadioLibraryItem(final String name, final String url, final int bitrate, 
+	public RadioLibraryItem(final String id, final String name, final String url, final int bitrate, 
 			final Collection<String> genres, final String currentSong)
 	{
-		super(name, genres, bitrate); 
+		super(id, name, genres, bitrate); 
 		
 		if (StringUtils.isBlank(url)) 
 			throw new IllegalArgumentException("Param url must not be null");

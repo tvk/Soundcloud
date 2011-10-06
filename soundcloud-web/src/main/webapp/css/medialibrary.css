@@ -4,14 +4,22 @@
 	height: 450px;
 }
 
-#medialibrary #radio-library-selection 
+
+#medialibrary #tab-radio table
 {
-	vertical-align: top;
+	width: 100%;
 }
 
 #medialibrary #radio-library-selection 
 {
+	vertical-align: top;
 	width: 150px;
+	padding: 14px 1px;
+}
+
+#medialibrary #radio-library-selection .search
+{
+	margin-top:30px;
 }
 
 #medialibrary #radio-library-selection .ui-button
@@ -20,10 +28,19 @@
 	width: 100%;
 }
 
+#medialibrary .content 
+{
+	height: 450px;
+	overflow-x: hidden;
+  overflow-y: auto;
+}
+
 #medialibrary #radio-library-content
 {
 	float: left;
 	position: relative;
+	width: 100%;
+	margin: 10px;
 }
 
 #medialibrary #radio-library-content thead td
