@@ -11,10 +11,10 @@ import org.junit.Test;
 import com.google.common.collect.Lists;
 import com.senselessweb.soundcloud.domain.library.RadioLibraryItem;
 import com.senselessweb.soundcloud.storage.mongodb.ApplicationContextTestBase;
-import com.senselessweb.storage.RadioStationStorageService;
+import com.senselessweb.storage.library.UserRadioStorageService;
 
 /**
- * Testcases for the {@link RadioStationStorageServiceImpl}
+ * Testcases for the {@link UserRadioStorageServiceImpl}
  * 
  * @author thomas
  */
@@ -28,7 +28,7 @@ public class RadioStationStorageServiceImplTest extends ApplicationContextTestBa
 	@Test
 	public void saveRadioStations() throws MalformedURLException
 	{
-		final RadioStationStorageService service = this.context.getBean(RadioStationStorageService.class);
+		final UserRadioStorageService service = this.context.getBean(UserRadioStorageService.class);
 		
 		Assert.assertTrue(service.getAllRadioStations().isEmpty());
 		

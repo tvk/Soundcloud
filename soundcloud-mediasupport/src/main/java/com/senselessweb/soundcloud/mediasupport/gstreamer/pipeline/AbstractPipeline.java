@@ -110,7 +110,7 @@ public abstract class AbstractPipeline implements PipelineBridge
 	{
 		return Pipeline.launch(
 				src + " name=src ! " +
-				"decodebin2 ! " +
+				"decodebin2 buffer-duration=3 ! " +
 				"audioconvert ! " +
 				"equalizer-10bands name=equalizer ! " +
 				"volume name=volume ! " +

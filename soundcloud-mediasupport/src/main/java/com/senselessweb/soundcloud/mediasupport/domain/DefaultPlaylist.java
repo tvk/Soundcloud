@@ -47,7 +47,6 @@ public class DefaultPlaylist implements Playlist
 		if (this.current == -1) this.current = 0;
 		
 		log.debug("Added " + mediaSource);
-		log.debug("Playlist is now: " + this);
 	}
 	
 	

@@ -9,15 +9,15 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.senselessweb.soundcloud.domain.library.RadioLibraryItem;
-import com.senselessweb.storage.RadioStationStorageService;
+import com.senselessweb.storage.library.UserRadioStorageService;
 
 /**
- * Implementation of the {@link RadioStationStorageService} that is based on mongoDB.
+ * Implementation of the {@link UserRadioStorageService} that is based on mongoDB.
  * 
  * @author thomas
  */
 @Service
-public class RadioStationStorageServiceImpl implements RadioStationStorageService
+public class UserRadioStorageServiceImpl implements UserRadioStorageService
 {
 
 	/**
@@ -32,7 +32,7 @@ public class RadioStationStorageServiceImpl implements RadioStationStorageServic
 
 	
 	/**
-	 * @see com.senselessweb.storage.RadioStationStorageService#createRadioStation(RadioLibraryItem)
+	 * @see com.senselessweb.storage.library.UserRadioStorageService#createRadioStation(RadioLibraryItem)
 	 */
 	@Override
 	public RadioLibraryItem createRadioStation(final RadioLibraryItem streamSource)
@@ -50,7 +50,7 @@ public class RadioStationStorageServiceImpl implements RadioStationStorageServic
 
 	
 	/**
-	 * @see com.senselessweb.storage.RadioStationStorageService#getAllRadioStations()
+	 * @see com.senselessweb.storage.library.UserRadioStorageService#getAllRadioStations()
 	 */
 	@Override
 	public Collection<RadioLibraryItem> getAllRadioStations()
@@ -60,7 +60,7 @@ public class RadioStationStorageServiceImpl implements RadioStationStorageServic
 
 	
 	/**
-	 * @see com.senselessweb.storage.RadioStationStorageService#getRadioStation(java.lang.String)
+	 * @see com.senselessweb.storage.library.UserRadioStorageService#getRadioStation(java.lang.String)
 	 */
 	@Override
 	public RadioLibraryItem getRadioStation(final String id)
@@ -70,7 +70,7 @@ public class RadioStationStorageServiceImpl implements RadioStationStorageServic
 
 
 	/**
-	 * @see com.senselessweb.storage.RadioStationStorageService#deleteRadioStation(java.lang.String)
+	 * @see com.senselessweb.storage.library.UserRadioStorageService#deleteRadioStation(java.lang.String)
 	 */
 	@Override
 	public void deleteRadioStation(final String id)

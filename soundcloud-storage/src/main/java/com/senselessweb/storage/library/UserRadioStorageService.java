@@ -1,4 +1,4 @@
-package com.senselessweb.storage;
+package com.senselessweb.storage.library;
 
 import java.util.Collection;
 
@@ -12,7 +12,7 @@ import com.senselessweb.soundcloud.domain.sources.StreamSource;
  * 
  * @author thomas
  */
-public interface RadioStationStorageService
+public interface UserRadioStorageService
 {
 
 	/**

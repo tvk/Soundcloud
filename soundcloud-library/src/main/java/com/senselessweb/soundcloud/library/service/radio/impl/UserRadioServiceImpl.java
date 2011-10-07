@@ -9,7 +9,7 @@ import com.google.common.collect.Lists;
 import com.senselessweb.soundcloud.domain.library.LibraryItem;
 import com.senselessweb.soundcloud.domain.library.RadioLibraryItem;
 import com.senselessweb.soundcloud.library.service.radio.UserRadioLibraryService;
-import com.senselessweb.storage.RadioStationStorageService;
+import com.senselessweb.storage.library.UserRadioStorageService;
 
 /**
  * Library service implementation for user stored radio stations.
@@ -23,7 +23,7 @@ public class UserRadioServiceImpl extends AbstractRadioService implements UserRa
 	/**
 	 * The RadioStationStorageService
 	 */
-	@Autowired RadioStationStorageService radioStationStorageService;
+	@Autowired UserRadioStorageService radioStationStorageService;
 
 	
 	/**
