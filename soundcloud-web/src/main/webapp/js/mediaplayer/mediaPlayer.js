@@ -19,7 +19,7 @@ function MediaPlayer(displayElement, playlistControlElement, playbackControlElem
 	this.equalizerControl = new EqualizerControl(equalizerControlElement);
 	this.playlistControl = new PlaylistControl(playlistControlElement);
 	
-	this.messageMediator = new MessageMediator(new Array(this, this.playbackControl));
+	this.messageMediator = new MessageMediator(new Array(this, this.playbackControl, this.playlistControl));
 	
 	$("body").append('<div id="errorDialog" style="display:none;"><div class="content"></div></div>');
 }

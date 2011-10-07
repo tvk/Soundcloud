@@ -12,6 +12,25 @@ import com.senselessweb.soundcloud.domain.sources.MediaSource;
  */
 public interface Playlist
 {
+	
+	/**
+	 * Events that are fired when the playlist changes
+	 * 
+	 * @see MessageListener 
+	 *
+	 * @author thomas
+	 */
+	public enum ChangeEvent
+	{
+		/** Next song */
+		NEXT,
+		
+		/** Previous song */
+		PREVIOUS,
+
+		/** All other events */
+		OTHER
+	}
 
 	/**
 	 * Jump to the next {@link MediaSource}. Is called when the 

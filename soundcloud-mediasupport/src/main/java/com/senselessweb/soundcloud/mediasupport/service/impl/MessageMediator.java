@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 import com.senselessweb.soundcloud.domain.sources.MediaSource;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer.State;
 import com.senselessweb.soundcloud.mediasupport.service.MessageListener;
+import com.senselessweb.soundcloud.mediasupport.service.Playlist.ChangeEvent;
 
 /**
  * Message Mediator that contains all the message listeners.
@@ -79,6 +80,16 @@ public class MessageMediator implements MessageListener
 	{
 		for (final MessageListener listener : this.messageListeners)
 			listener.newSource(source);
+	}
+
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#playlistChanged(com.senselessweb.soundcloud.mediasupport.service.Playlist.ChangeEvent)
+	 */
+	@Override
+	public void playlistChanged(final ChangeEvent event)
+	{
+		for (final MessageListener listener : this.messageListeners)
+			listener.playlistChanged(event);
 	}
 
 }

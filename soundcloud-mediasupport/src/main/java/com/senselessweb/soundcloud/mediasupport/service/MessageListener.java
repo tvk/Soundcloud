@@ -2,6 +2,7 @@ package com.senselessweb.soundcloud.mediasupport.service;
 
 import com.senselessweb.soundcloud.domain.sources.MediaSource;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer.State;
+import com.senselessweb.soundcloud.mediasupport.service.Playlist.ChangeEvent;
 
 
 /**
@@ -11,7 +12,7 @@ import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer.State;
  */
 public interface MessageListener
 {
-
+	
 	/**
 	 * Is called when the playback state changes.
 	 * 
@@ -42,4 +43,11 @@ public interface MessageListener
 	 */
 	public void newSource(MediaSource source);
 	
+	
+	/**
+	 * Is called when the playlist changes.
+	 * 
+	 * @param event The {@link ChangeEvent}
+	 */
+	public void playlistChanged(Playlist.ChangeEvent event);
 }

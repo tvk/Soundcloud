@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.senselessweb.soundcloud.domain.sources.MediaSource;
 import com.senselessweb.soundcloud.mediasupport.service.Playlist;
+import com.senselessweb.soundcloud.mediasupport.service.impl.MessageMediator;
 
 /**
  * Default playlist implementation
@@ -23,6 +24,12 @@ public class DefaultPlaylist implements Playlist
 	 * Logger
 	 */
 	private static final Log log = LogFactory.getLog(DefaultPlaylist.class);
+	
+	
+	/**
+	 * The messageMediator
+	 */
+	private final MessageMediator messageMediator;
 
 	/**
 	 * The list of media sources in this playlist.
@@ -38,6 +45,17 @@ public class DefaultPlaylist implements Playlist
 
 
 	/**
+	 * Constructor
+	 *
+	 * @param messageMediator The message mediator.
+	 */
+	public DefaultPlaylist(final MessageMediator messageMediator)
+	{
+		this.messageMediator = messageMediator;
+	}
+
+
+	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.Playlist#add(MediaSource)
 	 */
 	@Override
@@ -47,6 +65,7 @@ public class DefaultPlaylist implements Playlist
 		if (this.current == -1) this.current = 0;
 		
 		log.debug("Added " + mediaSource);
+		this.messageMediator.playlistChanged(ChangeEvent.OTHER);		
 	}
 	
 	
@@ -60,6 +79,7 @@ public class DefaultPlaylist implements Playlist
 		this.playlist.addAll(playlist);
 		
 		this.current = this.playlist.isEmpty() ? -1 : 0;
+		this.messageMediator.playlistChanged(ChangeEvent.OTHER);
 	}
 	
 	
@@ -72,6 +92,7 @@ public class DefaultPlaylist implements Playlist
 		if (this.current < this.playlist.size() - 1) 
 		{
 			this.current++;
+			this.messageMediator.playlistChanged(ChangeEvent.NEXT);
 			return true;
 		}
 		else
@@ -91,6 +112,7 @@ public class DefaultPlaylist implements Playlist
 		if (currentIndex > 0)
 		{
 			this.current--;
+			this.messageMediator.playlistChanged(ChangeEvent.PREVIOUS);
 			return true;
 		}
 		else

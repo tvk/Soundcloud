@@ -7,6 +7,7 @@ import com.senselessweb.soundcloud.domain.sources.MediaSource;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer.State;
 import com.senselessweb.soundcloud.mediasupport.service.MessageListener;
+import com.senselessweb.soundcloud.mediasupport.service.Playlist.ChangeEvent;
 import com.senselessweb.soundcloud.web.service.DisplayDataService;
 
 /**
@@ -119,5 +120,10 @@ public class DisplayDataServiceImpl implements DisplayDataService, MessageListen
 	@Override
 	public void error(final String message) { /* unused */ }
 
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#playlistChanged(com.senselessweb.soundcloud.mediasupport.service.Playlist.ChangeEvent)
+	 */
+	@Override
+	public void playlistChanged(ChangeEvent event) { /* unused */ }
 
 }

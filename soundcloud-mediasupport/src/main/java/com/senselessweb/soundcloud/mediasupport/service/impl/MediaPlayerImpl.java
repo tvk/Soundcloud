@@ -35,7 +35,7 @@ public class MediaPlayerImpl implements MediaPlayer, GStreamerMessageListener
 	/**
 	 * The current playlist
 	 */
-	private Playlist playlist = new DefaultPlaylist();
+	private Playlist playlist;
 	
 	/**
 	 * The currently used pipeline. Is rebuilt everytime a new song is played.  
@@ -106,6 +106,8 @@ public class MediaPlayerImpl implements MediaPlayer, GStreamerMessageListener
 			withMessageListener(this.messageMediator).
 			withGStreamerMessageListener(this).
 			withVolume(this.volume);
+		
+		this.playlist = new DefaultPlaylist(this.messageMediator);
 	}
 	
 	/**

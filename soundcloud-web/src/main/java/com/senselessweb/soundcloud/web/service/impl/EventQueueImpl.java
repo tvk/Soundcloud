@@ -10,6 +10,7 @@ import com.senselessweb.soundcloud.domain.sources.MediaSource;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer.State;
 import com.senselessweb.soundcloud.mediasupport.service.MessageListener;
+import com.senselessweb.soundcloud.mediasupport.service.Playlist.ChangeEvent;
 import com.senselessweb.soundcloud.web.service.Event;
 import com.senselessweb.soundcloud.web.service.EventQueue;
 
@@ -70,6 +71,15 @@ public class EventQueueImpl implements EventQueue, MessageListener
 	}
 	
 	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#playlistChanged(com.senselessweb.soundcloud.mediasupport.service.Playlist.ChangeEvent)
+	 */
+	@Override
+	public void playlistChanged(ChangeEvent event)
+	{
+		this.queue.add(new Event("playlistChanged", "event", event.name()));
+	}
+	
+	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#tag(java.lang.String, java.lang.String)
 	 */
 	@Override
@@ -78,14 +88,11 @@ public class EventQueueImpl implements EventQueue, MessageListener
 		// Unused as long as the DisplayDataController handles all tag request
 		// this.queue.add(new Event("tag", tag, value));
 	}
-
 	
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#newSource(com.senselessweb.soundcloud.domain.sources.MediaSource)
 	 */
 	@Override
-	public void newSource(final MediaSource source)
-	{
-		// Unused
-	}
+	public void newSource(final MediaSource source) { /* unused */ }
+	
 }

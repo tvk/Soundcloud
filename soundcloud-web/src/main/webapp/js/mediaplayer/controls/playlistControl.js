@@ -1,11 +1,13 @@
 
+var playlistControlElement;
 
-function PlaylistControl(playlistControlElement)
+function PlaylistControl(_playlistControlElement)
 {
+	this.playlistControlElement = _playlistControlElement;
 	$.getJSON('controller/playlist/getData', function(data) {
-		initPlaylistControl(playlistControlElement, data);
+		initPlaylistControl(_playlistControlElement, data);
 	});
-}
+};
 
 function initPlaylistControl(playlistControlElement, data)
 {
@@ -20,11 +22,33 @@ function initPlaylistControl(playlistControlElement, data)
 				'</div><div style="clear:both;"></div>');
 		
 		$('#playlist-play-' + i).button({icons: {primary: 'ui-icon-play'}, text: false}).click(function() {
-			//$.ajax('controller/library/radio/play?id=' + $(this).val());
+			//TODO $.ajax('controller/library/radio/play?id=' + $(this).val());
 		});
 		
 		$('#playlist-delete-' + i).button({icons: {primary: 'ui-icon-cancel'}, text: false}).click(function() {
-			//$.ajax('controller/library/radio/play?id=' + $(this).val());
+			//TODO $.ajax('controller/library/radio/play?id=' + $(this).val());
 		});
 	}
 }
+
+/**
+ * Listens to stateChanged events and changes the current active button
+ * 
+ * @param data 
+ */
+PlaylistControl.prototype.processMessage = function(data)
+{
+	var _playlistControlElement = this.playlistControlElement;
+	
+	if (data.type == 'playlistChanged')
+	{
+		var event = data.properties['event'];
+		
+		// TODO If event is next or previous, it's not necessary to reload the complete list
+		$('.playlistEntry', _playlistControlElement).remove();
+		$.getJSON('controller/playlist/getData', function(data) {
+			initPlaylistControl(_playlistControlElement, data);
+		});
+	}
+
+};

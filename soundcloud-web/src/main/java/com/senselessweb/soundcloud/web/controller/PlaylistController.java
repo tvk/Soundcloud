@@ -30,7 +30,7 @@ public class PlaylistController
 	/**
 	 * Returns the current playlist
 	 * 
-	 * @return The current playlist. The boolean value of this map indicates if it is the current song. 
+	 * @return The current playlist encapsulated in {@link PlaylistContainer}s. 
 	 */
 	@RequestMapping("/getData")
 	@ResponseBody
@@ -38,9 +38,7 @@ public class PlaylistController
 	{
 		final List<PlaylistContainer> result = new ArrayList<PlaylistContainer>();
 		for (final MediaSource mediaSource : this.mediaPlayer.getCurrentPlaylist().getAll())
-		{
 			result.add(new PlaylistContainer(mediaSource, mediaSource.equals(this.mediaPlayer.getCurrentPlaylist().getCurrent())));
-		}
 		return result;
 	}
 	
