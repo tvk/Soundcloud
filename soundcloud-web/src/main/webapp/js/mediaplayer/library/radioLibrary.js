@@ -89,7 +89,7 @@ function appendStationElement(name, data, buttonMask)
 		$('#content-' + name + ' table').append('<tr id="station-' + station + '" class="station"></tr>');
 	
 	$('#station-' + station).append('<td><button id="play-station-' + station + '" value="' + station + '">Play</button></td>');
-	$('#station-' + station).append('<td class="title">' + data.name + '</td>');
+	$('#station-' + station).append('<td class="title">' + data.longTitle + '</td>');
 	$('#station-' + station).append('<td class="genres">' + data.genres + '</td>');
 	
 	$('#play-station-' + station).button({icons: {primary: 'ui-icon-play'}, text: false}).click(function() {

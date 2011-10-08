@@ -67,7 +67,7 @@ public abstract class AbstractRadioService implements LibraryService
 			@Override
 			public boolean apply(final LibraryItem input)
 			{
-				return input.getName().contains(name);
+				return input.getLongTitle().contains(name);
 			}
 		});
 	}

@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
@@ -69,7 +70,7 @@ public class RadioLibraryItem extends AbstractLibraryItem
 				@Override
 				public StreamSource apply(final String url)
 				{
-					return new StreamSource(RadioLibraryItem.this.getName(), url, 
+					return new StreamSource(RadioLibraryItem.this.getLongTitle(), url, 
 							RadioLibraryItem.this.getGenres().toArray(new String[RadioLibraryItem.this.getGenres().size()]));
 				}
 			});
@@ -139,6 +140,15 @@ public class RadioLibraryItem extends AbstractLibraryItem
 		return this.url;
 	}
 	
+	/**
+	 * @see com.senselessweb.soundcloud.domain.library.LibraryItem#getLongTitle()
+	 */
+	@Override
+	public String getLongTitle()
+	{
+		return this.getShortTitle();
+	}
+	
 	
 	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
@@ -158,7 +168,7 @@ public class RadioLibraryItem extends AbstractLibraryItem
 	@Override
 	public int hashCode()
 	{
-		return super.hashCode();
+		return HashCodeBuilder.reflectionHashCode(this, true);
 	}
 	
 }

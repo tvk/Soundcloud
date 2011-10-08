@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.senselessweb.soundcloud.domain.library.LibraryItem;
 import com.senselessweb.soundcloud.domain.sources.MediaSource;
+import com.senselessweb.soundcloud.library.service.local.LocalLibraryService;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
 
 /**
@@ -29,6 +31,10 @@ public class PlaylistController
 	 */
 	@Autowired MediaPlayer mediaPlayer;
 
+	/**
+	 * The localLibraryService
+	 */
+	@Autowired LocalLibraryService localLibraryService;
 	
 	/**
 	 * Returns the current playlist
@@ -41,7 +47,8 @@ public class PlaylistController
 	{
 		final List<PlaylistContainer> result = new ArrayList<PlaylistContainer>();
 		for (final MediaSource mediaSource : this.mediaPlayer.getCurrentPlaylist().getAll())
-			result.add(new PlaylistContainer(mediaSource, mediaSource.equals(this.mediaPlayer.getCurrentPlaylist().getCurrent())));
+			result.add(new PlaylistContainer(mediaSource, this.localLibraryService.getFile(mediaSource), 
+					mediaSource.equals(this.mediaPlayer.getCurrentPlaylist().getCurrent())));
 		return result;
 	}
 	
@@ -86,6 +93,11 @@ class PlaylistContainer
 	private final MediaSource mediaSource;
 	
 	/**
+	 * The libraryItem
+	 */
+	private final LibraryItem libraryItem;
+	
+	/**
 	 * True if this is the current entry
 	 */
 	private final boolean isCurrent;
@@ -94,12 +106,14 @@ class PlaylistContainer
 	 * Constructor
 	 * 
 	 * @param mediaSource The media source
+	 * @param libraryItem The libraryItem
 	 * @param isCurrent True if this is the current entry
 	 */
-	public PlaylistContainer(final MediaSource mediaSource, final boolean isCurrent)
+	public PlaylistContainer(final MediaSource mediaSource, final LibraryItem libraryItem, final boolean isCurrent)
 	{
 		this.mediaSource = mediaSource;
 		this.isCurrent = isCurrent;
+		this.libraryItem = libraryItem;
 	}
 	
 	/**
@@ -111,11 +125,31 @@ class PlaylistContainer
 	}
 	
 	/**
+	 * Returns the libraryItem
+	 *
+	 * @return The libraryItem
+	 */
+	public LibraryItem getLibraryItem()
+	{
+		return this.libraryItem;
+	}
+	
+	/**
 	 * @return True if this is the current entry
 	 */ 
 	public boolean isCurrent()
 	{
 		return this.isCurrent;
+	}
+	
+	/**
+	 * Returns a title for the playlist.
+	 * 
+	 * @return The title.
+	 */
+	public String getTitle()
+	{
+		return this.libraryItem != null ? this.libraryItem.getShortTitle() : this.mediaSource.getTitle();
 	}
 }
 

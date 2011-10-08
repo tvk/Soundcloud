@@ -2,6 +2,8 @@ package com.senselessweb.soundcloud.domain.sources;
 
 import java.io.File;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import com.senselessweb.soundcloud.util.IdentityUtils;
 
 /**
@@ -64,7 +66,7 @@ public class FileSource implements MediaSource
 	@Override
 	public int hashCode()
 	{
-		return super.hashCode();
+		return HashCodeBuilder.reflectionHashCode(this, true);
 	}
 
 	/**

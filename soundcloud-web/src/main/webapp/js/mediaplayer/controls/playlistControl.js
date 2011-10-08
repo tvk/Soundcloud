@@ -19,7 +19,7 @@ function initPlaylistControl(playlistControlElement, data)
 					'<div class="playlist-delete"><button value="' + i + '" id="playlist-delete-' + i + '"/></div>' + 
 					'<div class="playlist-play"><button value="' + i + '" id="playlist-play-' + i + '"/></div>' + 
 					'<div class="index">' + (i+1) + '</div>' + 
-					'<div class="title">' + data[i].mediaSource.title + '</div>' + 
+					'<div class="title">' + data[i].title + '</div>' + 
 				'</div><div style="clear:both;"></div>');
 		
 		$('#playlist-play-' + i).button({icons: {primary: 'ui-icon-play'}, text: false}).click(function() {

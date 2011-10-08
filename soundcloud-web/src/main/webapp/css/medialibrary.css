@@ -88,7 +88,7 @@
 
 #medialibrary .library-column
 {
-	width: 250px;
+	width: 300px;
 }
 
 #medialibrary .library-column .level-container
@@ -116,8 +116,23 @@
 
 #medialibrary  .library-column .level-container label.ui-button
 {
-	width: 232px;
+	width: 282px;
 }
 
+#medialibrary  .library-column .level-container .level-container-files button
+{
+	margin-right: 4px;
+}
+
+
+#medialibrary  .library-column .level-container .level-container-files table
+{
+	width: 100%;
+}
+
+#medialibrary  .library-column .level-container .level-container-files table td.button
+{
+	width: 2.4em;
+}
 
 

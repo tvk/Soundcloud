@@ -39,7 +39,7 @@ public class UserRadioStorageServiceImpl implements UserRadioStorageService
 	{
 		// Remove stations with the same name and location
 		this.mongoTemplate.remove(new Query(
-				Criteria.where("name").is(streamSource.getName())), collectionName);
+				Criteria.where("name").is(streamSource.getLongTitle())), collectionName);
 		
 		// Store the new station
 		this.mongoTemplate.insert(streamSource, collectionName);

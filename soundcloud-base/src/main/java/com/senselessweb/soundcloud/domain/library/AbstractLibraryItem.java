@@ -3,6 +3,7 @@ package com.senselessweb.soundcloud.domain.library;
 import java.util.Collection;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.senselessweb.soundcloud.util.IdentityUtils;
 
@@ -20,9 +21,9 @@ public abstract class AbstractLibraryItem implements LibraryItem
 	private final String id;
 	
 	/**
-	 * The name of this item.
+	 * The short title of this item.
 	 */
-	private final String name;
+	private final String shortTitle;
 	
 	/**
 	 * The genres
@@ -40,17 +41,17 @@ public abstract class AbstractLibraryItem implements LibraryItem
 	 * Constructor
 	 * 
 	 * @param id The id
-	 * @param name The name 
+	 * @param shortTitle The name 
 	 * @param genres The genres
 	 * @param bitrate The bitrate
 	 */
-	public AbstractLibraryItem(final String id, final String name, final Collection<String> genres, final int bitrate)
+	public AbstractLibraryItem(final String id, final String shortTitle, final Collection<String> genres, final int bitrate)
 	{
-		if (StringUtils.isBlank(name)) 
-			throw new IllegalArgumentException("Param name must not be null");
+		if (StringUtils.isBlank(shortTitle)) 
+			throw new IllegalArgumentException("Param shortTitle must not be null");
 		
 		this.id = id;
-		this.name = name;
+		this.shortTitle = shortTitle;
 		this.genres = genres;
 		this.bitrate = bitrate;
 	}
@@ -86,12 +87,12 @@ public abstract class AbstractLibraryItem implements LibraryItem
 	}
 	
 	/**
-	 * @see com.senselessweb.soundcloud.domain.library.LibraryItem#getName()
+	 * @see com.senselessweb.soundcloud.domain.library.LibraryItem#getShortTitle()
 	 */
 	@Override
-	public String getName()
+	public String getShortTitle()
 	{
-		return this.name;
+		return this.shortTitle;
 	}
 	
 	/**
@@ -111,7 +112,7 @@ public abstract class AbstractLibraryItem implements LibraryItem
 	{
 		if (!(obj instanceof AbstractLibraryItem)) return false;
 		final AbstractLibraryItem other = (AbstractLibraryItem) obj;
-		return IdentityUtils.areEqual(this.name, other.name, this.bitrate, other.bitrate, this.genres, other.genres);
+		return IdentityUtils.areEqual(this.shortTitle, other.shortTitle, this.bitrate, other.bitrate, this.genres, other.genres);
 	}
 
 	/**
@@ -120,6 +121,6 @@ public abstract class AbstractLibraryItem implements LibraryItem
 	@Override
 	public int hashCode()
 	{
-		return super.hashCode();
+		return HashCodeBuilder.reflectionHashCode(this, true);
 	}
 }

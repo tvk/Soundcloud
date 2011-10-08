@@ -35,13 +35,20 @@ public interface LibraryItem
 	public String getId();
 	
 	/**
-	 * Returns the name of this item.
+	 * Returns a long title for this item (contains for example the
+	 * tracknumber and the artist)
 	 * 
-	 * @return The name.
+	 * @return The long title.
 	 */
-	public String getName();
+	public String getLongTitle();
 	
-	
+	/**
+	 * Returns a short title for this item.
+	 * 
+	 * @return The short title.
+	 */
+	public String getShortTitle();
+		
 	/**
 	 * Returns the bitrate of this item.
 	 * 

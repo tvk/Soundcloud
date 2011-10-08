@@ -1,5 +1,7 @@
 package com.senselessweb.soundcloud.domain.sources;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import com.senselessweb.soundcloud.util.IdentityUtils;
 
 /**
@@ -115,7 +117,7 @@ public class StreamSource implements MediaSource
 	@Override
 	public int hashCode()
 	{
-		return super.hashCode();
+		return HashCodeBuilder.reflectionHashCode(this, true);
 	}
 
 	/**

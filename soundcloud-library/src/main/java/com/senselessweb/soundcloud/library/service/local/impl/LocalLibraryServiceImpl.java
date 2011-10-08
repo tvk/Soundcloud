@@ -17,6 +17,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.senselessweb.soundcloud.domain.library.LocalFile;
 import com.senselessweb.soundcloud.domain.library.LocalFolder;
+import com.senselessweb.soundcloud.domain.sources.MediaSource;
 import com.senselessweb.soundcloud.library.service.local.LocalLibraryService;
 import com.senselessweb.soundcloud.util.FileFilters;
 
@@ -47,6 +48,11 @@ public class LocalLibraryServiceImpl implements LocalLibraryService
 	final Map<String, LocalFile> localFilesById = new HashMap<String, LocalFile>();
 	
 	/**
+	 * Map of local files by media source.
+	 */
+	final Map<MediaSource, LocalFile> localFilesByMediaSource = new HashMap<MediaSource, LocalFile>();
+	
+	/**
 	 * Sequence generator for the unique file ids.
 	 */
 	private final AtomicInteger fileIdSequence = new AtomicInteger();
@@ -68,8 +74,17 @@ public class LocalLibraryServiceImpl implements LocalLibraryService
 		final List<LocalFile> files = Lists.newArrayList(Collections2.transform(Lists.newArrayList(dir.listFiles(FileFilters.mediaFileFilter)), new Function<File, LocalFile>() {
 			/** @see com.google.common.base.Function#apply(java.lang.Object) */
 			@Override public LocalFile apply(final File input) { 
-				final LocalFile localFile = new LocalFile(createId(input), input.getAbsolutePath(), input.getName(), -1, Collections.<String>emptySet());
+				
+				final String id = createId(input);
+				if (LocalLibraryServiceImpl.this.localFilesById.containsKey(id))
+					return LocalLibraryServiceImpl.this.localFilesById.get(id);
+				
+				final LocalFile localFile = new LocalFile(id, input.getAbsolutePath(), FileReader.read(input));
 				LocalLibraryServiceImpl.this.localFilesById.put(localFile.getId(), localFile);
+				
+				for (final MediaSource mediaSource : localFile.asMediaSources())
+					LocalLibraryServiceImpl.this.localFilesByMediaSource.put(mediaSource, localFile);
+				
 				return localFile;
 			}
 		}));
@@ -101,6 +116,15 @@ public class LocalLibraryServiceImpl implements LocalLibraryService
 	public LocalFile getFile(final String id) 
 	{
 		return this.localFilesById.get(id);
+	}
+	
+	/**
+	 * @see com.senselessweb.soundcloud.library.service.local.LocalLibraryService#getFile(com.senselessweb.soundcloud.domain.sources.MediaSource)
+	 */
+	@Override
+	public LocalFile getFile(final MediaSource mediaSource)
+	{
+		return this.localFilesByMediaSource.get(mediaSource);
 	}
 	
 	/**

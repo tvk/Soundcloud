@@ -71,11 +71,11 @@ function initLevel(localLibraryElement, level, data)
 	{
 		files.append(
 				'<label class="ui-button ui-widget ui-state-default ui-button-text-only">' + 
-					'<span class="ui-button-text">' +
-						'<button value="' + data.files[i].id + '" id="play-file-' + data.files[i].id + '"></button>' + 
-						'<button value="' + data.files[i].id + '" id="enqueue-file-' + data.files[i].id + '"></button>' + 
-						data.files[i].name + 
-					'</span>' + 
+					'<span class="ui-button-text"><table><tr>' +
+						'<td class="button"><button value="' + data.files[i].id + '" id="play-file-' + data.files[i].id + '"></button></td>' + 
+						'<td class="button"><button value="' + data.files[i].id + '" id="enqueue-file-' + data.files[i].id + '"></button></td>' + 
+						'<td class="title">' + data.files[i].shortTitle + '</td>' +  
+					'</tr></table></span>' + 
 				'</label>');
 		
 		$('#enqueue-file-' + data.files[i].id).button({icons: {primary: 'ui-icon-plus'}, text: false}).click(function() {

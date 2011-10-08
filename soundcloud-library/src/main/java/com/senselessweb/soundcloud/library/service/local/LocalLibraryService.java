@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.senselessweb.soundcloud.domain.library.LocalFile;
 import com.senselessweb.soundcloud.domain.library.LocalFolder;
+import com.senselessweb.soundcloud.domain.sources.MediaSource;
 
 /**
  * Service interface for the local music library.
@@ -39,4 +40,15 @@ public interface LocalLibraryService
 	 * @return The file.
 	 */
 	public LocalFile getFile(String id);
+	
+
+	/**
+	 * Returns a single item by media source.
+	 * 
+	 * @param mediaSource The {@link MediaSource}.
+	 * 
+	 * @return The local file that belongs to that {@link MediaSource} or null if 
+	 * there is no such item. 
+	 */
+	public LocalFile getFile(MediaSource mediaSource);	
 }

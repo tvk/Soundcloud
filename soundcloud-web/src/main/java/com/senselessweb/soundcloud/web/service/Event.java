@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.senselessweb.soundcloud.util.IdentityUtils;
 
@@ -85,7 +86,7 @@ public class Event
 	@Override
 	public int hashCode()
 	{
-		return super.hashCode();
+		return HashCodeBuilder.reflectionHashCode(this, true);
 	}
 	
 	/**

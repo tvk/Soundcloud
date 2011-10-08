@@ -97,7 +97,7 @@ public class RadioLibraryController
 	public RadioLibraryItem store(final @RequestParam String id)
 	{
 		final RadioLibraryItem item = (RadioLibraryItem) this.remoteRadioLibraryService.findById(id);
-		return this.userRadioLibraryService.store(item.getName(), item.getUrl(), item.getGenres().toArray(new String[0]));
+		return this.userRadioLibraryService.store(item.getLongTitle(), item.getUrl(), item.getGenres().toArray(new String[0]));
 	}
 	
 	/**
