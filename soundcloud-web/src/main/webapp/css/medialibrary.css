@@ -94,7 +94,7 @@
 #medialibrary .library-column .level-container
 {
 	overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: scroll;
 	height: 450px;
 }
 
@@ -116,7 +116,7 @@
 
 #medialibrary  .library-column .level-container label.ui-button
 {
-	width: 250px;
+	width: 232px;
 }
 
 

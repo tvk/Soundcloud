@@ -6,21 +6,28 @@
  */
 function LocalLibrary(localLibraryElement)
 {
-	localLibraryElement.append('<div class="local-library-container"><table><tr></tr></table></div>');
+	localLibraryElement.append('<div class="local-library-container"><table><tr><td class="lastCol"></td></tr></table></div>');
 	
 	$.getJSON('controller/library/local/getFolder', function(data) {
 		initLevel(localLibraryElement, 0, data);
 	});
 }
 
+/**
+ * Initializes a level with the given data
+ * 
+ * @param localLibraryElement The localLibraryElement
+ * @param level The level. Starting with 0
+ * @param data The data for this level
+ */
 function initLevel(localLibraryElement, level, data)
 {
 	// Remove everything of this level and above levels
-	$('table tr td.level-' + level, localLibraryElement).remove();
+	$('table tr td.level-' + level, localLibraryElement).remove();		
 	
 	var classLevelIdentifier = '';
 	for (var i = 0; i <= level; i++) classLevelIdentifier += 'level-' + i + ' '; 
-	$('table tr', localLibraryElement).append(
+	$('table tr td.lastCol', localLibraryElement).before(
 			'<td class="' + classLevelIdentifier + 'library-column" id="library-column-level-' + level + '">' + 
 				'<div class="level-container">' +
 					'<div class="folder-buttons">' + 
@@ -77,7 +84,8 @@ function initLevel(localLibraryElement, level, data)
 		$('#play-file-' + data.files[i].id).button({icons: {primary: 'ui-icon-play'}, text: false}).click(function() {
 			$.ajax('controller/library/local/playFile?file=' + $(this).val());			
 		});
-		
 	}
 	
+	// Scroll to the new element
+	$('.local-library-container').scrollTo('max', 600);
 }
