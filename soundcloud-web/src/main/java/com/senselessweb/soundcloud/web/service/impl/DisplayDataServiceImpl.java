@@ -1,7 +1,5 @@
 package com.senselessweb.soundcloud.web.service.impl;
 
-import java.io.Serializable;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -21,23 +19,18 @@ import com.senselessweb.soundcloud.web.service.DisplayDataService;
  */
 @Service
 @Scope(proxyMode=ScopedProxyMode.INTERFACES, value="session")
-public class DisplayDataServiceImpl implements DisplayDataService, MessageListener, Serializable
+public class DisplayDataServiceImpl implements DisplayDataService, MessageListener
 {
 	
 	/**
-	 * The serialVersionUID
-	 */
-	private static final long serialVersionUID = -7662848477701634221L;
-
-	/**
 	 * The current display data
 	 */
-	private transient final DisplayData currentDisplayData = new DisplayData();
+	private final DisplayData currentDisplayData = new DisplayData();
 	
 	/**
 	 * Indicates that new data is available that has not been consumed yet. 
 	 */
-	private transient boolean newDataAvailable = false;
+	private boolean newDataAvailable = false;
 	
 	
 	
