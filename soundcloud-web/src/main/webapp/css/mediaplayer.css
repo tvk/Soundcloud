@@ -44,11 +44,13 @@
 {
 	margin-left: 9px;
 	display: inline-block;
+	width: 90%;
 }
 
 #playlist .playlistEntry.current
 {
 	font-weight: bold;
+	background: #000;
 }
 
 #playlist .playlistEntry button
