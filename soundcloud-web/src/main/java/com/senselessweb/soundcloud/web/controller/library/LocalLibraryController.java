@@ -105,9 +105,11 @@ public class LocalLibraryController
 	@ResponseStatus(HttpStatus.OK)
 	public void enqueueFolder(@RequestParam String folder)
 	{
+		final List<MediaSource> playlist = new ArrayList<MediaSource>();		
 		for (final LocalFile file : this.localLibraryService.getFiles(folder))
-			for (final MediaSource mediaSource : file.asMediaSources()) 
-				this.mediaPlayer.getCurrentPlaylist().add(mediaSource);
+			playlist.addAll(file.asMediaSources());
+			
+		this.mediaPlayer.getCurrentPlaylist().addAll(playlist);
 	}
 	
 	

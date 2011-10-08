@@ -83,13 +83,13 @@ public class MessageMediator implements MessageListener
 	}
 
 	/**
-	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#playlistChanged(com.senselessweb.soundcloud.mediasupport.service.Playlist.ChangeEvent)
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#playlistChanged(ChangeEvent, int)
 	 */
 	@Override
-	public void playlistChanged(final ChangeEvent event)
+	public void playlistChanged(final ChangeEvent event, final int current)
 	{
 		for (final MessageListener listener : this.messageListeners)
-			listener.playlistChanged(event);
+			listener.playlistChanged(event, current);
 	}
 
 }

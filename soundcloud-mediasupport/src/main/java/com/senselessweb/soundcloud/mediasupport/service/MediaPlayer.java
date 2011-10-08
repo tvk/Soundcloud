@@ -39,18 +39,6 @@ public interface MediaPlayer
 	public void stop();
 	
 	/**
-	 * Play the next song of the current playlist.
-	 */
-	public void next();
-	
-
-	/**
-	 * Play the previous song of the current playlist.
-	 */
-	public void previous();
-	
-	
-	/**
 	 * Pauses the playback.
 	 */
 	public void pause();

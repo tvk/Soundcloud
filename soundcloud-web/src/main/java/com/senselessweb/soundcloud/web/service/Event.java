@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.senselessweb.soundcloud.util.IdentityUtils;
+
 /**
  * Event. Contains a string identifying the event type
  * and a map of string properties.
@@ -64,5 +66,34 @@ public class Event
 	public Map<String, String> getProperties()
 	{
 		return this.properties;
+	}
+	
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(final Object obj)
+	{
+		if (!(obj instanceof Event)) return false;
+		final Event other = (Event) obj;
+		return IdentityUtils.areEqual(this.type , other.type, this.properties, other.properties);
+	}
+	
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode()
+	{
+		return super.hashCode();
+	}
+	
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString()
+	{
+		return this.type + "[" + this.properties + "]";
 	}
 }

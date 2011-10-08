@@ -48,6 +48,7 @@ public interface MessageListener
 	 * Is called when the playlist changes.
 	 * 
 	 * @param event The {@link ChangeEvent}
+	 * @param current The index of the current playlist title. 
 	 */
-	public void playlistChanged(Playlist.ChangeEvent event);
+	public void playlistChanged(Playlist.ChangeEvent event, int current);
 }

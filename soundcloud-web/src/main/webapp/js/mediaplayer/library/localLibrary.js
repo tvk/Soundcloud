@@ -25,8 +25,8 @@ function initLevel(localLibraryElement, level, data)
 				'<div class="level-container">' +
 					'<div class="folder-buttons">' + 
 						'<span class="title">All: </span>' +
-						'<button id="play-folder-' + level + '"></button>' + 
-						'<button id="enqueue-folder-' + level + '"></button>' + 
+						'<button id="play-folder-' + level + '">Play</button>' + 
+						'<button id="enqueue-folder-' + level + '">Enqueue</button>' + 
 					'</div>' +
 					'<div class="level-container-subfolders"></div>' + 
 					'<div class="level-container-files"></div>' + 

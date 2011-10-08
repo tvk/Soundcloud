@@ -11,22 +11,23 @@ function PlaylistControl(_playlistControlElement)
 
 function initPlaylistControl(playlistControlElement, data)
 {
+	$('div', playlistControlElement).remove();	
 	for (var i = 0; i < data.length; i++)
 	{
 		playlistControlElement.append(
 				'<div class="playlistEntry' + (data[i].current ? ' current' : '') + '">' + 
-				'<div class="playlist-delete"><button id="playlist-delete-' + i + '"/></div>' + 
-				'<div class="playlist-play"><button id="playlist-play-' + i + '"/></div>' + 
-				'<div class="index">' + (i+1) + '</div>' + 
-				'<div class="title">' + data[i].mediaSource.title + '</div>' + 
+					'<div class="playlist-delete"><button value="' + i + '" id="playlist-delete-' + i + '"/></div>' + 
+					'<div class="playlist-play"><button value="' + i + '" id="playlist-play-' + i + '"/></div>' + 
+					'<div class="index">' + (i+1) + '</div>' + 
+					'<div class="title">' + data[i].mediaSource.title + '</div>' + 
 				'</div><div style="clear:both;"></div>');
 		
 		$('#playlist-play-' + i).button({icons: {primary: 'ui-icon-play'}, text: false}).click(function() {
-			//TODO $.ajax('controller/library/radio/play?id=' + $(this).val());
+			$.ajax('controller/playlist/gotoTitle?index=' + $(this).val());
 		});
 		
 		$('#playlist-delete-' + i).button({icons: {primary: 'ui-icon-cancel'}, text: false}).click(function() {
-			//TODO $.ajax('controller/library/radio/play?id=' + $(this).val());
+			$.ajax('controller/playlist/removeTitle?index=' + $(this).val());
 		});
 	}
 }
@@ -43,12 +44,18 @@ PlaylistControl.prototype.processMessage = function(data)
 	if (data.type == 'playlistChanged')
 	{
 		var event = data.properties['event'];
-		
-		// TODO If event is next or previous, it's not necessary to reload the complete list
-		$('.playlistEntry', _playlistControlElement).remove();
-		$.getJSON('controller/playlist/getData', function(data) {
-			initPlaylistControl(_playlistControlElement, data);
-		});
+		if (event == 'CURRENT_CHANGED')
+		{
+			var newCurrent = $('div:nth-child(' + ((parseInt(data.properties['current']) + 1) * 2 - 1) + ')', _playlistControlElement);
+			$('.playlistEntry.current', _playlistControlElement).removeClass('current');
+			newCurrent.addClass('current');
+		}
+		if (event == 'OTHER')
+		{
+			$.getJSON('controller/playlist/getData', function(data) {
+				initPlaylistControl(_playlistControlElement, data);
+			});
+		}
 	}
 
 };

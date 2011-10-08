@@ -62,7 +62,11 @@ public class PlaybackController
 	@ResponseStatus(HttpStatus.OK)
 	public void previous()
 	{
-		this.mediaPlayer.previous();
+		if (this.mediaPlayer.getCurrentPlaylist().previous())
+		{
+			this.mediaPlayer.stop();
+			this.mediaPlayer.play();
+		}
 	}
 	
 	/**
@@ -72,7 +76,11 @@ public class PlaybackController
 	@ResponseStatus(HttpStatus.OK)
 	public void next()
 	{
-		this.mediaPlayer.next();
+		if (this.mediaPlayer.getCurrentPlaylist().next())
+		{
+			this.mediaPlayer.stop();
+			this.mediaPlayer.play();
+		}
 	}
 	
 	/**

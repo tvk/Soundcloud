@@ -1,6 +1,8 @@
 package com.senselessweb.soundcloud.web.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 
 import com.senselessweb.soundcloud.domain.sources.MediaSource;
@@ -16,6 +18,7 @@ import com.senselessweb.soundcloud.web.service.DisplayDataService;
  * @author thomas
  */
 @Service
+@Scope(proxyMode=ScopedProxyMode.INTERFACES, value="session")
 public class DisplayDataServiceImpl implements DisplayDataService, MessageListener
 {
 	
@@ -121,9 +124,9 @@ public class DisplayDataServiceImpl implements DisplayDataService, MessageListen
 	public void error(final String message) { /* unused */ }
 
 	/**
-	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#playlistChanged(com.senselessweb.soundcloud.mediasupport.service.Playlist.ChangeEvent)
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#playlistChanged(ChangeEvent, int)
 	 */
 	@Override
-	public void playlistChanged(ChangeEvent event) { /* unused */ }
+	public void playlistChanged(ChangeEvent event, int current) { /* unused */ }
 
 }

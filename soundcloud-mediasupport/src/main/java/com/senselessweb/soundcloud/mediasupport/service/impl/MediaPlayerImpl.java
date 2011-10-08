@@ -159,35 +159,6 @@ public class MediaPlayerImpl implements MediaPlayer, GStreamerMessageListener
 		}
 	}
 	
-
-	/**
-	 * @see com.senselessweb.soundcloud.mediasupport.service.MediaPlayer#next()
-	 */
-	@Override
-	public void next()
-	{
-		if (this.playlist.next())
-		{
-			this.stop();
-			this.play();
-		}
-	}	
-	
-
-	/**
-	 * @see com.senselessweb.soundcloud.mediasupport.service.MediaPlayer#previous()
-	 */
-	@Override
-	public void previous()
-	{
-		if (this.playlist.previous())
-		{
-			this.stop();
-			this.play();
-		}
-	}	
-	
-
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.gstreamer.GStreamerMessageListener#endofStream()
 	 */
@@ -196,7 +167,8 @@ public class MediaPlayerImpl implements MediaPlayer, GStreamerMessageListener
 	{
 		this.stop();
 		this.pipeline = null;
-		this.next();
+		
+		if (this.playlist.next()) this.play();
 	}	
 
 

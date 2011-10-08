@@ -65,7 +65,21 @@ public class DefaultPlaylist implements Playlist
 		if (this.current == -1) this.current = 0;
 		
 		log.debug("Added " + mediaSource);
-		this.messageMediator.playlistChanged(ChangeEvent.OTHER);		
+		this.messageMediator.playlistChanged(ChangeEvent.OTHER, this.current);		
+	}
+	
+	
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.Playlist#addAll(java.util.Collection)
+	 */
+	@Override
+	public void addAll(Collection<MediaSource> playlist)
+	{
+		this.playlist.addAll(playlist);
+		if (this.current == -1) this.current = 0;
+		
+		log.debug("Added " + playlist);
+		this.messageMediator.playlistChanged(ChangeEvent.OTHER, this.current);		
 	}
 	
 	
@@ -79,7 +93,7 @@ public class DefaultPlaylist implements Playlist
 		this.playlist.addAll(playlist);
 		
 		this.current = this.playlist.isEmpty() ? -1 : 0;
-		this.messageMediator.playlistChanged(ChangeEvent.OTHER);
+		this.messageMediator.playlistChanged(ChangeEvent.OTHER, this.current);
 	}
 	
 	
@@ -92,7 +106,7 @@ public class DefaultPlaylist implements Playlist
 		if (this.current < this.playlist.size() - 1) 
 		{
 			this.current++;
-			this.messageMediator.playlistChanged(ChangeEvent.NEXT);
+			this.messageMediator.playlistChanged(ChangeEvent.CURRENT_CHANGED, this.current);
 			return true;
 		}
 		else
@@ -108,11 +122,10 @@ public class DefaultPlaylist implements Playlist
 	@Override
 	public boolean previous()
 	{
-		final int currentIndex = this.playlist.indexOf(this.current);
-		if (currentIndex > 0)
+		if (this.current > 0)
 		{
 			this.current--;
-			this.messageMediator.playlistChanged(ChangeEvent.PREVIOUS);
+			this.messageMediator.playlistChanged(ChangeEvent.CURRENT_CHANGED, this.current);
 			return true;
 		}
 		else
@@ -120,7 +133,38 @@ public class DefaultPlaylist implements Playlist
 			return false;
 		}
 	}	
+	
+	
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.Playlist#gotoTitle(int)
+	 */
+	@Override
+	public void gotoTitle(final int index)
+	{
+		if (index < 0 || index > this.playlist.size() - 1) 
+			throw new IllegalArgumentException("Index " + index + " is out of range");
 
+		this.current = index;
+		this.messageMediator.playlistChanged(ChangeEvent.CURRENT_CHANGED, this.current);
+	}
+
+	
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.Playlist#remove(int)
+	 */
+	@Override
+	public void remove(final int index)
+	{
+		if (index < 0 || index > this.playlist.size() - 1) 
+			throw new IllegalArgumentException("Index " + index + " is out of range");
+
+		this.playlist.remove(index);
+		
+		if (index <= this.current) this.current--;
+		if (this.current > this.playlist.size() - 1) this.current--;
+		
+		this.messageMediator.playlistChanged(ChangeEvent.OTHER, this.current);
+	}
 	
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.Playlist#getCurrent()

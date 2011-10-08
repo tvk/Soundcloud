@@ -6,6 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.senselessweb.soundcloud.domain.sources.FileSource;
@@ -20,6 +21,7 @@ import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
  * 
  * @author thomas
  */
+@Ignore("Should not be used in automatic tests")
 public class MediaPlayerTest
 {
 	
@@ -75,7 +77,7 @@ public class MediaPlayerTest
 		this.mediaPlayer.play();
 		Thread.sleep(5000);
 		
-		this.mediaPlayer.next();
+		this.mediaPlayer.getCurrentPlaylist().next();
 		Thread.sleep(5000);
 	}
 
@@ -98,7 +100,7 @@ public class MediaPlayerTest
 		this.mediaPlayer.getVolumeControl().setVolume(0.1);
 		Thread.sleep(5000);
 		
-		this.mediaPlayer.next();
+		this.mediaPlayer.getCurrentPlaylist().next();
 		Thread.sleep(5000);
 
 		this.mediaPlayer.getVolumeControl().setVolume(1.0);
@@ -159,19 +161,19 @@ public class MediaPlayerTest
 		Thread.sleep(5000);
 		
 		// Jump to wavFile
-		this.mediaPlayer.next();
+		this.mediaPlayer.getCurrentPlaylist().next();
 		log.debug("Playlist: " + this.mediaPlayer.getCurrentPlaylist());
 		Thread.sleep(2000);
 		
 		// Should do nothing
-		this.mediaPlayer.next();
+		this.mediaPlayer.getCurrentPlaylist().next();
 		log.debug("Playlist: " + this.mediaPlayer.getCurrentPlaylist());
 		Thread.sleep(5000);
 		
 		// Should play file
 		this.mediaPlayer.getCurrentPlaylist().add(this.file);
 		log.debug("Playlist: " + this.mediaPlayer.getCurrentPlaylist());
-		this.mediaPlayer.next();
+		this.mediaPlayer.getCurrentPlaylist().next();
 		log.debug("Playlist: " + this.mediaPlayer.getCurrentPlaylist());
 		Thread.sleep(5000);
 	}

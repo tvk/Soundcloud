@@ -22,11 +22,8 @@ public interface Playlist
 	 */
 	public enum ChangeEvent
 	{
-		/** Next song */
-		NEXT,
-		
-		/** Previous song */
-		PREVIOUS,
+		/** Current playlist index has changed */
+		CURRENT_CHANGED,
 
 		/** All other events */
 		OTHER
@@ -50,6 +47,22 @@ public interface Playlist
 	
 	
 	/**
+	 * Jumps to the title with the given index.
+	 * 
+	 * @param index The index to jump to.
+	 */
+	public void gotoTitle(int index);
+
+	
+	/**
+	 * Removes the title with the given index.
+	 * 
+	 * @param index The index to remove.
+	 */
+	public void remove(int index);
+	
+	
+	/**
 	 * Return the current playlist entry.
 	 * 
 	 * @return The current playlist entry. May be null if there 
@@ -67,6 +80,14 @@ public interface Playlist
 	
 	
 	/**
+	 * Adds all the given media sources to the playlist.
+	 * 
+	 * @param playlist The {@link MediaSource}s to add.
+	 */
+	public void addAll(Collection<MediaSource> playlist);
+
+	
+	/**
 	 * Replaces the current playlist by the given sources.
 	 * 
 	 * @param playlist The new playlist entries.
@@ -80,7 +101,5 @@ public interface Playlist
 	 * @return A copy of the current playlist entries.
 	 */
 	public List<MediaSource> getAll();
-
-	
 	
 }

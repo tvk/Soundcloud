@@ -4,6 +4,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 
 import com.senselessweb.soundcloud.domain.sources.MediaSource;
@@ -20,6 +22,7 @@ import com.senselessweb.soundcloud.web.service.EventQueue;
  * @author thomas
  */
 @Service
+@Scope(proxyMode=ScopedProxyMode.INTERFACES, value="session")
 public class EventQueueImpl implements EventQueue, MessageListener
 {
 
@@ -42,8 +45,18 @@ public class EventQueueImpl implements EventQueue, MessageListener
 	@Override
 	public Event getNextEvent()
 	{
+		// Throw anything into the queue so that a second waiting thread stops waiting 
+		final Event poison = new Event("poison-" + Thread.currentThread().getId());
+		this.queue.add(poison);
+		
 		try
 		{
+			final Event event = this.queue.take();
+			
+			// Won't consume my own poison :)
+			if (!event.equals(poison)) return event;
+			
+			// Continue waiting
 			return this.queue.take();
 		} 
 		catch (final InterruptedException e)
@@ -71,12 +84,12 @@ public class EventQueueImpl implements EventQueue, MessageListener
 	}
 	
 	/**
-	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#playlistChanged(com.senselessweb.soundcloud.mediasupport.service.Playlist.ChangeEvent)
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#playlistChanged(ChangeEvent, int)
 	 */
 	@Override
-	public void playlistChanged(ChangeEvent event)
+	public void playlistChanged(final ChangeEvent event, final int current)
 	{
-		this.queue.add(new Event("playlistChanged", "event", event.name()));
+		this.queue.add(new Event("playlistChanged", "event", event.name(), "current", String.valueOf(current)));
 	}
 	
 	/**

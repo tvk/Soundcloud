@@ -43,6 +43,7 @@
 #playlist .playlistEntry
 {
 	margin-left: 9px;
+	display: inline-block;
 }
 
 #playlist .playlistEntry.current
@@ -58,7 +59,7 @@
 #playlist .playlistEntry div 
 {
 	float: left;
-	margin: 5px;
+	margin: 1px 5px;
 }
 
 /* Playback control buttons */
