@@ -1,6 +1,7 @@
 package com.senselessweb.soundcloud.domain.library;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -31,9 +32,9 @@ public abstract class AbstractLibraryItem implements LibraryItem
 	private final Collection<String> genres;
 	
 	/**
-	 * The bitrate
+	 * The keywords
 	 */
-	private final int bitrate;
+	private final Collection<String> keywords;
 	
 	
 	
@@ -43,9 +44,10 @@ public abstract class AbstractLibraryItem implements LibraryItem
 	 * @param id The id
 	 * @param shortTitle The name 
 	 * @param genres The genres
-	 * @param bitrate The bitrate
+	 * @param keywords The keywords
 	 */
-	public AbstractLibraryItem(final String id, final String shortTitle, final Collection<String> genres, final int bitrate)
+	public AbstractLibraryItem(final String id, final String shortTitle, final Collection<String> genres, 
+			final Collection<String> keywords)
 	{
 		if (StringUtils.isBlank(shortTitle)) 
 			throw new IllegalArgumentException("Param shortTitle must not be null");
@@ -53,7 +55,7 @@ public abstract class AbstractLibraryItem implements LibraryItem
 		this.id = id;
 		this.shortTitle = shortTitle;
 		this.genres = genres;
-		this.bitrate = bitrate;
+		this.keywords = keywords;
 	}
 
 	/**
@@ -61,11 +63,11 @@ public abstract class AbstractLibraryItem implements LibraryItem
 	 * 
 	 * @param name The name 
 	 * @param genres The genres
-	 * @param bitrate The bitrate
+	 * @param keywords The keywords
 	 */
-	public AbstractLibraryItem(final String name, final Collection<String> genres, final int bitrate)
+	public AbstractLibraryItem(final String name, final Collection<String> genres, final Collection<String> keywords)
 	{
-		this(null, name, genres, bitrate);
+		this(null, name, genres, keywords);
 	}
 	
 	/**
@@ -96,12 +98,12 @@ public abstract class AbstractLibraryItem implements LibraryItem
 	}
 	
 	/**
-	 * @see com.senselessweb.soundcloud.domain.library.LibraryItem#getBitrate()
+	 * @see com.senselessweb.soundcloud.domain.library.LibraryItem#getKeywords()
 	 */
 	@Override
-	public int getBitrate()
+	public Collection<String> getKeywords()
 	{
-		return this.bitrate;
+		return Collections.unmodifiableCollection(this.keywords);
 	}
 	
 	/**
@@ -112,7 +114,7 @@ public abstract class AbstractLibraryItem implements LibraryItem
 	{
 		if (!(obj instanceof AbstractLibraryItem)) return false;
 		final AbstractLibraryItem other = (AbstractLibraryItem) obj;
-		return IdentityUtils.areEqual(this.shortTitle, other.shortTitle, this.bitrate, other.bitrate, this.genres, other.genres);
+		return IdentityUtils.areEqual(this.shortTitle, other.shortTitle, this.genres, other.genres);
 	}
 
 	/**

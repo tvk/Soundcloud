@@ -3,6 +3,7 @@ package com.senselessweb.soundcloud.domain.library;
 import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.CharUtils;
@@ -35,24 +36,76 @@ public class LocalFile extends AbstractLibraryItem implements Comparable<LocalFi
 	private final int tracknumber;
 
 	/**
+	 * The lastModified
+	 */
+	private final long lastModified;
+	
+	/**
 	 * Constructor
 	 * 
-	 * @param id The id of this item.
-	 * @param path The path to the file.
-	 * @param fileInformations The file informations container
+	 * @param id The id 
+	 * @param shortTitle The sort title 
+	 * @param genres The genres
+	 * @param keywords The keywords
+	 * @param path The path
+	 * @param longTitle The long title
+	 * @param tracknumber The tracknumber
+	 * @param lastModified The last modified
+	 *
 	 */
-	public LocalFile(final String id, final String path, final FileInformations fileInformations)
+	public LocalFile(final String id, final String shortTitle, final Collection<String> genres, final Collection<String> keywords, 
+			final String path, final String longTitle, final int tracknumber, final long lastModified)
 	{
-		super(id, createShortTitle(path, fileInformations), 
-				StringUtils.isBlank(fileInformations.getGenre()) ? Collections.<String>emptySet() : Collections.singleton(fileInformations.getGenre()), 
-						-1);
-		
+		super(id, shortTitle, genres, keywords);
+
 		if (StringUtils.isBlank(path)) 
 			throw new IllegalArgumentException("Param path must not be null");
 		
 		this.path = path;
-		this.longTitle = createLongTitle(path, fileInformations);
-		this.tracknumber = readTracknumber(fileInformations);
+		this.longTitle = longTitle;
+		this.tracknumber = tracknumber;
+		this.lastModified = lastModified;
+	}
+	
+	/**
+	 * Creates a new local file.
+	 * 
+	 * @param path The path to the file.
+	 * @param fileInformations The file informations container
+	 * 
+	 * @return The new local file. Has no id yet.
+	 */
+	public static LocalFile create(final String path, final FileInformations fileInformations)
+	{
+		return new LocalFile(null,
+				createShortTitle(path, fileInformations), 
+				StringUtils.isBlank(fileInformations.getGenre()) ? Collections.<String>emptySet() : Collections.singleton(fileInformations.getGenre()), 
+				createKeywords(path, fileInformations),
+				path, 
+				createLongTitle(path, fileInformations),
+				readTracknumber(fileInformations),
+				new File(path).lastModified());
+	}
+	
+	/**
+	 * Creates the keywords for this item.
+	 * 
+	 * @param path The path of this item
+	 * @param fileInformations The {@link FileInformations} of this item
+	 * 
+	 * @return The keywords
+	 */
+	public static Collection<String> createKeywords(final String path, final FileInformations fileInformations)
+	{
+		final Collection<String> keywords = new HashSet<String>();
+		keywords.add(FilenameUtils.getBaseName(path));
+		
+		if (!StringUtils.isBlank(fileInformations.getArtist())) keywords.add(fileInformations.getArtist());
+		if (!StringUtils.isBlank(fileInformations.getAlbum())) keywords.add(fileInformations.getAlbum());
+		if (!StringUtils.isBlank(fileInformations.getGenre())) keywords.add(fileInformations.getGenre());
+		if (!StringUtils.isBlank(fileInformations.getTitle())) keywords.add(fileInformations.getTitle());
+		
+		return keywords;
 	}
 
 	/**
@@ -139,6 +192,16 @@ public class LocalFile extends AbstractLibraryItem implements Comparable<LocalFi
 	public int getTracknumber()
 	{
 		return this.tracknumber;
+	}
+	
+	/**
+	 * Returns the lastModified
+	 *
+	 * @return The lastModified
+	 */
+	public long getLastModified()
+	{
+		return this.lastModified;
 	}
 	
 	/**

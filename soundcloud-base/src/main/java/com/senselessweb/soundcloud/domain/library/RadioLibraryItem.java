@@ -14,6 +14,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
 import com.senselessweb.soundcloud.domain.sources.MediaSource;
 import com.senselessweb.soundcloud.domain.sources.StreamSource;
 import com.senselessweb.soundcloud.util.IdentityUtils;
@@ -49,7 +50,7 @@ public class RadioLibraryItem extends AbstractLibraryItem
 	public RadioLibraryItem(final String id, final String name, final String url, final int bitrate, 
 			final Collection<String> genres, final String currentSong)
 	{
-		super(id, name, genres, bitrate); 
+		super(id, name, genres, Lists.asList(name, genres.toArray(new String[0]))); 
 		
 		if (StringUtils.isBlank(url)) 
 			throw new IllegalArgumentException("Param url must not be null");

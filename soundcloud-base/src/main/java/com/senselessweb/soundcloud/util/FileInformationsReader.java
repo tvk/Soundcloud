@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.senselessweb.soundcloud.library.service.local.impl;
+package com.senselessweb.soundcloud.util;
 
 import java.io.File;
 
@@ -15,7 +15,7 @@ import com.senselessweb.soundcloud.domain.library.FileInformations;
  *
  * @author thomas
  */
-class FileReader
+public class FileInformationsReader
 {
 
 	/**

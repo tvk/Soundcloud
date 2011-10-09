@@ -29,26 +29,6 @@ public interface LibraryService
 	 */
 	public Collection<? extends LibraryItem> getRandomItems(int limit); 
 	
-
-	/**
-	 * Returns all items of this library of that genre.
-	 * 
-	 * @param genre The genre. May be a substring of the real genre. 
-	 * 
-	 * @return The items.
-	 */
-	public Collection<? extends LibraryItem> findByGenre(String genre); 
-	
-
-	/**
-	 * Returns all items of this library of that name.
-	 * 
-	 * @param name The name. May be a substring of the real name. 
-	 * 
-	 * @return The items.
-	 */
-	public Collection<? extends LibraryItem> findByName(String name); 
-	
 	
 	/**
 	 * Finds an item by id.

@@ -48,12 +48,13 @@ public interface LibraryItem
 	 * @return The short title.
 	 */
 	public String getShortTitle();
-		
+
+	
 	/**
-	 * Returns the bitrate of this item.
+	 * Returns a collection of keywords for this item.
 	 * 
-	 * @return The bitrate or -1 if it is unknown.
+	 * @return A collection of keywords.
 	 */
-	public int getBitrate();
+	public Collection<String> getKeywords();
 	
 }

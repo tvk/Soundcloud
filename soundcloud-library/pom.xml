@@ -43,11 +43,6 @@
 			<artifactId>spring-context</artifactId>
 			<version>3.0.5.RELEASE</version>
 		</dependency>
-		<dependency>
-			<groupId>net.sf.javamusictag</groupId>
-			<artifactId>jid3lib</artifactId>
-			<version>0.5.4</version>
-		</dependency>
 
 	</dependencies>
 

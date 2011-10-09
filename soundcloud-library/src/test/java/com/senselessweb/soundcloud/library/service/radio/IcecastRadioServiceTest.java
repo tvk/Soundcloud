@@ -40,13 +40,4 @@ public class IcecastRadioServiceTest
 	{
 		Assert.assertTrue(this.icecastRadioService.getAllItems().size() > 2);
 	}
-	
-	/**
-	 * Try to find stations be genre
-	 */
-	@Test
-	public void findRadioStationsByGenre()
-	{
-		Assert.assertTrue(this.icecastRadioService.findByGenre("80").size() > 2);
-	}
 }

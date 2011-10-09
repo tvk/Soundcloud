@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.senselessweb.soundcloud.library.service.local.impl;
+package com.senselessweb.soundcloud.util;
 
 import java.io.File;
 
@@ -10,14 +10,15 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import com.senselessweb.soundcloud.domain.library.FileInformations;
+import com.senselessweb.soundcloud.util.FileInformationsReader;
 
 
 /**
- * Testcases for the {@link FileReader}
+ * Testcases for the {@link FileInformationsReader}
  *
  * @author thomas
  */
-public class FileReaderTest
+public class FileInformationsReaderTest
 {
 	
 	/**
@@ -32,7 +33,7 @@ public class FileReaderTest
 	@Test
 	public void testReading()
 	{
-		final FileInformations fileInformations = FileReader.read(testfile);
+		final FileInformations fileInformations = FileInformationsReader.read(testfile);
 		
 		Assert.assertEquals("Asmara All Stars", fileInformations.getArtist());
 		Assert.assertEquals("Amajo", fileInformations.getTitle());
