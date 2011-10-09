@@ -158,7 +158,7 @@ public class LocalFile extends AbstractLibraryItem implements Comparable<LocalFi
 	{
 		// If both have a track number, compare those.
 		if (this.getTracknumber() >= 0 && o.getTracknumber() >= 0)
-			return o.getTracknumber() - this.getTracknumber();
+			return this.getTracknumber() - o.getTracknumber();
 		
 		// Otherwise compare the filenames
 		return this.path.compareTo(o.path);

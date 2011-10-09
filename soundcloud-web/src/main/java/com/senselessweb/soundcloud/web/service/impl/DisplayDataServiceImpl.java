@@ -5,7 +5,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 
+import com.senselessweb.soundcloud.domain.library.LocalFile;
 import com.senselessweb.soundcloud.domain.sources.MediaSource;
+import com.senselessweb.soundcloud.library.service.local.LocalLibraryService;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer.State;
 import com.senselessweb.soundcloud.mediasupport.service.MessageListener;
@@ -21,6 +23,11 @@ import com.senselessweb.soundcloud.web.service.DisplayDataService;
 @Scope(proxyMode=ScopedProxyMode.INTERFACES, value="session")
 public class DisplayDataServiceImpl implements DisplayDataService, MessageListener
 {
+	
+	/**
+	 * The localLibraryService
+	 */
+	@Autowired LocalLibraryService localLibraryService;
 	
 	/**
 	 * The current display data
@@ -102,7 +109,7 @@ public class DisplayDataServiceImpl implements DisplayDataService, MessageListen
 	@Override
 	public void stateChanged(final State newState) 
 	{  
-		this.currentDisplayData.clear();
+		if (newState == State.STOPPED) this.currentDisplayData.clear();
 		this.notifyInternal();
 	}
 
@@ -112,7 +119,8 @@ public class DisplayDataServiceImpl implements DisplayDataService, MessageListen
 	@Override
 	public void newSource(final MediaSource source)
 	{
-		this.currentDisplayData.set("source", source.getTitle());
+		final LocalFile localFile = this.localLibraryService.getFile(source);
+		this.currentDisplayData.set("source", localFile != null ? localFile.getShortTitle() : source.getTitle());
 		this.notifyInternal();
 		
 	}

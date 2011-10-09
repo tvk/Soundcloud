@@ -125,8 +125,8 @@ public class MediaPlayerImpl implements MediaPlayer, GStreamerMessageListener
 		if (this.pipeline != null) 
 		{
 			this.pipeline.play();
-			this.messageMediator.newSource(this.current);
 			this.messageMediator.stateChanged(State.PLAYING);
+			this.messageMediator.newSource(this.current);
 		}
 	}
 	
