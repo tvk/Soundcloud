@@ -15,6 +15,7 @@ import com.senselessweb.soundcloud.domain.library.RadioLibraryItem;
 import com.senselessweb.soundcloud.library.service.radio.RemoteRadioLibraryService;
 import com.senselessweb.soundcloud.library.service.radio.UserRadioLibraryService;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
+import com.senselessweb.soundcloud.mediasupport.service.Playlist;
 
 /**
  * Web controller interface for the radio library.
@@ -41,7 +42,11 @@ public class RadioLibraryController
 	 */
 	@Autowired MediaPlayer mediaPlayer;
 
-	
+	/**
+	 * The playlist
+	 */
+	@Autowired Playlist playlist;
+		
 	/**
 	 * Returns all user radio stations
 	 * 
@@ -116,7 +121,7 @@ public class RadioLibraryController
 		else station = this.userRadioLibraryService.findById(id);
 		
 		this.mediaPlayer.stop();
-		this.mediaPlayer.getCurrentPlaylist().set(station.asMediaSources());
+		this.playlist.set(station.asMediaSources());
 		this.mediaPlayer.play();
 	}
 	

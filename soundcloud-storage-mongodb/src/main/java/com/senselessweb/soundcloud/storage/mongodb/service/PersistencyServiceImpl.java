@@ -1,5 +1,8 @@
 package com.senselessweb.soundcloud.storage.mongodb.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
@@ -24,40 +27,43 @@ public class PersistencyServiceImpl implements PersistencyService
 	/**
 	 * The collection used by this service.
 	 */
-	private static final String collectionName = "persistencyServiceCollection";
+	private static final String collectionName = "persistencyService";
 
 	
 	/**
-	 * @see com.senselessweb.storage.PersistencyService#put(java.lang.String, java.lang.String)
+	 * @see com.senselessweb.storage.PersistencyService#put(String, String, Object)
 	 */
 	@Override
-	public void put(String key, String value)
+	public void put(final String prefix, final String key, final Object value)
 	{
-		this.mongoTemplate.remove(SimpleEntry.createQuery(key), PersistencyServiceImpl.collectionName);
-		this.mongoTemplate.insert(new SimpleEntry(key, value), PersistencyServiceImpl.collectionName);
+		this.mongoTemplate.remove(SimpleEntry.createQuery(prefix, key), collectionName);
+		this.mongoTemplate.insert(new SimpleEntry(prefix, key, value), collectionName);
 	}
 
 	
 	/**
-	 * @see com.senselessweb.storage.PersistencyService#get(java.lang.String)
+	 * @see com.senselessweb.storage.PersistencyService#get(String, String)
 	 */
 	@Override
-	public String get(String key)
+	public Object get(final String prefix, final String key)
 	{
 		final SimpleEntry tuple = this.mongoTemplate.findOne(
-				SimpleEntry.createQuery(key), SimpleEntry.class, PersistencyServiceImpl.collectionName);
+				SimpleEntry.createQuery(prefix, key), SimpleEntry.class, collectionName);
 		return tuple != null ? tuple.getValue() : null;
 	}
-
 	
 	/**
-	 * @see com.senselessweb.storage.PersistencyService#contains(java.lang.String)
+	 * @see com.senselessweb.storage.PersistencyService#getAll(java.lang.String)
 	 */
 	@Override
-	public boolean contains(String key)
+	public Map<String, Object> getAll(String prefix)
 	{
-		return this.mongoTemplate.findOne(
-				SimpleEntry.createQuery(key), SimpleEntry.class, PersistencyServiceImpl.collectionName) != null;
+		final Map<String, Object> result = new HashMap<String, Object>();
+		for (final SimpleEntry entry : this.mongoTemplate.find(SimpleEntry.createQuery(prefix), SimpleEntry.class, collectionName))
+		{
+			result.put(entry.getKey(), entry.getValue());
+		}
+		return result;
 	}
-	
+
 }

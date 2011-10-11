@@ -32,7 +32,6 @@ public interface MediaPlayer
 	 */
 	public void play();
 	
-	
 	/**
 	 * Stops the playback.
 	 */
@@ -51,43 +50,5 @@ public interface MediaPlayer
 	 */
 	public State getState();
 	
-	
-	/**
-	 * Returns the current playlist.
-	 * 
-	 * @return The current playlist. Never null.
-	 */
-	public Playlist getCurrentPlaylist();
-	
-	
-	/**
-	 * Return the volume control that can be used to control the volume.
-	 * 
-	 * @return The {@link VolumeControl}. 
-	 */
-	public VolumeControl getVolumeControl();
-	
-	
-	/**
-	 * Returns the equalizer control.
-	 * 
-	 * @return The {@link Equalizer}.
-	 */
-	public Equalizer getEqualizer();
-	
-	
-	/**
-	 * Attaches a messageListener.
-	 * 
-	 * @param listener The {@link MessageListener}.
-	 */
-	public void addMessageListener(MessageListener listener);
-
-
-	/**
-	 * Shutdown the music service and deallocate all resources.
-	 */
-	public void shutdown();
-
 
 }

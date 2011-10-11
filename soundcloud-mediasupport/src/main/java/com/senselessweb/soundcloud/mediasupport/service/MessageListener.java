@@ -1,18 +1,23 @@
+/**
+ * 
+ */
 package com.senselessweb.soundcloud.mediasupport.service;
 
 import com.senselessweb.soundcloud.domain.sources.MediaSource;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer.State;
 import com.senselessweb.soundcloud.mediasupport.service.Playlist.ChangeEvent;
 
-
 /**
  * Generic message listener that can be attached to the media player.
  * 
+ * Consider using the {@link MessageListenerService} interface when you are outside
+ * of a request scope.
+ *
  * @author thomas
  */
 public interface MessageListener
 {
-	
+
 	/**
 	 * Is called when the playback state changes.
 	 * 
@@ -51,4 +56,9 @@ public interface MessageListener
 	 * @param current The index of the current playlist title. 
 	 */
 	public void playlistChanged(Playlist.ChangeEvent event, int current);
+
+	/**
+	 * Is called when the end of the stream is reached.
+	 */
+	public void endOfStream();
 }

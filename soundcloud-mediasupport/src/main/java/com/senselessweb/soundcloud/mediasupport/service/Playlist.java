@@ -16,7 +16,7 @@ public interface Playlist
 	/**
 	 * Events that are fired when the playlist changes
 	 * 
-	 * @see MessageListener 
+	 * @see MessageListenerService 
 	 *
 	 * @author thomas
 	 */

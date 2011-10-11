@@ -8,10 +8,7 @@ import org.springframework.stereotype.Service;
 import com.senselessweb.soundcloud.domain.library.LocalFile;
 import com.senselessweb.soundcloud.domain.sources.MediaSource;
 import com.senselessweb.soundcloud.library.service.local.LocalLibraryService;
-import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer.State;
-import com.senselessweb.soundcloud.mediasupport.service.MessageListener;
-import com.senselessweb.soundcloud.mediasupport.service.Playlist.ChangeEvent;
 import com.senselessweb.soundcloud.web.service.DisplayDataService;
 
 /**
@@ -21,14 +18,14 @@ import com.senselessweb.soundcloud.web.service.DisplayDataService;
  */
 @Service
 @Scope(proxyMode=ScopedProxyMode.INTERFACES, value="session")
-public class DisplayDataServiceImpl implements DisplayDataService, MessageListener
+public class DisplayDataServiceImpl extends AbstractMessageAdapter implements DisplayDataService
 {
 	
 	/**
 	 * The localLibraryService
 	 */
 	@Autowired LocalLibraryService localLibraryService;
-	
+			
 	/**
 	 * The current display data
 	 */
@@ -40,15 +37,6 @@ public class DisplayDataServiceImpl implements DisplayDataService, MessageListen
 	private boolean newDataAvailable = false;
 	
 	
-	
-	
-	/**
-	 * @param mediaPlayer The media player
-	 */
-	@Autowired public DisplayDataServiceImpl(final MediaPlayer mediaPlayer)
-	{
-		mediaPlayer.addMessageListener(this);
-	}	
 
 	/**
 	 * @see com.senselessweb.soundcloud.web.service.DisplayDataService#getDisplayData()
@@ -94,7 +82,7 @@ public class DisplayDataServiceImpl implements DisplayDataService, MessageListen
 	}
 
 	/**
-	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#tag(java.lang.String, java.lang.String)
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListenerService#tag(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public void tag(final String tag, final String value) 
@@ -104,7 +92,7 @@ public class DisplayDataServiceImpl implements DisplayDataService, MessageListen
 	}
 	
 	/**
-	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#stateChanged(com.senselessweb.soundcloud.mediasupport.service.MediaPlayer.State)
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListenerService#stateChanged(com.senselessweb.soundcloud.mediasupport.service.MediaPlayer.State)
 	 */
 	@Override
 	public void stateChanged(final State newState) 
@@ -114,7 +102,7 @@ public class DisplayDataServiceImpl implements DisplayDataService, MessageListen
 	}
 
 	/**
-	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#newSource(com.senselessweb.soundcloud.domain.sources.MediaSource)
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListenerService#newSource(com.senselessweb.soundcloud.domain.sources.MediaSource)
 	 */
 	@Override
 	public void newSource(final MediaSource source)
@@ -122,19 +110,6 @@ public class DisplayDataServiceImpl implements DisplayDataService, MessageListen
 		final LocalFile localFile = this.localLibraryService.getFile(source);
 		this.currentDisplayData.set("source", localFile != null ? localFile.getShortTitle() : source.getTitle());
 		this.notifyInternal();
-		
 	}
 	
-	/**
-	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#error(java.lang.String)
-	 */
-	@Override
-	public void error(final String message) { /* unused */ }
-
-	/**
-	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#playlistChanged(ChangeEvent, int)
-	 */
-	@Override
-	public void playlistChanged(ChangeEvent event, int current) { /* unused */ }
-
 }

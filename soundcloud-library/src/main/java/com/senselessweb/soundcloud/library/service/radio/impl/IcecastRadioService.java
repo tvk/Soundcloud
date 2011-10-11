@@ -72,13 +72,6 @@ public class IcecastRadioService extends AbstractRadioService implements RemoteR
 		int i = 0;
 		for (final Element element : doc.select("entry"))
 		{
-			int bitrate = -1;
-			try 
-			{
-				bitrate = Integer.valueOf(element.select("bitrate").text());
-			}
-			catch (final NumberFormatException e) { /* do nothing */ }
-			
 			
 			final Collection<String> genres = Lists.newArrayList(element.select("genre").text().split(" "));
 			final String name = element.select("server_name").text(); 
@@ -86,8 +79,7 @@ public class IcecastRadioService extends AbstractRadioService implements RemoteR
 			final RadioLibraryItem item = new RadioLibraryItem(
 					"remote-" + i, name,
 					element.select("listen_url").text(),
-					bitrate, genres,
-					element.select("current_song").text());
+					genres);
 			
 			items.add(item);
 			i++;

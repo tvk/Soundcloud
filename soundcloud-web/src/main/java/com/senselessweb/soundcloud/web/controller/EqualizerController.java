@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.senselessweb.soundcloud.mediasupport.service.Equalizer;
 import com.senselessweb.soundcloud.mediasupport.service.Equalizer.Band;
-import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
 
 /**
  * Web controller interface for the {@link Equalizer}
@@ -26,10 +25,9 @@ public class EqualizerController
 {
 
 	/**
-	 * The mediaPlayer
+	 * The Equalizer
 	 */
-	@Autowired
-	MediaPlayer mediaPlayer;
+	@Autowired Equalizer equalizer;
 
 	/**
 	 * Returns the current equalizer values.
@@ -43,7 +41,7 @@ public class EqualizerController
 	public Model getData(final Model model)
 	{
 		for (final Band band : Equalizer.Band.values())
-			model.addAttribute(band.name(), this.mediaPlayer.getEqualizer().getValue(band));
+			model.addAttribute(band.name(), this.equalizer.getValue(band));
 
 		return model;
 	}
@@ -58,6 +56,6 @@ public class EqualizerController
 	public void setData(final @RequestParam Map<String, String> values)
 	{
 		for (final Map.Entry<String, String> entry : values.entrySet()) 
-			this.mediaPlayer.getEqualizer().setValue(Band.valueOf(entry.getKey()), Double.valueOf(entry.getValue()));
+			this.equalizer.setValue(Band.valueOf(entry.getKey()), Double.valueOf(entry.getValue()));
 	}
 }

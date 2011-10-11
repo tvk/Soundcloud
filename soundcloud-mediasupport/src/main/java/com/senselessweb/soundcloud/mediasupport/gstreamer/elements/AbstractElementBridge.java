@@ -1,11 +1,13 @@
 package com.senselessweb.soundcloud.mediasupport.gstreamer.elements;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gstreamer.Element;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.senselessweb.storage.PersistencyService;
 
 /**
  * Abstract element bridge that contains an {@link Element} and the properties that need 
@@ -25,14 +27,15 @@ abstract class AbstractElementBridge
 	private static final Log log = LogFactory.getLog(AbstractElementBridge.class);
 
 	/**
+	 * The {@link PersistencyService}
+	 */
+	@Autowired PersistencyService persistencyService;
+
+	
+	/**
 	 * The actual element. May be null.
 	 */
 	private Element element;
-	
-	/**
-	 * The properties to set to the object.
-	 */
-	private Map<String, Object> properties = new HashMap<String, Object>();
 	
 	/**
 	 * Initializes the element and sets all stored properties to that element.
@@ -42,7 +45,7 @@ abstract class AbstractElementBridge
 	public void initElement(final Element element)
 	{
 		this.element = element;
-		for (final Map.Entry<String, Object> entry : this.properties.entrySet())
+		for (final Map.Entry<String, Object> entry : this.persistencyService.getAll(this.getPrefix()).entrySet())
 		{
 			this.element.set(entry.getKey(), entry.getValue());
 		}
@@ -59,7 +62,7 @@ abstract class AbstractElementBridge
 	protected void set(final String key, final Object value)
 	{
 		log.debug("Setting [" + key + ":" + value + "] to " + this.getClass().getSimpleName() + " (Element: " + this.element + ")");
-		this.properties.put(key, value);
+		this.persistencyService.put(this.getPrefix(), key, value);
 		if (this.element != null) this.element.set(key, value);
 	}
 	
@@ -75,8 +78,14 @@ abstract class AbstractElementBridge
 	@SuppressWarnings("unchecked")
 	protected <T> T get(final String key, final T defaultValue)
 	{
-		if (!this.properties.containsKey(key)) return defaultValue;
-		else return (T) this.properties.get(key);
+		final Object value = this.persistencyService.get(this.getPrefix(), key);
+		return (T) (value != null ? value : defaultValue);
 	}
-	
+
+	/**
+	 * Returns a name for this element bridge.
+	 * 
+	 * @return A name for this element bridge.
+	 */
+	protected abstract String getPrefix();
 }

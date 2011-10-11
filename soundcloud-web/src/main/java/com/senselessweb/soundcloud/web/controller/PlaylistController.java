@@ -15,6 +15,7 @@ import com.senselessweb.soundcloud.domain.library.LibraryItem;
 import com.senselessweb.soundcloud.domain.sources.MediaSource;
 import com.senselessweb.soundcloud.library.service.local.LocalLibraryService;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
+import com.senselessweb.soundcloud.mediasupport.service.Playlist;
 
 /**
  * Controls the playlist
@@ -32,6 +33,11 @@ public class PlaylistController
 	@Autowired MediaPlayer mediaPlayer;
 
 	/**
+	 * The playlist
+	 */
+	@Autowired Playlist playlist;
+	
+	/**
 	 * The localLibraryService
 	 */
 	@Autowired LocalLibraryService localLibraryService;
@@ -46,9 +52,9 @@ public class PlaylistController
 	public List<PlaylistContainer> getData()
 	{
 		final List<PlaylistContainer> result = new ArrayList<PlaylistContainer>();
-		for (final MediaSource mediaSource : this.mediaPlayer.getCurrentPlaylist().getAll())
+		for (final MediaSource mediaSource : this.playlist.getAll())
 			result.add(new PlaylistContainer(mediaSource, this.localLibraryService.getFile(mediaSource), 
-					mediaSource.equals(this.mediaPlayer.getCurrentPlaylist().getCurrent())));
+					mediaSource.equals(this.playlist.getCurrent())));
 		return result;
 	}
 	
@@ -62,7 +68,7 @@ public class PlaylistController
 	public void gotoTitle(@RequestParam int index)
 	{
 		this.mediaPlayer.stop();
-		this.mediaPlayer.getCurrentPlaylist().gotoTitle(index);
+		this.playlist.gotoTitle(index);
 		this.mediaPlayer.play();
 	}
 	
@@ -75,7 +81,7 @@ public class PlaylistController
 	@ResponseStatus(HttpStatus.OK)
 	public void removeTitle(@RequestParam int index)
 	{
-		this.mediaPlayer.getCurrentPlaylist().remove(index);
+		this.playlist.remove(index);
 	}
 	
 }

@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.senselessweb.soundcloud.domain.sources.MediaSource;
 import com.senselessweb.soundcloud.mediasupport.service.Playlist;
@@ -17,6 +19,7 @@ import com.senselessweb.soundcloud.mediasupport.service.impl.MessageMediator;
  * 
  * @author thomas
  */
+@Service
 public class DefaultPlaylist implements Playlist
 {
 
@@ -29,7 +32,7 @@ public class DefaultPlaylist implements Playlist
 	/**
 	 * The messageMediator
 	 */
-	private final MessageMediator messageMediator;
+	@Autowired MessageMediator messageMediator;
 
 	/**
 	 * The list of media sources in this playlist.
@@ -42,17 +45,6 @@ public class DefaultPlaylist implements Playlist
 	 */
 	private int current = -1;
 
-
-
-	/**
-	 * Constructor
-	 *
-	 * @param messageMediator The message mediator.
-	 */
-	public DefaultPlaylist(final MessageMediator messageMediator)
-	{
-		this.messageMediator = messageMediator;
-	}
 
 
 	/**

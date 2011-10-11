@@ -13,12 +13,11 @@ import org.gstreamer.Tag;
 import org.gstreamer.TagList;
 
 import com.google.common.collect.Sets;
-import com.senselessweb.soundcloud.mediasupport.gstreamer.GStreamerMessageListener;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.PipelineBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.EqualizerBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.VolumeBridge;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer.State;
-import com.senselessweb.soundcloud.mediasupport.service.MessageListener;
+import com.senselessweb.soundcloud.mediasupport.service.MessageListenerService;
 import com.senselessweb.soundcloud.mediasupport.service.VolumeControl;
 
 /**
@@ -57,11 +56,10 @@ public abstract class AbstractPipeline implements PipelineBridge
 	 * @param pipeline The {@link Pipeline} to use.
 	 * @param volume The current {@link VolumeControl}.
 	 * @param equalizer The current {@link EqualizerBridge}.
-	 * @param eosListener The {@link GStreamerMessageListener} gets notified when the strem ends.
-	 * @param messageListener The {@link MessageListener}.
+	 * @param messageListener The {@link MessageListenerService}.
 	 */
 	public AbstractPipeline(final Pipeline pipeline, final VolumeBridge volume, final EqualizerBridge equalizer, 
-			final GStreamerMessageListener eosListener, final MessageListener messageListener)
+			final MessageListenerService messageListener)
 	{
 		this.pipeline = pipeline;
 		
@@ -76,25 +74,7 @@ public abstract class AbstractPipeline implements PipelineBridge
 		this.pipeline.getBus().connect(busMessageListener.warnMessageListener);
 		this.pipeline.getBus().connect(busMessageListener.infoMessageListener);
 		this.pipeline.getBus().connect(busMessageListener.tagMessageListener);
-		
-		if (eosListener != null)
-		{
-			this.pipeline.getBus().connect(new Bus.EOS() {
-				@Override
-				public void endOfStream(final GstObject source)
-				{
-					eosListener.endofStream();
-				}
-			});
-			this.pipeline.getBus().connect(new Bus.ERROR() {
-				
-				@Override
-				public void errorMessage(GstObject source, int code, String message)
-				{
-					eosListener.error(code, message);
-				}
-			});
-		}
+		this.pipeline.getBus().connect(busMessageListener.eosMessageListener);		
 	}
 	
 	/**
@@ -183,17 +163,30 @@ class BusMessageListener
 	/**
 	 * The messageListener
 	 */
-	final MessageListener messageListener;
+	final MessageListenerService messageListener;
 	
 	/**
 	 * Constructor
 	 * 
-	 * @param messageListener The {@link MessageListener} to redirect some messages to.
+	 * @param messageListener The {@link MessageListenerService} to redirect some messages to.
 	 */
-	BusMessageListener(final MessageListener messageListener)
+	BusMessageListener(final MessageListenerService messageListener)
 	{
 		this.messageListener = messageListener;
 	}
+	
+	/**
+	 * End of stream message listener
+	 */
+	Bus.EOS eosMessageListener = new Bus.EOS() {
+		
+		@Override
+		public void endOfStream(final GstObject source)
+		{
+			AbstractPipeline.log.debug("EOS: " + source);
+			BusMessageListener.this.messageListener.endOfStream();
+		}
+	};
 	
 	/**
 	 * Error message listener

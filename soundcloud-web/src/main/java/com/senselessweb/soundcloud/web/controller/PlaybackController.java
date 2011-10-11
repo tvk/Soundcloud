@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
+import com.senselessweb.soundcloud.mediasupport.service.Playlist;
 
 /**
  * Web controller interface for the playback control
@@ -25,6 +26,11 @@ public class PlaybackController
 	 */
 	@Autowired MediaPlayer mediaPlayer;
 
+	/**
+	 * The playlist
+	 */
+	@Autowired Playlist playlist;
+	
 	/**
 	 * Starts the playback
 	 */
@@ -62,7 +68,7 @@ public class PlaybackController
 	@ResponseStatus(HttpStatus.OK)
 	public void previous()
 	{
-		if (this.mediaPlayer.getCurrentPlaylist().previous())
+		if (this.playlist.previous())
 		{
 			this.mediaPlayer.stop();
 			this.mediaPlayer.play();
@@ -76,7 +82,7 @@ public class PlaybackController
 	@ResponseStatus(HttpStatus.OK)
 	public void next()
 	{
-		if (this.mediaPlayer.getCurrentPlaylist().next())
+		if (this.playlist.next())
 		{
 			this.mediaPlayer.stop();
 			this.mediaPlayer.play();

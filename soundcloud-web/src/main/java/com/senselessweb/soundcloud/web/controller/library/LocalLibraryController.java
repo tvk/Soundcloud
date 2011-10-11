@@ -16,6 +16,7 @@ import com.senselessweb.soundcloud.domain.library.LocalFolder;
 import com.senselessweb.soundcloud.domain.sources.MediaSource;
 import com.senselessweb.soundcloud.library.service.local.LocalLibraryService;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
+import com.senselessweb.soundcloud.mediasupport.service.Playlist;
 
 /**
  * Web controller interface for the local music library
@@ -37,6 +38,11 @@ public class LocalLibraryController
 	 */
 	@Autowired MediaPlayer mediaPlayer;
 
+	/**
+	 * The playlist
+	 */
+	@Autowired Playlist playlist;
+		
 	/**
 	 * Returns the content of a folder
 	 * 
@@ -61,7 +67,7 @@ public class LocalLibraryController
 	public void playFile(@RequestParam String file)
 	{
 		this.mediaPlayer.stop();
-		this.mediaPlayer.getCurrentPlaylist().set(this.localLibraryService.getFile(file).asMediaSources());
+		this.playlist.set(this.localLibraryService.getFile(file).asMediaSources());
 		this.mediaPlayer.play();
 	}
 	
@@ -79,7 +85,7 @@ public class LocalLibraryController
 			playlist.addAll(file.asMediaSources());
 		
 		this.mediaPlayer.stop();
-		this.mediaPlayer.getCurrentPlaylist().set(playlist);
+		this.playlist.set(playlist);
 		this.mediaPlayer.play();
 	}
 
@@ -93,7 +99,7 @@ public class LocalLibraryController
 	public void enqueueFile(@RequestParam String file)
 	{
 		for (final MediaSource mediaSource : this.localLibraryService.getFile(file).asMediaSources())
-			this.mediaPlayer.getCurrentPlaylist().add(mediaSource);
+			this.playlist.add(mediaSource);
 	}
 	
 	/**
@@ -109,7 +115,7 @@ public class LocalLibraryController
 		for (final LocalFile file : this.localLibraryService.getFiles(folder))
 			playlist.addAll(file.asMediaSources());
 			
-		this.mediaPlayer.getCurrentPlaylist().addAll(playlist);
+		this.playlist.addAll(playlist);
 	}
 	
 	

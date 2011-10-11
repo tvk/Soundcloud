@@ -7,7 +7,10 @@ import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer.State;
  * Encapsulates the gstreamer pipeline and contains basic methods to 
  * control the playback.
  * 
- * A pipeline represents always only one source. 
+ * A pipeline represents always only one source. You have to recreate the 
+ * pipeline for every new source.
+ * 
+ * Use the {@link PipelineBuilder} to create pipelines.
  * 
  * @author thomas
  *

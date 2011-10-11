@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
 import com.senselessweb.soundcloud.mediasupport.service.VolumeControl;
 
 /**
@@ -23,9 +22,9 @@ public class VolumeController
 {
 
 	/**
-	 * The media player
+	 * The volume control
 	 */
-	@Autowired MediaPlayer mediaPlayer;
+	@Autowired VolumeControl volumeControl;
 
 	/**
 	 * Sets the volume.
@@ -36,7 +35,7 @@ public class VolumeController
 	@ResponseStatus(HttpStatus.OK)
 	public void setVolume(final @RequestParam("volume") double volume)
 	{
-		this.mediaPlayer.getVolumeControl().setVolume(volume);
+		this.volumeControl.setVolume(volume);
 	}
 	
 	/**
@@ -48,7 +47,7 @@ public class VolumeController
 	@ResponseStatus(HttpStatus.OK)
 	public void setMute(final @RequestParam("mute") boolean mute)
 	{
-		this.mediaPlayer.getVolumeControl().setMute(mute);
+		this.volumeControl.setMute(mute);
 	}
 	
 	
@@ -63,8 +62,8 @@ public class VolumeController
 	@ResponseBody
 	public Model getData(final Model model)
 	{
-		model.addAttribute("volume", this.mediaPlayer.getVolumeControl().getVolume());
-		model.addAttribute("mute", this.mediaPlayer.getVolumeControl().getMute());
+		model.addAttribute("volume", this.volumeControl.getVolume());
+		model.addAttribute("mute", this.volumeControl.getMute());
 		return model;
 	}
 }

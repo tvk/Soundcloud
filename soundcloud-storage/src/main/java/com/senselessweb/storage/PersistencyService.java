@@ -1,5 +1,7 @@
 package com.senselessweb.storage;
 
+import java.util.Map;
+
 
 /**
  * A PersistencyService is used by the MediaPlayer to store and restore 
@@ -13,26 +15,30 @@ public interface PersistencyService
 	/**
 	 * Stores a value in the {@link PersistencyService}.
 	 * 
+	 * @param prefix The prefix for the key. 
 	 * @param key The key under which the value is stored.
+	 * 
 	 * @param value The value
 	 */
-	public void put(String key, String value);
+	public void put(String prefix, String key, Object value);
 	
 	/**
 	 * Returns the value that is stored for the given key.
 	 * 
+	 * @param prefix The prefix for the key. 
 	 * @param key The key
 	 * 
 	 * @return The value or null if there is no value for that key.
 	 */
-	public String get(String key);
+	public Object get(String prefix, String key);
 	
 	/**
-	 * Checks whether there is a value stored for the given key.
+	 * Returns all value that are stored for the given prefix.
 	 * 
-	 * @param key The key
+	 * @param prefix The prefix for the key. 
 	 * 
-	 * @return True if there is a value for that key, false otherwise.
+	 * @return All values for that prefix.
 	 */
-	public boolean contains(String key);
+	public Map<String, Object> getAll(String prefix);
+	
 }

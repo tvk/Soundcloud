@@ -2,10 +2,9 @@ package com.senselessweb.soundcloud.mediasupport.gstreamer.pipeline;
 
 import java.io.File;
 
-import com.senselessweb.soundcloud.mediasupport.gstreamer.GStreamerMessageListener;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.EqualizerBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.VolumeBridge;
-import com.senselessweb.soundcloud.mediasupport.service.MessageListener;
+import com.senselessweb.soundcloud.mediasupport.service.MessageListenerService;
 import com.senselessweb.soundcloud.mediasupport.service.VolumeControl;
 
 /**
@@ -13,7 +12,7 @@ import com.senselessweb.soundcloud.mediasupport.service.VolumeControl;
  * 
  * @author thomas
  */
-class FileSrcPipeline extends AbstractPipeline
+public class FileSrcPipeline extends AbstractPipeline
 {
 
 	/**
@@ -22,13 +21,12 @@ class FileSrcPipeline extends AbstractPipeline
 	 * @param file The file that is used as source.
 	 * @param volume The {@link VolumeControl}.
 	 * @param equalizer The current {@link EqualizerBridge}.
-	 * @param eosListener The {@link GStreamerMessageListener} gets notified when the strem ends.
-	 * @param messageListener The {@link MessageListener}.
+	 * @param messageListener The {@link MessageListenerService}.
 	 */
 	public FileSrcPipeline(final File file, final VolumeBridge volume, final EqualizerBridge equalizer, 
-			final GStreamerMessageListener eosListener, final MessageListener messageListener)
+			final MessageListenerService messageListener)
 	{
-		super(createDefaultPipeline("filesrc"), volume, equalizer, eosListener, messageListener);
+		super(createDefaultPipeline("filesrc"), volume, equalizer, messageListener);
 		this.pipeline.getElementByName("src").set("location", file.getAbsolutePath());
 	}
 	

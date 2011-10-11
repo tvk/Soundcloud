@@ -1,4 +1,4 @@
-package com.senselessweb.soundcloud.mediasupport.util;
+package com.senselessweb.soundcloud.util;
 
 import java.util.HashMap;
 import java.util.Map;

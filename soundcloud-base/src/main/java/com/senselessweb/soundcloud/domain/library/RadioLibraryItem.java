@@ -33,30 +33,22 @@ public class RadioLibraryItem extends AbstractLibraryItem
 	private final String url; 
 	
 	/**
-	 * The current song. 
-	 */
-	private final String currentSong;
-	
-	/**
 	 * Constructor
 	 * 
 	 * @param id The id of this item.
-	 * @param name The name
+	 * @param shortTitle The shortTitle
 	 * @param url The url
-	 * @param bitrate The bitrate. Supply -1 if no bitrate is known.
 	 * @param genres The genres
-	 * @param currentSong The current playing song.
 	 */
-	public RadioLibraryItem(final String id, final String name, final String url, final int bitrate, 
-			final Collection<String> genres, final String currentSong)
+	public RadioLibraryItem(final String id, final String shortTitle, final String url, 
+			final Collection<String> genres)
 	{
-		super(id, name, genres, Lists.asList(name, genres.toArray(new String[0]))); 
+		super(id, shortTitle, genres, Lists.asList(shortTitle, genres.toArray(new String[0]))); 
 		
 		if (StringUtils.isBlank(url)) 
 			throw new IllegalArgumentException("Param url must not be null");
 		
 		this.url = url;
-		this.currentSong = currentSong;
 	}
 	
 	/**
@@ -122,16 +114,6 @@ public class RadioLibraryItem extends AbstractLibraryItem
 
 	
 	/**
-	 * Returns the current playing song.
-	 * 
-	 * @return The current song. May be null.
-	 */
-	public String getCurrentSong()
-	{
-		return this.currentSong;
-	}
-	
-	/**
 	 * Returns the url.
 	 * 
 	 * @return The url.
@@ -160,7 +142,7 @@ public class RadioLibraryItem extends AbstractLibraryItem
 		if (!(obj instanceof RadioLibraryItem)) return false;
 		final RadioLibraryItem other = (RadioLibraryItem) obj;
 		return super.equals(obj) && 
-			IdentityUtils.areEqual(this.currentSong, other.currentSong, this.url, other.url);
+			IdentityUtils.areEqual(this.url, other.url);
 	}
 
 	/**

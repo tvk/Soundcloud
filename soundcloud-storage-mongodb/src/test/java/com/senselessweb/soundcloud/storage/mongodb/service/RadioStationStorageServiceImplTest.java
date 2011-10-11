@@ -32,9 +32,9 @@ public class RadioStationStorageServiceImplTest extends ApplicationContextTestBa
 		
 		Assert.assertTrue(service.getAllRadioStations().isEmpty());
 		
-		final RadioLibraryItem radio1 = new RadioLibraryItem(null, "WDR 2", "https://www.wdr2-radio.de", 0, Lists.newArrayList("pop", "schrott", "gelaber", "werbung"), null);
-		final RadioLibraryItem radio2 = new RadioLibraryItem(null, "WDR 4", "https://www.wdr4-radio.de", 0, Lists.newArrayList("volksmusik", "schrott", "gelaber"), null);
-		final RadioLibraryItem radio2Clone = new RadioLibraryItem(null, "WDR 4", "https://www.wdr4-radio.de", 0, Lists.newArrayList("volksmusik", "schrott", "unsinn"), null);
+		final RadioLibraryItem radio1 = new RadioLibraryItem(null, "WDR 2", "https://www.wdr2-radio.de", Lists.newArrayList("pop", "schrott", "gelaber", "werbung"));
+		final RadioLibraryItem radio2 = new RadioLibraryItem(null, "WDR 4", "https://www.wdr4-radio.de", Lists.newArrayList("volksmusik", "schrott", "gelaber"));
+		final RadioLibraryItem radio2Clone = new RadioLibraryItem(null, "WDR 4", "https://www.wdr4-radio.de", Lists.newArrayList("volksmusik", "schrott", "unsinn"));
 		
 		// Add a station
 		service.createRadioStation(radio1);

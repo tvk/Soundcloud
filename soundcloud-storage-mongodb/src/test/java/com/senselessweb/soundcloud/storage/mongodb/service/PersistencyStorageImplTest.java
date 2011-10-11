@@ -24,13 +24,13 @@ public class PersistencyStorageImplTest extends ApplicationContextTestBase
 	{
 		final PersistencyService persistencyService = (PersistencyService) this.context.getBean("persistencyService");
 		
-		final String key = "test.myFirstProperty";
+		final String prefix = "test";
+		final String key = "myFirstProperty";
 		final String value = "hello world";
 		
-		Assert.assertFalse(persistencyService.contains(key));
+		Assert.assertTrue(persistencyService.getAll(prefix).isEmpty());
 		
-		persistencyService.put(key, value);		
-		Assert.assertTrue(persistencyService.contains(key));
-		Assert.assertEquals(value, persistencyService.get(key));
+		persistencyService.put(prefix, key, value);		
+		Assert.assertEquals(value, persistencyService.get(prefix, key));
 	}
 }
