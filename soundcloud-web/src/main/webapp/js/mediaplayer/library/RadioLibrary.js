@@ -1,6 +1,6 @@
 
-$.include('js/mediaplayer/library/Item.js');
-$.include('css/medialibrary.css');
+RadioLibrary.prototype = new Library();
+RadioLibrary.prototype.constructor = Library;
 
 /**
  * The parent element where to append the library to.
@@ -32,6 +32,9 @@ function RadioLibrary(parent)
 	});
 	
 	this.initSelector($('table td.radio-selection', _this.parent));
+	
+	this.appendSearchElement(parent);
+	
 }
 
 /**

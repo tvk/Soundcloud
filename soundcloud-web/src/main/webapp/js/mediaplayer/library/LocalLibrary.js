@@ -1,13 +1,11 @@
 
-$.include('js/mediaplayer/library/Item.js');
-$.include('js/mediaplayer/library/Folder.js');
-$.include('css/medialibrary.css');
+LocalLibrary.prototype = new Library();
+LocalLibrary.prototype.constructor = Library;
 
 /**
  * The parent element
  */
 var parent;
-
 
 /**
  * Creates a new local library
@@ -16,14 +14,17 @@ var parent;
  */
 function LocalLibrary(parent) 
 {
+	console.log("local");
 	var _this = this;
 	
 	parent.append('<div class="library-container"><table><tr></tr></table></div>');
-	this.parent = $('table tr', parent);
+	this.parent = $('.library-container table tr', parent);
 	
 	$.getJSON('controller/library/local/getFolder', function(data) {
 		_this.initLevel(0, data);
 	});	
+	
+	this.appendSearchElement(parent);
 }
 
 /**

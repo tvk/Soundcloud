@@ -59,11 +59,11 @@ Folder.prototype.appendAsElement = function(element, onSelectSubfolder, onPlayFo
 	if (this.level > 0)
 	{
 		element.append(
-				'<div class="folder-title">' + 
-					'<button id="play-folder-' + this.level + '">Play</button>' +
-					'<button id="enqueue-folder-' + this.level + '">Enqueue</button>' +
-					'<span class="title">' + this.name + '</span>' +
-				'</div>');
+				'<div class="folder-title"><table><tr>' + 
+					'<td><button id="play-folder-' + this.level + '">Play</button></td>' +
+					'<td><button id="enqueue-folder-' + this.level + '">Enqueue</button></td>' +
+					'<td class="title">' + this.name + '</td>' +
+				'</tr></table></div>');
 		
 		$('#play-folder-' + this.level, element).button({icons: {primary: 'ui-icon-play'}, text: false}).click(function() { onPlayFolder(_this.path); });
 		$('#enqueue-folder-' + this.level, element).button({icons: {primary: 'ui-icon-plus'}, text: false}).click(function() { onEnqueueFolder(_this.path); });

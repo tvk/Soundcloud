@@ -14,6 +14,19 @@
   overflow-y: auto;
 }
 
+#medialibrary table td 
+{
+	vertical-align: top;
+}
+
+
+/* Library item */
+
+#medialibrary div.item table
+{
+	width: 100%;
+}
+
 #medialibrary div.item,
 #medialibrary div.folder
 {
@@ -29,22 +42,13 @@
 	border-radius: 0;
 }
 
-#medialibrary div.folder-title span.title,
+#medialibrary div.folder-title td.title,
 #medialibrary div.folder-title button
 {
 	margin: 4px 1px 8px 5px;
 	font-weight: bold;
-}
-
-#medialibrary div.item table
-{
-	width: 100%;
-}
-
-
-#medialibrary table td 
-{
-	vertical-align: top;
+	float: left;
+	vertical-align: middle;
 }
 
 #medialibrary div.item table td.title
@@ -63,6 +67,26 @@
 	width: 35px;
 }
 
+
+/* Search panel */
+
+#medialibrary .searchPanel
+{
+	width: 90%;
+	margin: 5px;
+}
+
+#medialibrary .searchPanel span.title,
+#medialibrary .searchPanel input.search-field
+{
+	margin: 5px;
+	font-weight: bold;	
+}
+
+#medialibrary .searchPanel input.search-field
+{
+	width: 300px;
+}
 
 /* Radio specific */
 
