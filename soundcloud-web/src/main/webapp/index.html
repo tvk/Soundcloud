@@ -8,6 +8,7 @@
 		<script type="text/javascript" src="js/libraries/jquery-1.6.2.min.js"></script>
 		<script type="text/javascript" src="js/libraries/jquery-ui-1.8.16.custom.min.js"></script>
 		<script type="text/javascript" src="js/libraries/jquery.scrollTo-1.4.2-min.js"></script>
+		<script type="text/javascript" src="js/libraries/jquery.includeMany-1.2.0.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/dark-hive/jquery-ui-1.8.16.custom.css">
 		
 		<!-- CSS -->
@@ -16,15 +17,17 @@
 		<link rel="stylesheet" type="text/css" href="css/medialibrary.css">
 		
 		<!-- Media Player -->
+		<script type="text/javascript" src="js/mediaplayer/library/RadioLibrary.js"></script>
+		<script type="text/javascript" src="js/mediaplayer/library/LocalLibrary.js"></script>
+		
+		
+		
 		<script type="text/javascript" src="js/mediaplayer/controls/playbackControl.js"></script>
 		<script type="text/javascript" src="js/mediaplayer/controls/equalizerControl.js"></script>
 		<script type="text/javascript" src="js/mediaplayer/controls/playlistControl.js"></script>
 		<script type="text/javascript" src="js/mediaplayer/controls/volumeControl.js"></script>
 		<script type="text/javascript" src="js/mediaplayer/controls/display.js"></script>
-		<script type="text/javascript" src="js/mediaplayer/library/radioLibrary.js"></script>
-		<script type="text/javascript" src="js/mediaplayer/library/localLibrary.js"></script>
 		<script type="text/javascript" src="js/mediaplayer/messageMediator.js"></script>
-		<script type="text/javascript" src="js/mediaplayer/mediaLibrary.js"></script>
 		<script type="text/javascript" src="js/mediaplayer/mediaPlayer.js"></script>
 		
 		<script>
@@ -40,7 +43,11 @@
 				
 				// Init the media library
 				$("#medialibrary").tabs();
-				mediaLibrary = new MediaLibrary($('#medialibrary #tab-library'), $('#medialibrary #tab-radio'));
+				var radioLibrary = new RadioLibrary($('#medialibrary #tab-radio'));
+				var localLibrary = new LocalLibrary($('#medialibrary #tab-medialibrary'));
+				
+				
+				//mediaLibrary = new MediaLibrary($('#medialibrary #tab-library'), $('#medialibrary #tab-radio'));
 				
 				// Init the display
 				$("#display")
@@ -68,13 +75,11 @@
 		<div id="rightPanel" class="panel">
 			<div id="medialibrary">
 				<ul>
-					<li><a href="#tab-library">Media Library</a></li>
+					<li><a href="#tab-medialibrary">Media Library</a></li>
 					<li><a href="#tab-radio">Radio</a></li>
-					<li><a href="#tab-settings">Settings</a></li>
 				</ul>
-				<div id="tab-library"></div>
+				<div id="tab-medialibrary"></div>
 				<div id="tab-radio"></div>
-				<div id="tab-settings"></div>
 			</div>
 		</div>
 			
