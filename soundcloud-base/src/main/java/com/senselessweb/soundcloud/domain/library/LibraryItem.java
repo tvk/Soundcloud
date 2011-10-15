@@ -5,7 +5,9 @@ import java.util.Collection;
 import com.senselessweb.soundcloud.domain.sources.MediaSource;
 
 /**
- * Base interface for all library items.
+ * Base interface for all library items. Library Items can be used by a
+ * media library and can be converted in one or more {@link MediaSource}s
+ * for playback.
  * 
  * @author thomas
  */

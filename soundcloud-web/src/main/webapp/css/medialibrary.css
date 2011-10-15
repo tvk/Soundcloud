@@ -80,6 +80,10 @@
 #medialibrary .searchPanel input.search-field
 {
 	margin: 5px;
+}
+
+#medialibrary .searchPanel span.title
+{
 	font-weight: bold;	
 }
 

@@ -63,8 +63,7 @@ public class RadioLibraryItem extends AbstractLibraryItem
 				@Override
 				public StreamSource apply(final String url)
 				{
-					return new StreamSource(RadioLibraryItem.this.getLongTitle(), url, 
-							RadioLibraryItem.this.getGenres().toArray(new String[RadioLibraryItem.this.getGenres().size()]));
+					return new StreamSource(RadioLibraryItem.this.getShortTitle(), url);
 				}
 			});
 		} 

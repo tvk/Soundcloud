@@ -2,15 +2,13 @@ package com.senselessweb.soundcloud.domain.sources;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import com.senselessweb.soundcloud.util.IdentityUtils;
-
 /**
  * A media source represented by a stream.
  * 
  * @author thomas
  *
  */
-public class StreamSource implements MediaSource
+public class StreamSource extends AbstractMediaSource
 {
 	
 	/**
@@ -19,16 +17,6 @@ public class StreamSource implements MediaSource
 	private String _id;
 	
 	/**
-	 * The name of this stream source.
-	 */
-	private final String name;
-
-	/**
-	 * The genres of this stream source.
-	 */
-	private final String[] genres;
-
-	/**
 	 * The url 
 	 */
 	private final String url;
@@ -36,18 +24,15 @@ public class StreamSource implements MediaSource
 	/**
 	 * @param name The name of this stream source.
 	 * @param url The url of this stream
-	 * @param genres The genres of this stream source.
 	 */
-	public StreamSource(final String name, final String url, final String[] genres)
+	public StreamSource(final String name, final String url)
 	{
-		if (name == null) 
-			throw new IllegalArgumentException("name must not be null");
+		super(name);
+
 		if (url == null) 
 			throw new IllegalArgumentException("url must not be null");
 		
-		this.name = name;
 		this.url = url;
-		this.genres = genres != null ? genres : new String[0];
 	}
 	
 	/**
@@ -58,17 +43,7 @@ public class StreamSource implements MediaSource
 	public String getId()
 	{
 		return this._id;
-	}
-	
-	/**
-	 * Returns the name.
-	 * 
-	 * @return The name.
-	 */
-	public String getName()
-	{
-		return this.name;
-	}
+	}	
 	
 	/**
 	 * Returns the url.
@@ -78,37 +53,6 @@ public class StreamSource implements MediaSource
 	public String getUrl()
 	{
 		return this.url;
-	}
-	
-	
-	/**
-	 * Returns the genres
-	 * 
-	 * @return The genres
-	 */
-	public String[] getGenres()
-	{
-		return this.genres;
-	}
-	
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString()
-	{
-		return "StreamSource[" + this.name + "," + this.url + "]";
-	}
-	
-	/**
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (!(obj instanceof StreamSource)) return false;
-		final StreamSource other = (StreamSource) obj;
-		return IdentityUtils.areEqual(this.name, other.name, this.url, other.url, this.genres, other.genres);
 	}
 
 	/**
@@ -120,12 +64,4 @@ public class StreamSource implements MediaSource
 		return HashCodeBuilder.reflectionHashCode(this, true);
 	}
 
-	/**
-	 * @see com.senselessweb.soundcloud.domain.sources.MediaSource#getTitle()
-	 */
-	@Override
-	public String getTitle()
-	{
-		return this.name;
-	}	
 }

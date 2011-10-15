@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.senselessweb.soundcloud.domain.library.LibraryItem;
 import com.senselessweb.soundcloud.domain.sources.MediaSource;
 import com.senselessweb.soundcloud.library.service.local.LocalLibraryService;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
@@ -53,8 +52,7 @@ public class PlaylistController
 	{
 		final List<PlaylistContainer> result = new ArrayList<PlaylistContainer>();
 		for (final MediaSource mediaSource : this.playlist.getAll())
-			result.add(new PlaylistContainer(mediaSource, this.localLibraryService.getFile(mediaSource), 
-					mediaSource.equals(this.playlist.getCurrent())));
+			result.add(new PlaylistContainer(mediaSource.getTitle(), mediaSource.equals(this.playlist.getCurrent())));
 		return result;
 	}
 	
@@ -93,15 +91,11 @@ public class PlaylistController
  */
 class PlaylistContainer
 {
-	/**
-	 * The media source
-	 */
-	private final MediaSource mediaSource;
 	
 	/**
-	 * The libraryItem
+	 * The title
 	 */
-	private final LibraryItem libraryItem;
+	private final String title;
 	
 	/**
 	 * True if this is the current entry
@@ -111,33 +105,13 @@ class PlaylistContainer
 	/**
 	 * Constructor
 	 * 
-	 * @param mediaSource The media source
-	 * @param libraryItem The libraryItem
+	 * @param title The title
 	 * @param isCurrent True if this is the current entry
 	 */
-	public PlaylistContainer(final MediaSource mediaSource, final LibraryItem libraryItem, final boolean isCurrent)
+	public PlaylistContainer(final String title, final boolean isCurrent)
 	{
-		this.mediaSource = mediaSource;
+		this.title = title;
 		this.isCurrent = isCurrent;
-		this.libraryItem = libraryItem;
-	}
-	
-	/**
-	 * @return The media source
-	 */
-	public MediaSource getMediaSource()
-	{
-		return this.mediaSource;
-	}
-	
-	/**
-	 * Returns the libraryItem
-	 *
-	 * @return The libraryItem
-	 */
-	public LibraryItem getLibraryItem()
-	{
-		return this.libraryItem;
 	}
 	
 	/**
@@ -155,7 +129,7 @@ class PlaylistContainer
 	 */
 	public String getTitle()
 	{
-		return this.libraryItem != null ? this.libraryItem.getShortTitle() : this.mediaSource.getTitle();
+		return this.title;
 	}
 }
 

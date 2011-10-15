@@ -12,7 +12,7 @@ import com.senselessweb.soundcloud.util.IdentityUtils;
  * @author thomas
  *
  */
-public class FileSource implements MediaSource
+public class FileSource extends AbstractMediaSource
 {
 
 	/**
@@ -21,10 +21,13 @@ public class FileSource implements MediaSource
 	private final File file;
 	
 	/**
+	 * @param title The title
 	 * @param file The file of this media source
 	 */
-	public FileSource(final File file)
+	public FileSource(final String title, final File file)
 	{
+		super(title);
+		
 		if (file == null || !file.isFile()) 
 			throw new IllegalArgumentException("File \"" + file + "\" must be an existing file");
 		this.file = file;
@@ -69,12 +72,4 @@ public class FileSource implements MediaSource
 		return HashCodeBuilder.reflectionHashCode(this, true);
 	}
 
-	/**
-	 * @see com.senselessweb.soundcloud.domain.sources.MediaSource#getTitle()
-	 */
-	@Override
-	public String getTitle()
-	{
-		return this.file.getName();
-	}
 }

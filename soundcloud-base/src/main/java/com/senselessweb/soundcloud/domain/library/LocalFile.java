@@ -210,7 +210,7 @@ public class LocalFile extends AbstractLibraryItem implements Comparable<LocalFi
 	@Override
 	public Collection<? extends MediaSource> asMediaSources()
 	{
-		return Collections.singleton(new FileSource(new File(this.path)));
+		return Collections.singleton(new FileSource(this.getShortTitle(), new File(this.path)));
 	}
 
 	/**
