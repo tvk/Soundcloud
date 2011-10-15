@@ -90,10 +90,8 @@ public class LocalLibraryStorageServiceImpl implements LocalLibraryStorageServic
 		{
 			for (final String keyword : localFile.getKeywords()) keywords.addAll(parseKeywords(keyword));
 			keywords.addAll(parseKeywords(localFile.getLongTitle()));
-			keywords.add(localFile.getShortTitle().trim().toLowerCase());
-			for (final String keyword : localFile.getKeywords())
-				keywords.add(keyword.trim().toLowerCase());
-			keywords.add(localFile.getLongTitle().trim().toLowerCase());
+			keywords.addAll(parseKeywords(localFile.getShortTitle()));
+			keywords.addAll(parseKeywords(localFile.getLongTitle().trim().toLowerCase()));
 		}
 		
 		this.cachedKeywords.put(path, keywords);
@@ -110,7 +108,7 @@ public class LocalLibraryStorageServiceImpl implements LocalLibraryStorageServic
 	private static Set<String> parseKeywords(final String string)
 	{
 		final Set<String> result = new HashSet<String>();
-		final StringTokenizer st = new StringTokenizer(string, "-_./( )");
+		final StringTokenizer st = new StringTokenizer(string, "-_./()");
 		while (st.hasMoreTokens())
 		{
 			final String s = st.nextToken();

@@ -1,6 +1,8 @@
 package com.senselessweb.soundcloud.web.controller.library;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -50,27 +52,31 @@ public class RadioLibraryController
 	/**
 	 * Returns all user radio stations
 	 * 
+	 * @param keyword A keyword to filter the radio stations
+	 * 
 	 * @return All user radio stations.
 	 */
 	@RequestMapping("/getUserStations")
 	@ResponseBody
-	public Collection<? extends LibraryItem> getUserStations()
+	public Collection<? extends LibraryItem> getUserStations(@RequestParam(required=false) String keyword)
 	{
-		return this.userRadioLibraryService.getAllItems();
+		return this.userRadioLibraryService.getItems(keyword);
 	}
 	
 	/**
 	 * Returns remote radio stations
 	 * 
 	 * @param limit The maximum number of radio stations to return
+	 * @param keyword A keyword to filter the radio stations
 	 * 
 	 * @return Some random remote radio stations.
 	 */
 	@RequestMapping("/getRemoteStations")
 	@ResponseBody
-	public Collection<? extends LibraryItem> getRemoteStations(@RequestParam(defaultValue="25") int limit)
+	public Collection<? extends LibraryItem> getRemoteStations(@RequestParam(defaultValue="25") int limit, @RequestParam(required=false) String keyword)
 	{
-		return this.remoteRadioLibraryService.getRandomItems(limit);
+		final List<LibraryItem> items = new ArrayList<LibraryItem>(this.remoteRadioLibraryService.getItems(keyword));
+		return items.subList(0, Math.min(limit, items.size()));
 	}
 	
 	

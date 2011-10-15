@@ -38,6 +38,6 @@ public class IcecastRadioServiceTest
 	@Test
 	public void tryToGetAllRadioStations()
 	{
-		Assert.assertTrue(this.icecastRadioService.getAllItems().size() > 2);
+		Assert.assertTrue(this.icecastRadioService.getItems().size() > 2);
 	}
 }

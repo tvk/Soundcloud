@@ -20,22 +20,38 @@ function RadioLibrary(parent)
 	this.parent.append(
 			'<table><tr>' + 
 				'<td class="radio-selection"></td>' + 
-				'<td class="radio-content-container"><div class="radio-content scollable-content"></div></td>' +
+				'<td class="radio-content-container">' + 
+					'<div class="radio-content scollable-content">' + 
+						'<div class="stations remote-stations" style="display:none;"></div>' +
+						'<div class="stations user-stations"></div>' +
+					'</div>' + 
+				'</td>' +
 			'</tr></table>');
 	
-	$.getJSON('controller/library/radio/getRemoteStations', function(data) {
-		_this.initRemoteStations($('table div.radio-content', _this.parent), data);
+	this.initStations(null);
+	this.initSelector($('table td.radio-selection', this.parent));
+	
+	this.appendSearchElement(parent, function(keyword) {
+		_this.initStations(keyword);
 	});
-	
-	$.getJSON('controller/library/radio/getUserStations', function(data) {
-		_this.initUserStations($('table div.radio-content', _this.parent), data);
-	});
-	
-	this.initSelector($('table td.radio-selection', _this.parent));
-	
-	this.appendSearchElement(parent);
 	
 }
+
+/**
+ * (Re-) Inititalizes all stations. Removes all previous stations.
+ * 
+ * @param keyword An optional keyword.
+ */
+RadioLibrary.prototype.initStations = function(keyword) 
+{
+	var _this = this;	
+	$.getJSON('controller/library/radio/getRemoteStations' + (keyword != null ? ('?keyword=' + keyword) : ''), function(data) {
+		_this.initRemoteStations($('table div.radio-content .remote-stations', _this.parent), data);
+	});
+	$.getJSON('controller/library/radio/getUserStations' + (keyword != null ? ('?keyword=' + keyword) : ''), function(data) {
+		_this.initUserStations($('table div.radio-content .user-stations', _this.parent), data);
+	});
+};
 
 /**
  * Initializes the selector.
@@ -67,9 +83,8 @@ RadioLibrary.prototype.initSelector = function(parent)
 RadioLibrary.prototype.initRemoteStations = function(parent, data)
 {
 	var _this = this;
-
-	parent.append('<div class="stations remote-stations" style="display:none;"></div>');
-	var element = $('.remote-stations', parent);
+	
+	parent.html(data.length == 0 ? '<div class="no-stations-available">No stations found</div>' : '');
 	
 	for (var i = 0; i < data.length; i++)
 	{
@@ -78,12 +93,12 @@ RadioLibrary.prototype.initRemoteStations = function(parent, data)
 		};
 		var storeFunction = function(id) {
 			$.getJSON('controller/library/radio/store?id=' + id, function(data) {
-				_this.appendUserStation($('.user-stations', parent), data);
+				_this.appendUserStation(parent, data);
 			});
 		};
 		
 		var item = new Item(data[i].id, data[i].shortTitle, data[i].genres, data[i].genres, playFunction, null, null, storeFunction);
-		item.appendAsElement(element);
+		item.appendAsElement(parent);
 	}
 };
 
@@ -95,10 +110,10 @@ RadioLibrary.prototype.initRemoteStations = function(parent, data)
  */
 RadioLibrary.prototype.initUserStations = function(parent, data)
 {
-	parent.append('<div class="stations user-stations"></div>');
-	var element = $('.user-stations', parent);
+	parent.html(data.length == 0 ? '<div class="no-stations-available">No stations found</div>' : '');
+	
 	for (var i = 0; i < data.length; i++)
-		this.appendUserStation(element, data[i]);
+		this.appendUserStation(parent, data[i]);
 };
 
 

@@ -1,12 +1,12 @@
 package com.senselessweb.soundcloud.library.service.radio.impl;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.Collections;
 
-import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.senselessweb.soundcloud.domain.library.LibraryItem;
 import com.senselessweb.soundcloud.library.service.LibraryService;
 
@@ -18,39 +18,38 @@ import com.senselessweb.soundcloud.library.service.LibraryService;
 public abstract class AbstractRadioService implements LibraryService
 {
 
+	
 	/**
-	 * A randomizer
+	 * @see com.senselessweb.soundcloud.library.service.LibraryService#getItems(String)
 	 */
-	private final Random random = new Random();
-
-
+	@Override
+	public Collection<? extends LibraryItem> getItems(final String keyword)
+	{
+		if (StringUtils.isBlank(keyword)) return Collections.unmodifiableCollection(this.getItems());
+		
+		return Collections2.filter(this.getItems(), new Predicate<LibraryItem>() 
+		{
+			/** @see com.google.common.base.Predicate#apply(java.lang.Object) */
+			@Override
+			public boolean apply(final LibraryItem input)
+			{
+				for (final String k : input.getKeywords())
+					if (k.toLowerCase().contains(keyword.trim().toLowerCase())) return true;
+				return false;
+			}
+		});
+	}
+	
 	/**
 	 * @see com.senselessweb.soundcloud.library.service.LibraryService#findById(java.lang.String)
 	 */
 	@Override
 	public LibraryItem findById(final String id)
 	{
-		for (final LibraryItem item : this.getAllItems())
+		for (final LibraryItem item : this.getItems(null))
 			if (id.equals(item.getId())) return item;
 
 		return null;
 	}
 
-	
-	/**
-	 * @see com.senselessweb.soundcloud.library.service.LibraryService#getRandomItems(int)
-	 */
-	@Override
-	public Collection<? extends LibraryItem> getRandomItems(final int limit)
-	{
-		if (this.getAllItems().size() <= limit) return this.getAllItems();
-		
-		final Set<LibraryItem> result = new HashSet<LibraryItem>();
-		final List<LibraryItem> asList = Lists.newArrayList(this.getAllItems());
-		while (result.size() < limit)
-		{
-			result.add(asList.get(this.random.nextInt(this.getAllItems().size() - 1)));
-		}
-		return result;
-	}
 }

@@ -17,18 +17,17 @@ public interface LibraryService
 	 * 
 	 * @return All items.
 	 */
-	public Collection<? extends LibraryItem> getAllItems(); 
+	public Collection<? extends LibraryItem> getItems(); 
 	
-
 	/**
-	 * Returns some randomized items of this library.
+	 * Returns all items of this library.
 	 * 
-	 * @param limit The maximum number of items to return.  
+	 * @param keyword A keyword. Only items that match the given keyword are returned. If null,
+	 * the keyword is ignored. 
 	 * 
-	 * @return The items.
+	 * @return All items.
 	 */
-	public Collection<? extends LibraryItem> getRandomItems(int limit); 
-	
+	public Collection<? extends LibraryItem> getItems(String keyword); 
 	
 	/**
 	 * Finds an item by id.

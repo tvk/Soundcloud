@@ -27,10 +27,10 @@ public class UserRadioServiceImpl extends AbstractRadioService implements UserRa
 
 	
 	/**
-	 * @see com.senselessweb.soundcloud.library.service.LibraryService#getAllItems()
+	 * @see com.senselessweb.soundcloud.library.service.LibraryService#getItems()
 	 */
 	@Override
-	public Collection<? extends LibraryItem> getAllItems()
+	public Collection<? extends LibraryItem> getItems()
 	{
 		return this.radioStationStorageService.getAllRadioStations();
 	}

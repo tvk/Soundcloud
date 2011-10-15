@@ -1,6 +1,7 @@
 package com.senselessweb.soundcloud.library.service.radio.impl;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 
 import org.jsoup.Jsoup;
@@ -46,16 +47,15 @@ public class IcecastRadioService extends AbstractRadioService implements RemoteR
 		this.items = loadItems();
 	}
 	
-	
+
 	/**
-	 * @see com.senselessweb.soundcloud.library.service.LibraryService#getAllItems()
+	 * @see com.senselessweb.soundcloud.library.service.LibraryService#getItems()
 	 */
 	@Override
-	public Collection<? extends LibraryItem> getAllItems()
+	public Collection<? extends LibraryItem> getItems()
 	{
-		return this.items;
+		return Collections.unmodifiableCollection(this.items);
 	}
-	
 	
 	/**
 	 * Loads all items from the remote xml file.

@@ -43,7 +43,7 @@ public class RadioLibraryItem extends AbstractLibraryItem
 	public RadioLibraryItem(final String id, final String shortTitle, final String url, 
 			final Collection<String> genres)
 	{
-		super(id, shortTitle, genres, Lists.asList(shortTitle, genres.toArray(new String[0]))); 
+		super(id, shortTitle, genres, Lists.asList(shortTitle, url, genres.toArray(new String[0]))); 
 		
 		if (StringUtils.isBlank(url)) 
 			throw new IllegalArgumentException("Param url must not be null");
@@ -141,8 +141,7 @@ public class RadioLibraryItem extends AbstractLibraryItem
 	{
 		if (!(obj instanceof RadioLibraryItem)) return false;
 		final RadioLibraryItem other = (RadioLibraryItem) obj;
-		return super.equals(obj) && 
-			IdentityUtils.areEqual(this.url, other.url);
+		return IdentityUtils.areEqual(this.url, other.url);
 	}
 
 	/**
@@ -151,7 +150,7 @@ public class RadioLibraryItem extends AbstractLibraryItem
 	@Override
 	public int hashCode()
 	{
-		return HashCodeBuilder.reflectionHashCode(this, true);
+		return HashCodeBuilder.reflectionHashCode(this.url, true);
 	}
 	
 }
