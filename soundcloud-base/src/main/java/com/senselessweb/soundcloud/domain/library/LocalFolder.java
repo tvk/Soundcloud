@@ -2,6 +2,8 @@ package com.senselessweb.soundcloud.domain.library;
 
 import java.util.Collection;
 
+import org.apache.commons.io.FilenameUtils;
+
 /**
  * Represents a local folder.
  *
@@ -23,13 +25,14 @@ public class LocalFolder
 	/**
 	 * The subfolders
 	 */
-	private final Collection<String> subfolders;
+	private final Collection<LocalSubfolder> subfolders;
 	
 	/**
 	 * The files
 	 */
 	private final Collection<LocalFile> files;
 	
+
 	/**
 	 * Constructor
 	 *
@@ -37,11 +40,13 @@ public class LocalFolder
 	 * @param path The relative path
 	 * @param subfolders The subfolders
 	 * @param files The files in this folder
+	 * @param keywords Keywords of this folder
 	 */
-	public LocalFolder(final String name, final String path, final Collection<String> subfolders, final Collection<LocalFile> files)
+	public LocalFolder(final String name, final String path, final Collection<LocalSubfolder> subfolders, 
+			final Collection<LocalFile> files, final Collection<String> keywords)
 	{
 		this.name = name;
-		this.path = path;
+		this.path = FilenameUtils.normalize(path);
 		this.subfolders = subfolders;
 		this.files = files;
 	}
@@ -81,8 +86,9 @@ public class LocalFolder
 	 *
 	 * @return The subfolders
 	 */
-	public Collection<String> getSubfolders()
+	public Collection<LocalSubfolder> getSubfolders()
 	{
 		return this.subfolders;
 	}
+	
 }

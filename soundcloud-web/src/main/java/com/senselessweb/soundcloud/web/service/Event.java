@@ -1,5 +1,6 @@
 package com.senselessweb.soundcloud.web.service;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,8 +15,13 @@ import com.senselessweb.soundcloud.util.IdentityUtils;
  * 
  * @author thomas
  */
-public class Event
+public class Event implements Serializable
 {
+
+	/**
+	 * The serialVersionUID
+	 */
+	private static final long serialVersionUID = 7779046115328260133L;
 
 	/**
 	 * The type

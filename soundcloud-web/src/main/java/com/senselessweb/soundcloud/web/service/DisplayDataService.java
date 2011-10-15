@@ -1,5 +1,6 @@
 package com.senselessweb.soundcloud.web.service;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,8 +19,13 @@ public interface DisplayDataService
 	 * 
 	 * @author thomas
 	 */
-	class DisplayData
+	class DisplayData implements Serializable
 	{
+		
+		/**
+		 * The serialVersionUID
+		 */
+		private static final long serialVersionUID = 7773075459199856642L;
 		
 		/**
 		 * The properties

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.senselessweb.soundcloud.domain.library.LocalFolder;
+import com.senselessweb.soundcloud.domain.library.LocalSubfolder;
 import com.senselessweb.soundcloud.library.service.local.LocalLibraryService;
 
 /**
@@ -61,8 +62,8 @@ public class LocalLibraryScanner
 					final String next = folders.pollFirst();
 					log.debug("Scanning " + next);
 					final LocalFolder localFolder = LocalLibraryScanner.this.localLibraryService.getFolder(next);
-					for (final String subfolder : localFolder.getSubfolders())
-						folders.add((next != null ? next + "/" : "") + subfolder);
+					for (final LocalSubfolder subfolder : localFolder.getSubfolders())
+						folders.add((next != null ? next + "/" : "") + subfolder.getName());
 					
 					try
 					{

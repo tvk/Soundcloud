@@ -15,6 +15,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.senselessweb.soundcloud.domain.library.LocalFile;
 import com.senselessweb.soundcloud.domain.library.LocalFolder;
+import com.senselessweb.soundcloud.domain.library.LocalSubfolder;
 import com.senselessweb.soundcloud.domain.sources.MediaSource;
 import com.senselessweb.soundcloud.library.service.local.LocalLibraryService;
 import com.senselessweb.soundcloud.util.FileFilters;
@@ -50,9 +51,14 @@ public class LocalLibraryServiceImpl implements LocalLibraryService
 	{
 		final File dir = StringUtils.isBlank(folder) ? new File(root) : new File(root, folder);
 		
-		final List<String> subfolders = Lists.newArrayList(Collections2.transform(Lists.newArrayList(dir.listFiles(FileFilters.directoryFilter)), new Function<File, String>() {
+		final List<LocalSubfolder> subfolders = Lists.newArrayList(Collections2.transform(Lists.newArrayList(dir.listFiles(FileFilters.directoryFilter)), new Function<File, LocalSubfolder>() {
 			/** @see com.google.common.base.Function#apply(java.lang.Object) */
-			@Override public String apply(final File input) { return input.getName(); }
+			@Override public LocalSubfolder apply(final File input) 
+			{ 
+				return new LocalSubfolder(input.getName(), 
+						LocalLibraryServiceImpl.this.localLibraryStorageService.getKeywords(root, 
+								(StringUtils.isBlank(folder) ? "" : (folder + File.separator)) + input.getName())); 
+			}
 		}));
 		Collections.sort(subfolders);
 		
@@ -65,7 +71,8 @@ public class LocalLibraryServiceImpl implements LocalLibraryService
 		}));
 		Collections.sort(files);
 		
-		return new LocalFolder(dir.getName(), dir.getAbsolutePath().substring(root.length()), subfolders, files);
+		return new LocalFolder(dir.getName(), dir.getAbsolutePath().substring(root.length()), 
+				subfolders, files, this.localLibraryStorageService.getKeywords(root, folder));
 	}
 	
 	/**
@@ -78,8 +85,8 @@ public class LocalLibraryServiceImpl implements LocalLibraryService
 		final LocalFolder localFolder = this.getFolder(folder);
 		
 		result.addAll(localFolder.getFiles());
-		for (final String subfolder : localFolder.getSubfolders())
-			result.addAll(this.getFiles(folder + "/" + subfolder));
+		for (final LocalSubfolder subfolder : localFolder.getSubfolders())
+			result.addAll(this.getFiles(folder + "/" + subfolder.getName()));
 		
 		return result;
 	}

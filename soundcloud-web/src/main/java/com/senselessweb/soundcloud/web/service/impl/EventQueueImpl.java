@@ -1,5 +1,6 @@
 package com.senselessweb.soundcloud.web.service.impl;
 
+import java.io.Serializable;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -19,8 +20,13 @@ import com.senselessweb.soundcloud.web.service.EventQueue;
  */
 @Service
 @Scope(proxyMode=ScopedProxyMode.INTERFACES, value="session")
-public class EventQueueImpl extends AbstractMessageAdapter implements EventQueue
+public class EventQueueImpl extends AbstractMessageAdapter implements EventQueue, Serializable
 {
+	
+	/**
+	 * The serialVersionUID
+	 */
+	private static final long serialVersionUID = -9044435692250334497L;
 	
 	/**
 	 * The message queue

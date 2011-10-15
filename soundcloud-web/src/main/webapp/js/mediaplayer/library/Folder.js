@@ -76,8 +76,8 @@ Folder.prototype.appendAsElement = function(element, onSelectSubfolder, onPlayFo
 	{
 		subfolders.append(
 				'<div class="item">' + 
-					'<input type="radio" name="folder-' + this.level + '" id="folder-' + this.level + '-' + i + '" value="' + this.path + "/" + this.subfolders[i] + '"/>' +
-					'<label for="folder-' + this.level + '-' + i + '">' + this.subfolders[i] + '</label>' +
+					'<input type="radio" name="folder-' + this.level + '" id="folder-' + this.level + '-' + i + '" value="' + this.path + "/" + this.subfolders[i].name + '"/>' +
+					'<label for="folder-' + this.level + '-' + i + '">' + this.subfolders[i].name + '</label>' +
 				'</div>' +
 				'<div style="clear:both;"></div>');
 		

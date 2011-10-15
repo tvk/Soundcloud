@@ -4,6 +4,7 @@
 package com.senselessweb.storage.library;
 
 import java.io.File;
+import java.util.Set;
 
 import com.senselessweb.soundcloud.domain.library.LocalFile;
 import com.senselessweb.soundcloud.domain.sources.MediaSource;
@@ -43,5 +44,14 @@ public interface LocalLibraryStorageService
 	 */
 	public LocalFile get(MediaSource mediaSource);
 
-	
+	/**
+	 * Returns all keywords for a given path
+	 * 
+	 * @param basePath The base path
+	 * @param path The actual path
+	 * 
+	 * @return All keywords for that path
+	 */
+	public Set<String> getKeywords(final String basePath, final String path);
+
 }

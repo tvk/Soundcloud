@@ -1,5 +1,7 @@
 package com.senselessweb.soundcloud.web.service.impl;
 
+import java.io.Serializable;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -18,9 +20,14 @@ import com.senselessweb.soundcloud.web.service.DisplayDataService;
  */
 @Service
 @Scope(proxyMode=ScopedProxyMode.INTERFACES, value="session")
-public class DisplayDataServiceImpl extends AbstractMessageAdapter implements DisplayDataService
+public class DisplayDataServiceImpl extends AbstractMessageAdapter implements DisplayDataService, Serializable
 {
 	
+	/**
+	 * The serialVersionUID
+	 */
+	private static final long serialVersionUID = 7263664298086412798L;
+
 	/**
 	 * The localLibraryService
 	 */
