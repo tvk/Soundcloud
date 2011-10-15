@@ -3,6 +3,8 @@
  */
 package com.senselessweb.soundcloud.domain.library;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Set;
 
 /**
@@ -20,6 +22,11 @@ public class LocalSubfolder implements Comparable<LocalSubfolder>
 	private final String name;
 
 	/**
+	 * The decoded name of this subfolder 
+	 */
+	private final String decodedName;
+
+	/**
 	 * The keywords of this subfolder
 	 */
 	private final Set<String> keywords;
@@ -34,6 +41,12 @@ public class LocalSubfolder implements Comparable<LocalSubfolder>
 	{
 		this.name = name;
 		this.keywords = keywords;
+		
+		try
+		{
+			this.decodedName = URLEncoder.encode(name, "UTF-8");
+		} 
+		catch (final UnsupportedEncodingException e) { throw new RuntimeException(e); }
 	}
 	
 	/**
@@ -54,6 +67,16 @@ public class LocalSubfolder implements Comparable<LocalSubfolder>
 	public Set<String> getKeywords()
 	{
 		return this.keywords;
+	}
+	
+	/**
+	 * Returns the decodedName
+	 *
+	 * @return The decodedName
+	 */
+	public String getDecodedName()
+	{
+		return this.decodedName;
 	}
 	
 	/**

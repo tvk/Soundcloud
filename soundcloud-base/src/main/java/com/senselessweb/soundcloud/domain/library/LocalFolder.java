@@ -1,5 +1,7 @@
 package com.senselessweb.soundcloud.domain.library;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Collection;
 
 import org.apache.commons.io.FilenameUtils;
@@ -16,7 +18,7 @@ public class LocalFolder
 	 * The name
 	 */
 	private final String name;
-	
+
 	/**
 	 * The path
 	 */
@@ -46,9 +48,14 @@ public class LocalFolder
 			final Collection<LocalFile> files, final Collection<String> keywords)
 	{
 		this.name = name;
-		this.path = FilenameUtils.normalize(path);
 		this.subfolders = subfolders;
 		this.files = files;
+		
+		try
+		{
+			this.path = FilenameUtils.normalize(URLEncoder.encode(path, "UTF-8"));
+		} 
+		catch (final UnsupportedEncodingException e) { throw new RuntimeException(e); }		
 	}
 	
 	/**
@@ -90,5 +97,6 @@ public class LocalFolder
 	{
 		return this.subfolders;
 	}
+	
 	
 }

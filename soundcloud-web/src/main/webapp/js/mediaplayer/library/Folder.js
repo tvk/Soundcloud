@@ -62,7 +62,7 @@ Folder.prototype.appendAsElement = function(element, onSelectSubfolder, onPlayFo
 				'<div class="folder-title"><table><tr>' + 
 					'<td><button id="play-folder-' + this.level + '">Play</button></td>' +
 					'<td><button id="enqueue-folder-' + this.level + '">Enqueue</button></td>' +
-					'<td class="title">' + this.name + '</td>' +
+					'<td class="title"><span>' + this.name + '</span></td>' +
 				'</tr></table></div>');
 		
 		$('#play-folder-' + this.level, element).button({icons: {primary: 'ui-icon-play'}, text: false}).click(function() { onPlayFolder(_this.path); });
@@ -76,7 +76,7 @@ Folder.prototype.appendAsElement = function(element, onSelectSubfolder, onPlayFo
 	{
 		subfolders.append(
 				'<div class="item item-subfolder-' + this.level + '-' + i + '">' + 
-					'<input type="radio" name="folder-' + this.level + '" id="folder-' + this.level + '-' + i + '" value="' + this.path + "/" + this.subfolders[i].name + '"/>' +
+					'<input type="radio" name="folder-' + this.level + '" id="folder-' + this.level + '-' + i + '" value="' + this.path + "/" + this.subfolders[i].decodedName + '"/>' +
 					'<label for="folder-' + this.level + '-' + i + '">' + this.subfolders[i].name + '</label>' +
 				'</div>' +
 				'<div style="clear:both;"></div>');

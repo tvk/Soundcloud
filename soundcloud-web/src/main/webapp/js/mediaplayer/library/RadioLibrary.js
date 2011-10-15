@@ -82,7 +82,7 @@ RadioLibrary.prototype.initRemoteStations = function(parent, data)
 			});
 		};
 		
-		var item = new Item(data[i].id, data[i].shortTitle, data[i].genres, playFunction, null, null, storeFunction);
+		var item = new Item(data[i].id, data[i].shortTitle, data[i].genres, data[i].genres, playFunction, null, null, storeFunction);
 		item.appendAsElement(element);
 	}
 };
@@ -118,7 +118,7 @@ RadioLibrary.prototype.appendUserStation = function(parent, data)
 		$('.item-' + id, this.parent).remove();
 	};
 	
-	var item = new Item(data.id, data.shortTitle, data.genres, playFunction, null, deleteFunction, null);
+	var item = new Item(data.id, data.shortTitle, data.genres, data.keywords, playFunction, null, deleteFunction, null);
 	item.appendAsElement(parent);
 };
 

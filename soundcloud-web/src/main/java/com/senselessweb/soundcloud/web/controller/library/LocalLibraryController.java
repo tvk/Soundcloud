@@ -1,5 +1,6 @@
 package com.senselessweb.soundcloud.web.controller.library;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,12 +50,13 @@ public class LocalLibraryController
 	 * @param folder The folder
 	 * 
 	 * @return The content of that folder
+	 * @throws UnsupportedEncodingException 
 	 */
 	@RequestMapping("/getFolder")
 	@ResponseBody
-	public LocalFolder getFolder(@RequestParam(required=false) String folder)
+	public LocalFolder getFolder(@RequestParam(required=false) String folder) throws UnsupportedEncodingException
 	{
-		return this.localLibraryService.getFolder(folder);
+		return this.localLibraryService.getFolder(folder != null ? java.net.URLDecoder.decode(folder, "UTF-8") : null);
 	}
 
 	/**
@@ -75,13 +77,14 @@ public class LocalLibraryController
 	 * Plays all entries of a folder
 	 * 
 	 * @param folder The folder
+	 * @throws UnsupportedEncodingException 
 	 */
 	@RequestMapping("/playFolder")
 	@ResponseStatus(HttpStatus.OK)
-	public void playFolder(@RequestParam String folder)
+	public void playFolder(@RequestParam String folder) throws UnsupportedEncodingException
 	{
 		final List<MediaSource> playlist = new ArrayList<MediaSource>();
-		for (final LocalFile file : this.localLibraryService.getFiles(folder))
+		for (final LocalFile file : this.localLibraryService.getFiles(java.net.URLDecoder.decode(folder, "UTF-8")))
 			playlist.addAll(file.asMediaSources());
 		
 		this.mediaPlayer.stop();
@@ -106,13 +109,14 @@ public class LocalLibraryController
 	 * Enqueues all entries of a folder
 	 * 
 	 * @param folder The folder
+	 * @throws UnsupportedEncodingException 
 	 */
 	@RequestMapping("/enqueueFolder")
 	@ResponseStatus(HttpStatus.OK)
-	public void enqueueFolder(@RequestParam String folder)
+	public void enqueueFolder(@RequestParam String folder) throws UnsupportedEncodingException
 	{
 		final List<MediaSource> playlist = new ArrayList<MediaSource>();		
-		for (final LocalFile file : this.localLibraryService.getFiles(folder))
+		for (final LocalFile file : this.localLibraryService.getFiles(java.net.URLDecoder.decode(folder, "UTF-8")))
 			playlist.addAll(file.asMediaSources());
 			
 		this.playlist.addAll(playlist);
