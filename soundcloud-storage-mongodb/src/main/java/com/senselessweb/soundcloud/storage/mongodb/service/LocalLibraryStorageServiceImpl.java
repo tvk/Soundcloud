@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -45,6 +46,8 @@ public class LocalLibraryStorageServiceImpl implements LocalLibraryStorageServic
 	
 	/**
 	 * Caches the keywords 
+	 * 
+	 * TODO Move cache to db
 	 */
 	private final Map<String, Set<String>> cachedKeywords = Collections.synchronizedMap(new HashMap<String, Set<String>>());
 
@@ -81,12 +84,16 @@ public class LocalLibraryStorageServiceImpl implements LocalLibraryStorageServic
 		final Set<String> keywords = new HashSet<String>();
 		keywords.addAll(parseKeywords(path));
 		
-		final String regex = FilenameUtils.normalize(basePath + File.separator + path) + "*";
+		final String regex = Pattern.quote(FilenameUtils.normalize(basePath + File.separator + path)) + "*";
 		for (final LocalFile localFile : this.mongoTemplate.find(new Query(
 				Criteria.where("path").regex(regex)), LocalFile.class, collectionName))
 		{
 			for (final String keyword : localFile.getKeywords()) keywords.addAll(parseKeywords(keyword));
 			keywords.addAll(parseKeywords(localFile.getLongTitle()));
+			keywords.add(localFile.getShortTitle().trim().toLowerCase());
+			for (final String keyword : localFile.getKeywords())
+				keywords.add(keyword.trim().toLowerCase());
+			keywords.add(localFile.getLongTitle().trim().toLowerCase());
 		}
 		
 		this.cachedKeywords.put(path, keywords);

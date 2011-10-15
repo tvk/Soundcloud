@@ -75,7 +75,7 @@ Folder.prototype.appendAsElement = function(element, onSelectSubfolder, onPlayFo
 	for (var i = 0; i < this.subfolders.length; i++)
 	{
 		subfolders.append(
-				'<div class="item">' + 
+				'<div class="item item-subfolder-' + this.level + '-' + i + '">' + 
 					'<input type="radio" name="folder-' + this.level + '" id="folder-' + this.level + '-' + i + '" value="' + this.path + "/" + this.subfolders[i].name + '"/>' +
 					'<label for="folder-' + this.level + '-' + i + '">' + this.subfolders[i].name + '</label>' +
 				'</div>' +
@@ -93,4 +93,52 @@ Folder.prototype.appendAsElement = function(element, onSelectSubfolder, onPlayFo
 	for (var i = 0; i < this.items.length; i++)
 		this.items[i].appendAsElement(files);
 };
+
+/**
+ * Filters the content of this folder by the given keyword 
+ * 
+ * @return The items that are left after this folder has been filtered.
+ */
+Folder.prototype.filter = function(search)
+{
+	var result = new Array();
+	var lastValidSubfolder = -1;
+	
+	// Filter subfolders
+	for (var i = 0; i < this.subfolders.length; i++)
+	{
+		var element = $('.item-subfolder-' + this.level + '-' + i);
+		var isValid = false;
+		for (var keyword in this.subfolders[i].keywords)
+		{
+			if (this.subfolders[i].keywords[keyword].toLowerCase().indexOf(search.toLowerCase()) != -1) 
+			{
+				isValid = true;
+				break;
+			}
+		}
+		
+		if (isValid) element.show();
+		else element.hide();
+		
+		if (isValid) 
+		{
+			result.push(this.subfolders[i]);
+			lastValidSubfolder = i;
+		}
+	}
+	
+	// Autoselect the current subfolder if only one is left.
+	if (result.length == 1) $('#folder-' + this.level + '-' + lastValidSubfolder).click();
+		
+
+	// Filter files
+	for (var i = 0; i < this.items.length; i++)
+	{
+		if (!this.items[i].filter(search)) result.push(this.items[i]);
+	}
+	
+	return result;
+};
+
 

@@ -8,14 +8,25 @@ LocalLibrary.prototype.constructor = Library;
 var parent;
 
 /**
+ * An array of the current folders ordered by level
+ */
+var folders;
+
+/**
+ * The current filter string.
+ */
+var filter;
+
+/**
  * Creates a new local library
  * 
  * @param parent The parent element
  */
 function LocalLibrary(parent) 
 {
-	console.log("local");
 	var _this = this;
+	this.filter = '';
+	this.folders = new Array();
 	
 	parent.append('<div class="library-container"><table><tr></tr></table></div>');
 	this.parent = $('.library-container table tr', parent);
@@ -24,7 +35,21 @@ function LocalLibrary(parent)
 		_this.initLevel(0, data);
 	});	
 	
-	this.appendSearchElement(parent);
+	this.appendSearchElement(parent, function(filter) 
+	{
+		_this.filter = filter;
+		for (var folder in _this.folders) 
+		{
+			var itemsLeft = _this.folders[folder].filter(filter); 
+			if (itemsLeft.length == 0 && folder > 0)
+			{
+				// If all items of the current level have been filtered away, remove this level.
+				$('td.level-' + folder, _this.parent).remove();
+				while (_this.folders.length > folder) _this.folders.pop();
+				break;
+			}
+		}
+	});
 }
 
 /**
@@ -53,6 +78,7 @@ LocalLibrary.prototype.initLevel = function(level, data)
 	
 	// Removes level columns that are to replace by the new level
 	$('td.level-' + level, _this.parent).remove();
+	while (this.folders.length > level) this.folders.pop();
 	
 	// Create the new folder column
 	var levelClass = "";
@@ -61,9 +87,11 @@ LocalLibrary.prototype.initLevel = function(level, data)
 	
 	// Create the new folder
 	var folder = new Folder(data.name, level, data.path, this.createItems(data.files), data.subfolders);
+	this.folders.push(folder);
 	
 	// Append the new folder to the new folder column.
-	folder.appendAsElement($('.level-' + level + ' div', this.parent), onSelectSubfolder, onPlayFolder, onEnqueueFolder);	
+	folder.appendAsElement($('.level-' + level + ' div', this.parent), onSelectSubfolder, onPlayFolder, onEnqueueFolder);
+	if (this.filter != '') folder.filter(this.filter);
 	
 	// Scroll to the new element
 	$('.library-container').scrollTo('max', 600);	
@@ -88,7 +116,8 @@ LocalLibrary.prototype.createItems = function(data)
 	var items = new Array();
 	for (var i = 0; i < data.length; i++)
 	{
-		var item = new Item(data[i].id, data[i].shortTitle, data[i].genres, playFunction, enqueueFunction, null, null);
+		var item = new Item(data[i].id, data[i].shortTitle, data[i].genres, data[i].keywords, 
+				playFunction, enqueueFunction, null, null);
 		items.push(item);
 	}
 	return items;

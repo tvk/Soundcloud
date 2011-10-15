@@ -88,6 +88,11 @@
 	width: 300px;
 }
 
+#medialibrary .searchPanel .search-field-clear span.ui-button-text
+{
+	padding: 0.2em;
+}
+
 /* Radio specific */
 
 #medialibrary #tab-radio table 
