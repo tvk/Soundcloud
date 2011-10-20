@@ -17,6 +17,6 @@
 	<context:annotation-config/> 
 	<context:component-scan base-package="com.senselessweb.soundcloud" />
 	
-	<task:annotation-driven />
+	<task:annotation-driven />    
 		  
 </beans>

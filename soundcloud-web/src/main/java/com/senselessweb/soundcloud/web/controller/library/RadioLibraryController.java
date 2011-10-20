@@ -2,6 +2,7 @@ package com.senselessweb.soundcloud.web.controller.library;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,7 +94,7 @@ public class RadioLibraryController
 	@ResponseBody
 	public RadioLibraryItem create(final @RequestParam String name, final @RequestParam String url, final @RequestParam String genres)
 	{
-		return this.userRadioLibraryService.store(name, url, genres.split(","));
+		return this.userRadioLibraryService.store(name, Collections.singleton(url), genres.split(","));
 	}
 	
 	/**
@@ -108,7 +109,7 @@ public class RadioLibraryController
 	public RadioLibraryItem store(final @RequestParam String id)
 	{
 		final RadioLibraryItem item = (RadioLibraryItem) this.remoteRadioLibraryService.findById(id);
-		return this.userRadioLibraryService.store(item.getLongTitle(), item.getUrl(), item.getGenres().toArray(new String[0]));
+		return this.userRadioLibraryService.store(item.getLongTitle(), item.getUrls(), item.getGenres().toArray(new String[0]));
 	}
 	
 	/**

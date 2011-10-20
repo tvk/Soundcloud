@@ -3,13 +3,13 @@ package com.senselessweb.soundcloud.domain.library;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.google.common.base.Function;
@@ -24,31 +24,35 @@ import com.senselessweb.soundcloud.util.IdentityUtils;
  * 
  * @author thomas
  */
-public class RadioLibraryItem extends AbstractLibraryItem
+public class RadioLibraryItem extends AbstractLibraryItem implements Serializable
 {
-
+	
+	/**
+	 * The serialVersionUID
+	 */
+	private static final long serialVersionUID = 5955409512879568983L;
+	
 	/**
 	 * The url
 	 */
-	private final String url; 
+	private final Collection<String> urls; 
 	
 	/**
 	 * Constructor
 	 * 
 	 * @param id The id of this item.
 	 * @param shortTitle The shortTitle
-	 * @param url The url
+	 * @param urls The url
 	 * @param genres The genres
 	 */
-	public RadioLibraryItem(final String id, final String shortTitle, final String url, 
+	public RadioLibraryItem(final String id, final String shortTitle, final Collection<String> urls, 
 			final Collection<String> genres)
 	{
-		super(id, shortTitle, genres, Lists.asList(shortTitle, url, genres.toArray(new String[0]))); 
+		super(id, shortTitle, genres, Lists.asList(shortTitle, genres.toArray(new String[0]))); 
 		
-		if (StringUtils.isBlank(url)) 
-			throw new IllegalArgumentException("Param url must not be null");
+		if (urls.isEmpty()) throw new IllegalArgumentException("Param urls must not be empty");
 		
-		this.url = url;
+		this.urls = urls;
 	}
 	
 	/**
@@ -85,41 +89,43 @@ public class RadioLibraryItem extends AbstractLibraryItem
 	{
 		final List<String> result = new ArrayList<String>(); 
 		
-		final URLConnection conn = new URL(this.url).openConnection();
-		final String contentType = conn.getHeaderField("Content-Type");
-		
-		
-		if ("audio/x-mpegurl".equals(contentType))
+		for (final String url : this.urls)
 		{
-			final InputStreamReader isr = new InputStreamReader(conn.getInputStream());
-			try
+			final URLConnection conn = new URL(url).openConnection();
+			final String contentType = conn.getHeaderField("Content-Type");
+			
+			if ("audio/x-mpegurl".equals(contentType))
 			{
-				final BufferedReader reader = new BufferedReader(isr);
-				
-				for (String line = reader.readLine(); line != null; line = reader.readLine())
-					result.add(line);
+				final InputStreamReader isr = new InputStreamReader(conn.getInputStream());
+				try
+				{
+					final BufferedReader reader = new BufferedReader(isr);
+					
+					for (String line = reader.readLine(); line != null; line = reader.readLine())
+						result.add(line);
+				}
+				finally
+				{
+					isr.close();
+				}
 			}
-			finally
+			else
 			{
-				isr.close();
+				result.add(url);
 			}
-		}
-		else
-		{
-			result.add(this.url);
 		}
 		return result;
 	}
 
 	
 	/**
-	 * Returns the url.
+	 * Returns the urls.
 	 * 
-	 * @return The url.
+	 * @return The urls.
 	 */
-	public String getUrl()
+	public Collection<String> getUrls()
 	{
-		return this.url;
+		return this.urls;
 	}
 	
 	/**
@@ -140,7 +146,7 @@ public class RadioLibraryItem extends AbstractLibraryItem
 	{
 		if (!(obj instanceof RadioLibraryItem)) return false;
 		final RadioLibraryItem other = (RadioLibraryItem) obj;
-		return IdentityUtils.areEqual(this.url, other.url);
+		return IdentityUtils.areEqual(this.urls, other.urls);
 	}
 
 	/**
@@ -149,7 +155,7 @@ public class RadioLibraryItem extends AbstractLibraryItem
 	@Override
 	public int hashCode()
 	{
-		return HashCodeBuilder.reflectionHashCode(this.url, true);
+		return HashCodeBuilder.reflectionHashCode(this.urls, true);
 	}
 	
 }

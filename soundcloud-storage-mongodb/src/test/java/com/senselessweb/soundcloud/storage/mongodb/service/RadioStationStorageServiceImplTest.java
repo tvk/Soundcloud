@@ -1,6 +1,7 @@
 package com.senselessweb.soundcloud.storage.mongodb.service;
 
 import java.net.MalformedURLException;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,9 +33,9 @@ public class RadioStationStorageServiceImplTest extends ApplicationContextTestBa
 		
 		Assert.assertTrue(service.getAllRadioStations().isEmpty());
 		
-		final RadioLibraryItem radio1 = new RadioLibraryItem(null, "WDR 2", "https://www.wdr2-radio.de", Lists.newArrayList("pop", "schrott", "gelaber", "werbung"));
-		final RadioLibraryItem radio2 = new RadioLibraryItem(null, "WDR 4", "https://www.wdr4-radio.de", Lists.newArrayList("volksmusik", "schrott", "gelaber"));
-		final RadioLibraryItem radio2Clone = new RadioLibraryItem(null, "WDR 4", "https://www.wdr4-radio.de", Lists.newArrayList("volksmusik", "schrott", "unsinn"));
+		final RadioLibraryItem radio1 = new RadioLibraryItem(null, "WDR 2", Collections.singleton("https://www.wdr2-radio.de"), Lists.newArrayList("pop", "schrott", "gelaber", "werbung"));
+		final RadioLibraryItem radio2 = new RadioLibraryItem(null, "WDR 4", Collections.singleton("https://www.wdr4-radio.de"), Lists.newArrayList("volksmusik", "schrott", "gelaber"));
+		final RadioLibraryItem radio2Clone = new RadioLibraryItem(null, "WDR 4", Collections.singleton("https://www.wdr4-radio.de"), Lists.newArrayList("volksmusik", "schrott", "unsinn"));
 		
 		// Add a station
 		service.createRadioStation(radio1);

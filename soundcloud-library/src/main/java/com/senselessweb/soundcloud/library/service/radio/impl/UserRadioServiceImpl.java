@@ -36,12 +36,12 @@ public class UserRadioServiceImpl extends AbstractRadioService implements UserRa
 	}
 
 	/**
-	 * @see com.senselessweb.soundcloud.library.service.radio.UserRadioLibraryService#store(java.lang.String, java.lang.String, java.lang.String[])
+	 * @see com.senselessweb.soundcloud.library.service.radio.UserRadioLibraryService#store(String, Collection, String[])
 	 */
 	@Override
-	public RadioLibraryItem store(final String name, final String url, final String[] genres)
+	public RadioLibraryItem store(final String name, final Collection<String> urls, final String[] genres)
 	{
-		final RadioLibraryItem newItem = new RadioLibraryItem(null, name, url, Lists.newArrayList(genres));
+		final RadioLibraryItem newItem = new RadioLibraryItem(null, name, urls, Lists.newArrayList(genres));
 		return this.radioStationStorageService.createRadioStation(newItem);
 	}
 

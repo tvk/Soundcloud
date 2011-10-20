@@ -137,8 +137,13 @@ public class MediaPlayerImpl implements MediaPlayer, MessageListenerService
 				this.pipeline = this.pipelineBuilder.createPipeline(this.current);
 				this.play();				
 			}
+			else
+			{
+				// Otherwise try to go to the next playlist entry
+				if (this.playlist.next()) this.play();
+			}
 		}
-		else
+		else 
 		{
 			this.messageMediator.error(message);
 		}
