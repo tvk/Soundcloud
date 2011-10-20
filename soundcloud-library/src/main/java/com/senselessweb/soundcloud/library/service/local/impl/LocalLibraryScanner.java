@@ -6,6 +6,7 @@ package com.senselessweb.soundcloud.library.service.local.impl;
 import java.util.LinkedList;
 import java.util.concurrent.Executors;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 import org.apache.commons.logging.Log;
@@ -47,7 +48,7 @@ public class LocalLibraryScanner
 	 * 
 	 * @throws InterruptedException
 	 */
-	/*@PostConstruct*/ void startScanning() throws InterruptedException
+	@PostConstruct void startScanning() throws InterruptedException
 	{
 		Executors.newSingleThreadExecutor().execute(new Runnable() {
 			

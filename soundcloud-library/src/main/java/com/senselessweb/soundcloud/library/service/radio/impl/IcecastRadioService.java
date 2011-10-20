@@ -44,7 +44,7 @@ public class IcecastRadioService extends AbstractRadioService implements RemoteR
 	/**
 	 * The items
 	 */
-	private final Collection<? extends LibraryItem> items;
+	private Collection<? extends LibraryItem> items;
 	
 	/**
 	 * Initializes the library
@@ -53,7 +53,15 @@ public class IcecastRadioService extends AbstractRadioService implements RemoteR
 	 */
 	public IcecastRadioService() throws Exception
 	{
-		this.items = loadItems();
+		try
+		{
+			this.items = loadItems();
+		}
+		catch (final Exception e)
+		{
+			log.error("Could not load icecast stations", e);
+			this.items = Collections.emptySet();
+		}
 	}
 	
 

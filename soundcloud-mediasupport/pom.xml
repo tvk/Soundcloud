@@ -17,6 +17,13 @@
 		</plugins>
 	</build>
 	
+	<repositories>
+		<repository>
+			<id>senselessweb.com</id>
+			<url>http://www.senselessweb.com/maven</url>
+		</repository>
+	</repositories>
+	
 	<dependencies>
 		<dependency>
 			<groupId>com.googlecode.gstreamer-java</groupId>
