@@ -50,16 +50,6 @@ public class DisplayDataServiceImpl extends AbstractMessageAdapter implements Di
 	 * Indicates that new data is available that has not been consumed yet. 
 	 */
 	private final LinkedBlockingQueue<Object> newDataAvailable = new LinkedBlockingQueue<Object>();
-	
-	/**
-	 * Constructor
-	 *
-	 */
-	public DisplayDataServiceImpl()
-	{
-		// Auto-generated constructor stub
-	}
-	
 
 	/**
 	 * @see com.senselessweb.soundcloud.web.service.DisplayDataService#getDisplayData()
@@ -78,9 +68,8 @@ public class DisplayDataServiceImpl extends AbstractMessageAdapter implements Di
 	{
 		try
 		{
-			log.debug("Waiting " + Integer.toHexString(currentDisplayData.hashCode()));
+			log.debug("Waiting for new data...");
 			this.newDataAvailable.take();
-			log.debug("Found data " + Integer.toHexString(currentDisplayData.hashCode()));
 		} 
 		catch (final InterruptedException e)
 		{
@@ -94,7 +83,6 @@ public class DisplayDataServiceImpl extends AbstractMessageAdapter implements Di
 	 */
 	private void notifyInternal()
 	{
-		log.debug("Adding notify object to " + Integer.toHexString(currentDisplayData.hashCode()));
 		this.newDataAvailable.add(new Object());
 	}
 
@@ -104,8 +92,6 @@ public class DisplayDataServiceImpl extends AbstractMessageAdapter implements Di
 	@Override
 	public void tag(final String tag, final String value) 
 	{ 
-		log.debug("Tag " + tag + " - " + value);
-		
 		currentDisplayData.set(tag, value);
 		this.notifyInternal();
 	}
@@ -116,8 +102,6 @@ public class DisplayDataServiceImpl extends AbstractMessageAdapter implements Di
 	@Override
 	public void stateChanged(final State newState) 
 	{  
-		log.debug("New state " + newState);
-		
 		if (newState == State.STOPPED) currentDisplayData.clear();
 		this.notifyInternal();
 	}
@@ -128,8 +112,6 @@ public class DisplayDataServiceImpl extends AbstractMessageAdapter implements Di
 	@Override
 	public void newSource(final MediaSource source)
 	{
-		log.debug("New source " + source.getTitle());
-		
 		final LocalFile localFile = this.localLibraryService.getFile(source);
 		currentDisplayData.set("source", localFile != null ? localFile.getShortTitle() : source.getTitle());
 		this.notifyInternal();

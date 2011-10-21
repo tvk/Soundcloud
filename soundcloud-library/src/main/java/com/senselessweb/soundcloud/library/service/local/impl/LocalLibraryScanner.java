@@ -4,14 +4,15 @@
 package com.senselessweb.soundcloud.library.service.local.impl;
 
 import java.util.LinkedList;
-import java.util.concurrent.Executors;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.senselessweb.soundcloud.domain.library.LocalFolder;
@@ -24,7 +25,7 @@ import com.senselessweb.soundcloud.library.service.local.LocalLibraryService;
  * @author thomas
  */
 @Service
-public class LocalLibraryScanner
+public class LocalLibraryScanner implements ApplicationListener<ContextRefreshedEvent>
 {
 
 	/**
@@ -43,39 +44,32 @@ public class LocalLibraryScanner
 	 */
 	boolean alive = true;
 	
+
 	/**
-	 * Starts the scanning
-	 * 
-	 * @throws InterruptedException
+	 * @see org.springframework.context.ApplicationListener#onApplicationEvent(org.springframework.context.ApplicationEvent)
 	 */
-	@PostConstruct void startScanning() throws InterruptedException
+	@Override
+	@Async public void onApplicationEvent(final ContextRefreshedEvent event)
 	{
-		Executors.newSingleThreadExecutor().execute(new Runnable() {
+		final LinkedList<String> folders = new LinkedList<String>();
+		
+		while (this.alive)
+		{
+			final String next = folders.pollFirst();
+			log.debug("Scanning " + next);
+			final LocalFolder localFolder = LocalLibraryScanner.this.localLibraryService.getFolder(next);
+			for (final LocalSubfolder subfolder : localFolder.getSubfolders())
+				folders.add((next != null ? next + "/" : "") + subfolder.getName());
 			
-			@Override
-			public void run()
+			try
 			{
-				final LinkedList<String> folders = new LinkedList<String>();
-				
-				while (LocalLibraryScanner.this.alive)
-				{
-					final String next = folders.pollFirst();
-					log.debug("Scanning " + next);
-					final LocalFolder localFolder = LocalLibraryScanner.this.localLibraryService.getFolder(next);
-					for (final LocalSubfolder subfolder : localFolder.getSubfolders())
-						folders.add((next != null ? next + "/" : "") + subfolder.getName());
-					
-					try
-					{
-						Thread.sleep(5000);
-					} 
-					catch (final InterruptedException e)
-					{
-						throw new RuntimeException("Scanner was interrupted", e);
-					}
-				}
+				Thread.sleep(5000);
+			} 
+			catch (final InterruptedException e)
+			{
+				throw new RuntimeException("Scanner was interrupted", e);
 			}
-		});
+		}
 	}
 	
 	/**
