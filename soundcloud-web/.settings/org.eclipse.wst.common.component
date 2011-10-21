@@ -6,19 +6,16 @@
         <wb-resource deploy-path="/" source-path="/WebContent"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/webapp"/>
-        <dependent-module archiveName="soundcloud-mediasupport-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/soundcloud-mediasupport/soundcloud-mediasupport">
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/soundcloud-mediasupport/soundcloud-mediasupport">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="soundcloud-storage-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/soundcloud-storage/soundcloud-storage">
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/soundcloud-storage/soundcloud-storage">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="soundcloud-base-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/soundcloud-base/soundcloud-base">
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/soundcloud-base/soundcloud-base">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="soundcloud-storage-mongodb-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/soundcloud-storage-mongodb/soundcloud-storage-mongodb">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="soundcloud-library-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/soundcloud-library/soundcloud-library">
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/soundcloud-storage-mongodb/soundcloud-storage-mongodb">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="context-root" value="soundcloud-web"/>
