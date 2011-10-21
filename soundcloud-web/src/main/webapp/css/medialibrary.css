@@ -1,20 +1,20 @@
 
 
-#medialibrary .library-container 
+#tabpanel .library-container 
 {
-	width: 100%;
+	width: 850px;
   overflow-x: auto;
 	overflow-y: hidden;
 }
 
-#medialibrary .scollable-content 
+#tabpanel .scollable-content 
 {
 	height: 450px;
 	overflow-x: hidden;
   overflow-y: auto;
 }
 
-#medialibrary table td 
+#tabpanel table td 
 {
 	vertical-align: top;
 }
@@ -22,28 +22,28 @@
 
 /* Library item */
 
-#medialibrary div.item table
+#tabpanel div.item table
 {
 	width: 100%;
 }
 
-#medialibrary div.item,
-#medialibrary div.folder
+#tabpanel div.item,
+#tabpanel div.folder
 {
 	width: 300px;
 	margin: 0 5px;
 }
 
-#medialibrary div.item label,
-#medialibrary div.folder label
+#tabpanel div.item label,
+#tabpanel div.folder label
 {
 	width: 100%;
 	text-align: left;
 	border-radius: 0;
 }
 
-#medialibrary div.folder-title td.title,
-#medialibrary div.folder-title button
+#tabpanel div.folder-title td.title,
+#tabpanel div.folder-title button
 {
 	margin: 4px 1px 8px 5px;
 	font-weight: bold;
@@ -51,18 +51,18 @@
 	vertical-align: middle;
 }
 
-#medialibrary div.item table td.title
+#tabpanel div.item table td.title
 {
 	text-align: left;
 	font-weight: bold;
 }
 
-#medialibrary div.item table td.genre
+#tabpanel div.item table td.genre
 {
 	text-align: right;
 }
 
-#medialibrary div.item table td.button
+#tabpanel div.item table td.button
 {
 	width: 35px;
 }
@@ -70,58 +70,58 @@
 
 /* Search panel */
 
-#medialibrary .searchPanel
+#tabpanel .searchPanel
 {
 	width: 90%;
 	margin: 5px;
 }
 
-#medialibrary .searchPanel span.title,
-#medialibrary .searchPanel input.search-field
+#tabpanel .searchPanel span.title,
+#tabpanel .searchPanel input.search-field
 {
 	margin: 5px;
 }
 
-#medialibrary .searchPanel span.title
+#tabpanel .searchPanel span.title
 {
 	font-weight: bold;	
 }
 
-#medialibrary .searchPanel input.search-field
+#tabpanel .searchPanel input.search-field
 {
 	width: 300px;
 }
 
-#medialibrary .searchPanel .search-field-clear span.ui-button-text
+#tabpanel .searchPanel .search-field-clear span.ui-button-text
 {
 	padding: 0.2em;
 }
 
 /* Radio specific */
 
-#medialibrary #tab-radio table 
+#tabpanel #tab-radio table 
 {
 	width: 100%;
 }
 
-#medialibrary #tab-radio table td.radio-content-container
+#tabpanel #tab-radio table td.radio-content-container
 {
 	padding-top: 5px;
 }
 
-#medialibrary #tab-radio table td.radio-selection 
+#tabpanel #tab-radio table td.radio-selection 
 {
 	width: 150px;
 }
 
-#medialibrary #tab-radio .radio-library-selector 
+#tabpanel #tab-radio .radio-library-selector 
 {
 	border-radius: 0;
 	margin: 5px 10px;
   width: 145px;
 }
 
-#medialibrary #tab-radio div.item
+#tabpanel #tab-radio div.item
 {
 	width: 100%;
 }
@@ -129,12 +129,12 @@
 
 /* Local library specific */
 
-#medialibrary #tab-medialibrary div.item td.genre
+#tabpanel #tab-medialibrary div.item td.genre
 {
 	display: none;
 }
 
-#medialibrary #tab-medialibrary div.item td.title
+#tabpanel #tab-medialibrary div.item td.title
 {
 	font-weight: normal;
 }
