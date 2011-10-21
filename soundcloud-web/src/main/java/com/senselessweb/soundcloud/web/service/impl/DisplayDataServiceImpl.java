@@ -1,7 +1,10 @@
 package com.senselessweb.soundcloud.web.service.impl;
 
 import java.io.Serializable;
+import java.util.concurrent.LinkedBlockingQueue;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -29,6 +32,11 @@ public class DisplayDataServiceImpl extends AbstractMessageAdapter implements Di
 	private static final long serialVersionUID = 7263664298086412798L;
 
 	/**
+	 * The log
+	 */
+	private static final Log log = LogFactory.getLog(DisplayDataServiceImpl.class);
+	
+	/**
 	 * The localLibraryService
 	 */
 	@Autowired LocalLibraryService localLibraryService;
@@ -36,13 +44,21 @@ public class DisplayDataServiceImpl extends AbstractMessageAdapter implements Di
 	/**
 	 * The current display data
 	 */
-	private final DisplayData currentDisplayData = new DisplayData();
+	private static final DisplayData currentDisplayData = new DisplayData();
 	
 	/**
 	 * Indicates that new data is available that has not been consumed yet. 
 	 */
-	private boolean newDataAvailable = false;
+	private final LinkedBlockingQueue<Object> newDataAvailable = new LinkedBlockingQueue<Object>();
 	
+	/**
+	 * Constructor
+	 *
+	 */
+	public DisplayDataServiceImpl()
+	{
+		// Auto-generated constructor stub
+	}
 	
 
 	/**
@@ -51,7 +67,7 @@ public class DisplayDataServiceImpl extends AbstractMessageAdapter implements Di
 	@Override
 	public DisplayData getDisplayData()
 	{
-		return this.currentDisplayData;
+		return currentDisplayData;
 	}
 
 	/**
@@ -60,20 +76,17 @@ public class DisplayDataServiceImpl extends AbstractMessageAdapter implements Di
 	@Override
 	public DisplayData waitForDisplayData()
 	{
-		synchronized (this)
+		try
 		{
-			while(!this.newDataAvailable)
-			{
-				try
-				{
-					this.wait();		
-				}
-				catch (final InterruptedException e) { /* ignored */ }
-			}
+			log.debug("Waiting " + Integer.toHexString(currentDisplayData.hashCode()));
+			this.newDataAvailable.take();
+			log.debug("Found data " + Integer.toHexString(currentDisplayData.hashCode()));
 		} 
-
-		this.newDataAvailable = false;
-		return this.currentDisplayData;
+		catch (final InterruptedException e)
+		{
+			throw new RuntimeException(e);
+		}
+		return currentDisplayData;
 	}
 	
 	/**
@@ -81,11 +94,8 @@ public class DisplayDataServiceImpl extends AbstractMessageAdapter implements Di
 	 */
 	private void notifyInternal()
 	{
-		this.newDataAvailable = true;
-		synchronized (this)
-		{
-			this.notify();			
-		}		
+		log.debug("Adding notify object to " + Integer.toHexString(currentDisplayData.hashCode()));
+		this.newDataAvailable.add(new Object());
 	}
 
 	/**
@@ -94,7 +104,9 @@ public class DisplayDataServiceImpl extends AbstractMessageAdapter implements Di
 	@Override
 	public void tag(final String tag, final String value) 
 	{ 
-		this.currentDisplayData.set(tag, value);
+		log.debug("Tag " + tag + " - " + value);
+		
+		currentDisplayData.set(tag, value);
 		this.notifyInternal();
 	}
 	
@@ -104,7 +116,9 @@ public class DisplayDataServiceImpl extends AbstractMessageAdapter implements Di
 	@Override
 	public void stateChanged(final State newState) 
 	{  
-		if (newState == State.STOPPED) this.currentDisplayData.clear();
+		log.debug("New state " + newState);
+		
+		if (newState == State.STOPPED) currentDisplayData.clear();
 		this.notifyInternal();
 	}
 
@@ -114,8 +128,10 @@ public class DisplayDataServiceImpl extends AbstractMessageAdapter implements Di
 	@Override
 	public void newSource(final MediaSource source)
 	{
+		log.debug("New source " + source.getTitle());
+		
 		final LocalFile localFile = this.localLibraryService.getFile(source);
-		this.currentDisplayData.set("source", localFile != null ? localFile.getShortTitle() : source.getTitle());
+		currentDisplayData.set("source", localFile != null ? localFile.getShortTitle() : source.getTitle());
 		this.notifyInternal();
 	}
 	
