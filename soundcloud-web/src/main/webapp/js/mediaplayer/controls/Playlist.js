@@ -1,7 +1,7 @@
 
 var playlistControlElement;
 
-function PlaylistControl(_playlistControlElement)
+function Playlist(_playlistControlElement)
 {
 	this.playlistControlElement = _playlistControlElement;
 	var _this = this;
@@ -12,7 +12,7 @@ function PlaylistControl(_playlistControlElement)
 	});
 };
 
-PlaylistControl.prototype.initPlaylistControl= function(data)
+Playlist.prototype.initPlaylistControl= function(data)
 {
 	$('div', this.playlistControlElement).remove();	
 	for (var i = 0; i < data.length; i++)
@@ -40,7 +40,7 @@ PlaylistControl.prototype.initPlaylistControl= function(data)
  * 
  * @param data 
  */
-PlaylistControl.prototype.processMessage = function(data)
+Playlist.prototype.processMessage = function(data)
 {
 	if (data.type == 'playlistChanged')
 	{

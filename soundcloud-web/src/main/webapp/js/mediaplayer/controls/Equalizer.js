@@ -9,11 +9,13 @@ var equalizerControlElement;
  * 
  * @param equalizerControlElement The equalizer control element
  */
-function EqualizerControl(equalizerControlElement)
+function Equalizer(equalizerControlElement)
 {
+	this.equalizerControlElement = equalizerControlElement;
+	var _this = this;
 	
 	$.getJSON('controller/equalizer/getData', function(data) {
-		initEqualizer(equalizerControlElement, data);
+		_this.initEqualizer(data);
 	});
 	
 }
@@ -21,14 +23,13 @@ function EqualizerControl(equalizerControlElement)
 /**
  * Initialize the equalizer element and attach listeners to it
  * 
- * @param equalizerControlElement The equalizerControlElement 
  * @param data The initial data
  */
-function initEqualizer(equalizerControlElement, data)
+Equalizer.prototype.initEqualizer = function(data)
 {
 	for (var i = 0; i < 10; i++)
 	{
-		$(equalizerControlElement).append('<span class="band band' + i + '"></span>');
+		this.equalizerControlElement.append('<span class="band band' + i + '"></span>');
 		$('.band' + i, equalizerControlElement).slider({
 			value: data['BAND' + i],
 			min: -12,
@@ -49,4 +50,4 @@ function initEqualizer(equalizerControlElement, data)
 			}
 		});
 	}
-}
+};

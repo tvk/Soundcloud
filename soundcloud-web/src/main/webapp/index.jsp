@@ -12,43 +12,39 @@
 		<link rel="stylesheet" type="text/css" href="css/dark-hive/jquery-ui-1.8.16.custom.css">
 		
 		<!-- CSS -->
-		<link href='http://fonts.googleapis.com/css?family=Geostar' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" type="text/css" href="css/main.css">
 		<link rel="stylesheet" type="text/css" href="css/mediaplayer.css">
 		
-		<!-- Media Player -->
+		<!-- Media Library -->
 		<script type="text/javascript" src="js/mediaplayer/library/Library.js"></script>
 		<script type="text/javascript" src="js/mediaplayer/library/RadioLibrary.js"></script>
 		<script type="text/javascript" src="js/mediaplayer/library/LocalLibrary.js"></script>
 		
-		
-		
-		<script type="text/javascript" src="js/mediaplayer/controls/playbackControl.js"></script>
-		<script type="text/javascript" src="js/mediaplayer/controls/equalizerControl.js"></script>
-		<script type="text/javascript" src="js/mediaplayer/controls/playlistControl.js"></script>
-		<script type="text/javascript" src="js/mediaplayer/controls/volumeControl.js"></script>
-		<script type="text/javascript" src="js/mediaplayer/controls/display.js"></script>
-		<script type="text/javascript" src="js/mediaplayer/messageMediator.js"></script>
-		<script type="text/javascript" src="js/mediaplayer/mediaPlayer.js"></script>
-		
+		<!-- Media Player -->
+		<script type="text/javascript" src="js/mediaplayer/controls/Display.js"></script>
+		<script type="text/javascript" src="js/mediaplayer/controls/Equalizer.js"></script>
+		<script type="text/javascript" src="js/mediaplayer/controls/PlaybackControl.js"></script>
+		<script type="text/javascript" src="js/mediaplayer/controls/Playlist.js"></script>
+		<script type="text/javascript" src="js/mediaplayer/controls/VolumeControl.js"></script>
+		<script type="text/javascript" src="js/mediaplayer/MessageMediator.js"></script>
+		<script type="text/javascript" src="js/mediaplayer/MediaPlayer.js"></script>
+				
+		<!-- Init -->
 		<script>
 		
-			var mediaPlayer;
-			
-			var mediaLibrary;
-			
 			$(document).ready(function() {
 				
 				// Init the media player
-				mediaPlayer = new MediaPlayer($('#display'), $('#playlist'), $('#playback'), $('#volume'), $('#equalizer'));
+				var mediaPlayer = new MediaPlayer($('#display'), $('#playlist'), $('#playback'), $('#volume'));
 				
 				// Init the media library
-				$("#tabpanel").tabs();
-				
 				var radioLibrary = new RadioLibrary($('#tabpanel #tab-radio'));
 				var localLibrary = new LocalLibrary($('#tabpanel #tab-medialibrary'));
+				$("#tabpanel").tabs();
+				
 
 				// Init the settings panels
+				var equalizer = new Equalizer($('#equalizer'));
 				$("#tabpanel-settings").tabs();
 			});
 		
