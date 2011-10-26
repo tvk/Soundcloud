@@ -30,7 +30,7 @@ public class FileSource extends AbstractMediaSource
 		
 		if (file == null || !file.isFile()) 
 			throw new IllegalArgumentException("File \"" + file + "\" must be an existing file");
-		this.file = file;
+		this.file = new File(file.getAbsolutePath());
 	}
 	
 	/**
@@ -56,7 +56,7 @@ public class FileSource extends AbstractMediaSource
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj)
+	public boolean equals(final Object obj)
 	{
 		if (!(obj instanceof FileSource)) return false;
 		final FileSource other = (FileSource) obj;

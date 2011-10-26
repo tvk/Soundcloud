@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd">
+
+	<!-- Annotation config -->
+	<context:component-scan base-package="com.senselessweb.soundcloud.storage.mongodb" />
+	<context:annotation-config/> 
+
+	<!-- MongoDB Config -->	
+	<bean id="mongo" class="com.mongodb.Mongo">
+		<constructor-arg index="0" value="127.0.0.1"/>
+		<constructor-arg index="1" value="27017"/>
+	</bean>
+	
+	<bean id="mongoDbFactory" class="org.springframework.data.mongodb.core.SimpleMongoDbFactory">
+		<constructor-arg index="0" ref="mongo" />
+		<constructor-arg index="1" ref="databaseName" />
+	</bean>
+	
+  <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+	  <constructor-arg index="0" ref="mongoDbFactory"/>
+	  <constructor-arg index="1" ref="mappingConverter"/>
+	</bean>
+
+	<mongo:mapping-converter>
+	  <mongo:custom-converters>
+	    <mongo:converter><bean class="com.senselessweb.soundcloud.storage.mongodb.converters.FileReadConverter"/></mongo:converter>
+	    <mongo:converter><bean class="com.senselessweb.soundcloud.storage.mongodb.converters.FileWriteConverter"/></mongo:converter>
+	  </mongo:custom-converters>
+	</mongo:mapping-converter>
+
+</beans>

@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.senselessweb.soundcloud.domain.sources.MediaSource;
 import com.senselessweb.soundcloud.mediasupport.service.Playlist;
 import com.senselessweb.soundcloud.mediasupport.service.impl.MessageMediator;
+import com.senselessweb.storage.PersistencyService;
 
 /**
  * Default playlist implementation
@@ -33,6 +36,11 @@ public class DefaultPlaylist implements Playlist
 	 * The messageMediator
 	 */
 	@Autowired MessageMediator messageMediator;
+	
+	/**
+	 * The persistencyService
+	 */
+	@Autowired PersistencyService persistencyService;
 
 	/**
 	 * The list of media sources in this playlist.
@@ -46,7 +54,6 @@ public class DefaultPlaylist implements Playlist
 	private int current = -1;
 
 
-
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.Playlist#add(MediaSource)
 	 */
@@ -58,6 +65,7 @@ public class DefaultPlaylist implements Playlist
 		
 		log.debug("Added " + mediaSource);
 		this.messageMediator.playlistChanged(ChangeEvent.OTHER, this.current);		
+		this.store();
 	}
 	
 	
@@ -72,6 +80,7 @@ public class DefaultPlaylist implements Playlist
 		
 		log.debug("Added " + playlist);
 		this.messageMediator.playlistChanged(ChangeEvent.OTHER, this.current);		
+		this.store();
 	}
 	
 	
@@ -86,6 +95,7 @@ public class DefaultPlaylist implements Playlist
 		
 		this.current = this.playlist.isEmpty() ? -1 : 0;
 		this.messageMediator.playlistChanged(ChangeEvent.OTHER, this.current);
+		this.store();
 	}
 	
 	
@@ -99,6 +109,7 @@ public class DefaultPlaylist implements Playlist
 		{
 			this.current++;
 			this.messageMediator.playlistChanged(ChangeEvent.CURRENT_CHANGED, this.current);
+			this.store();
 			return true;
 		}
 		else
@@ -118,6 +129,7 @@ public class DefaultPlaylist implements Playlist
 		{
 			this.current--;
 			this.messageMediator.playlistChanged(ChangeEvent.CURRENT_CHANGED, this.current);
+			this.store();
 			return true;
 		}
 		else
@@ -138,6 +150,7 @@ public class DefaultPlaylist implements Playlist
 
 		this.current = index;
 		this.messageMediator.playlistChanged(ChangeEvent.CURRENT_CHANGED, this.current);
+		this.store();
 	}
 
 	
@@ -156,6 +169,7 @@ public class DefaultPlaylist implements Playlist
 		if (this.current > this.playlist.size() - 1) this.current--;
 		
 		this.messageMediator.playlistChanged(ChangeEvent.OTHER, this.current);
+		this.store();
 	}
 	
 	/**
@@ -177,6 +191,26 @@ public class DefaultPlaylist implements Playlist
 		return Collections.unmodifiableList(this.playlist);
 	}
 	
+	/**
+	 * Stores the current setting of the playlist to the persistency service.
+	 */
+	private void store()
+	{
+		this.persistencyService.put("defaultPlaylist", "playlistContainer", new PlayListContainer(this.current, this.playlist));
+	}
+	
+	/**
+	 * Reads the current setting from the persistency service.
+	 */
+	@PostConstruct public void init()
+	{
+		final PlayListContainer container = (PlayListContainer) this.persistencyService.get("defaultPlaylist", "playlistContainer");
+		if (container != null)
+		{
+			this.playlist.addAll(container.playlist);
+			this.current = container.current;
+		}
+	}
 	
 	/**
 	 * @see java.lang.Object#toString()
@@ -194,4 +228,34 @@ public class DefaultPlaylist implements Playlist
 		return sb.append("]").toString();
 	}
 
+}
+
+/**
+ * Simple container class to store the current playlist
+ *
+ * @author thomas
+ */
+class PlayListContainer
+{
+	/**
+	 * The current
+	 */
+	final int current;
+	
+	/**
+	 * The playlist
+	 */
+	final List<MediaSource> playlist;
+	
+	/**
+	 * Constructor
+	 * 
+	 * @param current The current
+	 * @param playlist The playlist
+	 */
+	public PlayListContainer(final int current, final List<MediaSource> playlist)
+	{
+		this.current = current;
+		this.playlist = playlist;
+	}
 }

@@ -33,6 +33,16 @@ public interface PersistencyService
 	public Object get(String prefix, String key);
 	
 	/**
+	 * Checks whether a value is stored for the given key.
+	 * 
+	 * @param prefix The prefix for the key. 
+	 * @param key The key
+	 * 
+	 * @return True if a value is stored for that key, false otherwise.
+	 */
+	public boolean contains(String prefix, String key);
+	
+	/**
 	 * Returns all value that are stored for the given prefix.
 	 * 
 	 * @param prefix The prefix for the key. 

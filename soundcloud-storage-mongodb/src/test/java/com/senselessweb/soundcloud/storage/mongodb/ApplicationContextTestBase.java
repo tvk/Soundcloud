@@ -26,8 +26,7 @@ public class ApplicationContextTestBase
 	public final void setupSpringApplicationContext()
 	{
 		 this.context = new ClassPathXmlApplicationContext(
-				 "test-spring-datasource.xml", "soundcloud-strorage-applicationcontext.xml");
+				 "test-spring-datasource.xml", "soundcloud-storage-applicationcontext.xml");
 		 this.context.getBean(MongoTemplate.class).getDb().dropDatabase();
-		 
 	}
 }

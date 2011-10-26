@@ -8,7 +8,7 @@
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>classpath:spring/*.xml,classpath:soundcloud-library-applicationcontext.xml</param-value>
+			<param-value>classpath:spring/*.xml,classpath:soundcloud-library-applicationcontext.xml,classpath:soundcloud-storage-applicationcontext.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>		

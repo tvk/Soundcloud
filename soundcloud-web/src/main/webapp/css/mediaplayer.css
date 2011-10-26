@@ -66,7 +66,7 @@
 
 #playlist .playlistEntry div.title 
 {
-	width: 270px;
+	width: 255px;
 	height: 1.4em;
 	overflow: hidden;
 }
@@ -95,7 +95,7 @@
 
 #volume {
 	float: left;
-	width: 200px;
+	width: 195px;
 }
 
 #volume .volumeControlSlider,

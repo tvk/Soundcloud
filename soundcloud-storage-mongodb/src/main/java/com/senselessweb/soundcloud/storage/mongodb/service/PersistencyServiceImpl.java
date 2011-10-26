@@ -53,6 +53,15 @@ public class PersistencyServiceImpl implements PersistencyService
 	}
 	
 	/**
+	 * @see com.senselessweb.storage.PersistencyService#contains(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public boolean contains(String prefix, String key)
+	{
+		return this.get(prefix, key) != null;
+	}
+	
+	/**
 	 * @see com.senselessweb.storage.PersistencyService#getAll(java.lang.String)
 	 */
 	@Override

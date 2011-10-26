@@ -2,6 +2,8 @@ package com.senselessweb.soundcloud.domain.sources;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import com.senselessweb.soundcloud.util.IdentityUtils;
+
 /**
  * A media source represented by a stream.
  * 
@@ -62,6 +64,17 @@ public class StreamSource extends AbstractMediaSource
 	public int hashCode()
 	{
 		return HashCodeBuilder.reflectionHashCode(this, true);
+	}
+	
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (!(obj instanceof StreamSource)) return false;
+		final StreamSource other = (StreamSource) obj;
+		return IdentityUtils.areEqual(this.url, other.url);	
 	}
 
 }
