@@ -61,9 +61,15 @@ abstract class AbstractElementBridge
 	 */
 	protected void set(final String key, final Object value)
 	{
+		if (value.equals(this.persistencyService.get(this.getPrefix(), key))) return;
+		
 		log.debug("Setting [" + key + ":" + value + "] to " + this.getClass().getSimpleName() + " (Element: " + this.element + ")");
 		this.persistencyService.put(this.getPrefix(), key, value);
-		if (this.element != null) this.element.set(key, value);
+		
+		synchronized(this)
+		{
+			if (this.element != null) this.element.set(key, value);
+		}
 	}
 	
 	/**
