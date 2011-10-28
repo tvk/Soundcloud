@@ -139,6 +139,10 @@
 
 /* Balance */
 
+#balance {
+	margin: 20px 0;
+}
+
 #balance .balanceReset {
 	float: right;
 }

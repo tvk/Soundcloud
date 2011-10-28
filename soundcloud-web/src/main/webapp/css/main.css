@@ -1,8 +1,9 @@
 @font-face {
-    font-family: "Geostar";
-    font-style: normal;
-    font-weight: normal;
-    src: local("Geostar"), local("Geostar-Regular"), url("fonts/Geostar.woff") format("woff");
+	font-family: "Geostar";
+	font-style: normal;
+	font-weight: normal;
+	src: local("Geostar"), local("Geostar-Regular"),
+		url("fonts/Geostar.woff") format("woff");
 }
 
 * {
@@ -20,14 +21,17 @@ body {
 	height: 565px;
 }
 
+#mainPanel .ui-tabs-nav li a {
+	padding: 0.5em 3em;
+}
+
 #mainPanel .panel {
 	vertical-align: top;
 	background: rgba(0, 0, 0, 0.4);
 }
 
-.ui-widget-content.ui-tabs,
-.ui-widget-content.ui-tabs-panel {
-		background: none;
+.ui-widget-content.ui-tabs, .ui-widget-content.ui-tabs-panel {
+	background: none;
 }
 
 #leftPanel {
@@ -53,8 +57,22 @@ body {
 
 #mainPanel #tab-settings {
 	height: 500px;
+	padding: 1em 0;
+}
+
+#mainPanel #tab-settings .tab-settings-content {
+	border: none;
 }
 
 #mainPanel #tabpanel-settings {
 	height: 100%;
+}
+
+#mainPanel #tab-settings .title {
+	background: -moz-linear-gradient(center top, #000000, #1E7EAC, #000000);
+	font-weight: bold;
+	margin: 5px 0;
+	opacity: 0.6;
+	padding: 9px;
+	width: 500px;
 }

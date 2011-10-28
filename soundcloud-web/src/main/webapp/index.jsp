@@ -76,25 +76,27 @@
 							<li><a href="#tab-radio">Radio</a></li>
 							<li><a href="#tab-settings">Settings</a></li>
 						</ul>
-						<div id="tab-medialibrary"></div>
-						<div id="tab-radio"></div>
 						<div id="tab-settings">
-							<div id="tabpanel-settings">
+							<div id="tabpanel-settings" class="tab-settings-content">
 								<ul>
 									<li><a href="#tab-settings-audio">Audio</a></li>
 									<li><a href="#tab-settings-system">System</a></li>
 								</ul>							
-								<div id="tab-settings-audio">
-									<span>Equalizer</span>
+								<div id="tab-settings-audio" class="tab-settings-content">
+									<div class="title">Equalizer</div>
+									<div style="clear:both;"></div>
 									<div id="equalizer"></div>
 									<div style="clear:both;"></div>
-									<span>Balance</span>
+									<div class="title">Balance</div>
+									<div style="clear:both;"></div>
 									<div id="balance"></div>
 								</div>
 								<div id="tab-settings-system">
 								</div>
 							</div>
 						</div>
+						<div id="tab-medialibrary"></div>
+						<div id="tab-radio"></div>
 					</div>
 				</td>
 				

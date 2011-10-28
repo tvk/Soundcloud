@@ -21,7 +21,7 @@ Playlist.prototype.initPlaylistControl= function(data)
 				'<div class="playlistEntry' + (data[i].current ? ' current' : '') + '">' + 
 					'<div class="playlist-delete"><button value="' + i + '" id="playlist-delete-' + i + '"/></div>' + 
 					'<div class="playlist-play"><button value="' + i + '" id="playlist-play-' + i + '"/></div>' + 
-					'<div class="title">' + (i+1) + ' ' + data[i].title + '</div>' + 
+					'<div class="title">' + (i+1) + '&nbsp;&nbsp;&nbsp;' + data[i].title + '</div>' + 
 				'</div><div style="clear:both;"></div>');
 		
 		
