@@ -22,6 +22,7 @@
 		
 		<!-- Media Player -->
 		<script type="text/javascript" src="js/mediaplayer/controls/Display.js"></script>
+		<script type="text/javascript" src="js/mediaplayer/controls/Balance.js"></script>
 		<script type="text/javascript" src="js/mediaplayer/controls/Equalizer.js"></script>
 		<script type="text/javascript" src="js/mediaplayer/controls/PlaybackControl.js"></script>
 		<script type="text/javascript" src="js/mediaplayer/controls/Playlist.js"></script>
@@ -45,6 +46,7 @@
 
 				// Init the settings panels
 				var equalizer = new Equalizer($('#equalizer'));
+				var balance = new Balance($('#balance'));
 				$("#tabpanel-settings").tabs();
 			});
 		
@@ -85,6 +87,9 @@
 								<div id="tab-settings-audio">
 									<span>Equalizer</span>
 									<div id="equalizer"></div>
+									<div style="clear:both;"></div>
+									<span>Balance</span>
+									<div id="balance"></div>
 								</div>
 								<div id="tab-settings-system">
 								</div>

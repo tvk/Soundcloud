@@ -118,6 +118,11 @@
 }
 
 
+#balance, #equalizer {
+	width: 500px;
+}
+
+
 /* Equalizer */
 
 #equalizer {
@@ -130,3 +135,21 @@
 	float: left; 
 	margin: 3%;
 }
+
+
+/* Balance */
+
+#balance .balanceReset {
+	float: right;
+}
+
+#balance .balanceReset .ui-button-text {
+	padding: 0.1em 1em 0.1em 2.1em;
+}
+
+#balance .balanceSlider {
+	margin-top: 4px;
+	width: 83%;
+	float: left;
+}
+

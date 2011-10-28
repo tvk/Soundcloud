@@ -7,6 +7,7 @@ import com.senselessweb.soundcloud.domain.sources.FileSource;
 import com.senselessweb.soundcloud.domain.sources.MediaSource;
 import com.senselessweb.soundcloud.domain.sources.StreamSource;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.EqualizerBridge;
+import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.PanoramaBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.VolumeBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.pipeline.FileSrcPipeline;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.pipeline.StreamSourcePipeline;
@@ -33,6 +34,11 @@ public class PipelineBuilder
 	@Autowired EqualizerBridge equalizer;
 	
 	/**
+	 * The panorama to use
+	 */
+	@Autowired PanoramaBridge panoramaBridge;
+	
+	/**
 	 * The messageListener to use
 	 */
 	@Autowired MessageMediator messageMediator;
@@ -51,12 +57,12 @@ public class PipelineBuilder
 		if (mediaSource instanceof FileSource)
 		{
 			return new FileSrcPipeline(((FileSource) mediaSource).getFile(), 
-					this.volume, this.equalizer, this.messageMediator);
+					this.volume, this.equalizer, this.panoramaBridge, this.messageMediator);
 		}
 		else if (mediaSource instanceof StreamSource)
 		{
 			return new StreamSourcePipeline(((StreamSource) mediaSource).getUrl(), 
-					this.volume, this.equalizer, this.messageMediator);
+					this.volume, this.equalizer, this.panoramaBridge, this.messageMediator);
 		}
 		else
 		{

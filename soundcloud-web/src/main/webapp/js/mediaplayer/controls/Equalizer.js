@@ -30,7 +30,7 @@ Equalizer.prototype.initEqualizer = function(data)
 	for (var i = 0; i < 10; i++)
 	{
 		this.equalizerControlElement.append('<span class="band band' + i + '"></span>');
-		$('.band' + i, equalizerControlElement).slider({
+		$('.band' + i, this.equalizerControlElement).slider({
 			value: data['BAND' + i],
 			min: -12,
 			max: 24,

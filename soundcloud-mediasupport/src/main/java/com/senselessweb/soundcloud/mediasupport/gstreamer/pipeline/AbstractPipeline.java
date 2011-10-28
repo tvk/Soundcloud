@@ -15,6 +15,7 @@ import org.gstreamer.TagList;
 import com.google.common.collect.Sets;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.PipelineBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.EqualizerBridge;
+import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.PanoramaBridge;
 import com.senselessweb.soundcloud.mediasupport.gstreamer.elements.VolumeBridge;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer.State;
 import com.senselessweb.soundcloud.mediasupport.service.MessageListenerService;
@@ -41,25 +42,31 @@ public abstract class AbstractPipeline implements PipelineBridge
 	protected final Pipeline pipeline;
 	
 	/**
-	 * The current volume control
+	 * The volume control
 	 */
 	private final VolumeBridge volume;
 	
 	/**
-	 * The current equalizer control
+	 * The equalizer control
 	 */
 	private final EqualizerBridge equalizer;
+	
+	/**
+	 * The audiopanorama control
+	 */
+	private final PanoramaBridge panoramaBridge;
 	
 	/**
 	 * Constructor
 	 * 
 	 * @param pipeline The {@link Pipeline} to use.
-	 * @param volume The current {@link VolumeControl}.
-	 * @param equalizer The current {@link EqualizerBridge}.
+	 * @param volume The {@link VolumeControl}.
+	 * @param equalizer The {@link EqualizerBridge}.
+	 * @param panoramaBridge The {@link PanoramaBridge}. 
 	 * @param messageListener The {@link MessageListenerService}.
 	 */
 	public AbstractPipeline(final Pipeline pipeline, final VolumeBridge volume, final EqualizerBridge equalizer, 
-			final MessageListenerService messageListener)
+			final PanoramaBridge panoramaBridge, final MessageListenerService messageListener)
 	{
 		this.pipeline = pipeline;
 		
@@ -68,6 +75,9 @@ public abstract class AbstractPipeline implements PipelineBridge
 		
 		this.equalizer = equalizer;
 		this.equalizer.initElement(this.pipeline.getElementByName("equalizer"));
+		
+		this.panoramaBridge = panoramaBridge;
+		this.panoramaBridge.initElement(this.pipeline.getElementByName("audiopanorama"));
 		
 		final BusMessageListener busMessageListener = new BusMessageListener(messageListener);
 		this.pipeline.getBus().connect(busMessageListener.errorMessageListener);
@@ -93,6 +103,7 @@ public abstract class AbstractPipeline implements PipelineBridge
 				"decodebin2 buffer-duration=3 ! " +
 				"audioconvert ! " +
 				"equalizer-10bands name=equalizer ! " +
+				"audiopanorama name=audiopanorama ! " +
 				"volume name=volume ! " +
 				"alsasink");
 	}
