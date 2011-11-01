@@ -126,6 +126,19 @@
 	width: 100%;
 }
 
+#tabpanel #tab-radio .create-station-container 
+{
+	padding: 10px;
+}
+		
+#add-dialog input,
+#add-dialog label
+{
+	float: right;
+	margin: 5px;
+}
+
+
 
 /* Local library specific */
 
