@@ -9,6 +9,7 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -107,6 +108,17 @@ public class RadioLibraryItem extends AbstractLibraryItem implements Serializabl
 				finally
 				{
 					isr.close();
+				}
+			}
+			else if (contentType.contains("audio/x-scpls"))
+			{
+				final Properties properties = new Properties();
+				properties.load(conn.getInputStream());
+				
+				for (final Object key : properties.keySet())
+				{
+					if (key.toString().toLowerCase().startsWith("file"))
+						result.add(properties.get(key).toString());
 				}
 			}
 			else
