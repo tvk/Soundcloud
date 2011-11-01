@@ -52,6 +52,13 @@ public interface PipelineBridge
 	 * @return True if this source should be resetted in error case, false otherwise.
 	 */
 	public boolean resetInErrorCase();
+	
+	/**
+	 * Returns whether the current pipeline can be set to {@link State#PAUSED} state.
+	 * 
+	 * @return True if this pipeline can be set to pause state, false otherwise.
+	 */
+	public boolean isPausable();
 
 
 	

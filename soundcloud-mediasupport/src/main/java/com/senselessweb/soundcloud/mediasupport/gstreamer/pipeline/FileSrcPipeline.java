@@ -41,4 +41,13 @@ public class FileSrcPipeline extends AbstractPipeline
 	{
 		return false;
 	}
+	
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.gstreamer.PipelineBridge#isPausable()
+	 */
+	@Override
+	public boolean isPausable()
+	{
+		return true;
+	}
 }

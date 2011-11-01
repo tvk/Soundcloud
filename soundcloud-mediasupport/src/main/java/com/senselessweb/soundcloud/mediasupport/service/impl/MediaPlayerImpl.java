@@ -102,8 +102,24 @@ public class MediaPlayerImpl implements MediaPlayer, MessageListenerService
 	{
 		if (this.pipeline != null) 
 		{
-			this.pipeline.pause();
-			this.messageMediator.stateChanged(State.PAUSED);
+			if (this.pipeline.isPausable())
+			{
+				if (this.pipeline.getState() == State.PAUSED)
+				{
+					// Restart playback if pipeline is already paused.
+					this.play();
+				}
+				else
+				{
+					this.pipeline.pause();
+					this.messageMediator.stateChanged(State.PAUSED);
+				}
+			}
+			else
+			{
+				log.debug("Current pipeline can't be set to pause state, redirecting to stop()");
+				this.stop();
+			}
 		}
 	}
 

@@ -40,4 +40,13 @@ public class StreamSourcePipeline extends AbstractPipeline
 		return true;
 	}
 	
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.gstreamer.PipelineBridge#isPausable()
+	 */
+	@Override
+	public boolean isPausable()
+	{
+		return false;
+	}
+	
 }
