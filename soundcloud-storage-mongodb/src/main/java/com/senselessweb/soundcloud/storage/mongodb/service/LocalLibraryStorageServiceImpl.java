@@ -64,6 +64,7 @@ public class LocalLibraryStorageServiceImpl implements LocalLibraryStorageServic
 			return localFile;
 		
 		final LocalFile newLocalFile = LocalFile.create(input.getAbsolutePath(), FileInformationsReader.read(input));
+		this.mongoTemplate.remove(new Query(Criteria.where("path").is(input.getAbsolutePath())), collectionName);
 		this.mongoTemplate.insert(newLocalFile, collectionName);
 		this.cachedKeywords.clear();
 		return this.mongoTemplate.findOne(
