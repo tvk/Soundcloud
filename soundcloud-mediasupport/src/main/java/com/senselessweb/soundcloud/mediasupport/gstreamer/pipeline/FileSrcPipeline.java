@@ -28,8 +28,7 @@ public class FileSrcPipeline extends AbstractPipeline
 	public FileSrcPipeline(final File file, final VolumeBridge volume, final EqualizerBridge equalizer, 
 			final PanoramaBridge panoramaBridge, final MessageListenerService messageListener)
 	{
-		super(createDefaultPipeline("filesrc"), volume, equalizer, panoramaBridge, messageListener);
-		this.pipeline.getElementByName("src").set("location", file.getAbsolutePath());
+		super(createDefaultPipeline("filesrc location=file.getAbsolutePath()"), volume, equalizer, panoramaBridge, messageListener);
 	}
 	
 	
