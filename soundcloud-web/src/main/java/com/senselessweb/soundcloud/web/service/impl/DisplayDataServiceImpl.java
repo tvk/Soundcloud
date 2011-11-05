@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.senselessweb.soundcloud.domain.library.LocalFile;
 import com.senselessweb.soundcloud.domain.sources.MediaSource;
 import com.senselessweb.soundcloud.library.service.local.LocalLibraryService;
+import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer.State;
 import com.senselessweb.soundcloud.web.service.DisplayDataService;
 
@@ -40,7 +41,13 @@ public class DisplayDataServiceImpl extends AbstractMessageAdapter implements Di
 	 * The localLibraryService
 	 */
 	@Autowired LocalLibraryService localLibraryService;
-			
+	
+	/**
+	 * The mediaplayer
+	 */
+	@Autowired MediaPlayer mediaplayer;
+	
+	
 	/**
 	 * The current display data
 	 */
@@ -57,6 +64,7 @@ public class DisplayDataServiceImpl extends AbstractMessageAdapter implements Di
 	@Override
 	public DisplayData getDisplayData()
 	{
+		currentDisplayData.set("position", String.valueOf(this.mediaplayer.getPosition()));
 		return currentDisplayData;
 	}
 
@@ -75,6 +83,9 @@ public class DisplayDataServiceImpl extends AbstractMessageAdapter implements Di
 		{
 			throw new RuntimeException(e);
 		}
+		
+		// Always resend the current position to keep the frontend up2date
+		currentDisplayData.set("position", String.valueOf(this.mediaplayer.getPosition()));
 		return currentDisplayData;
 	}
 	
@@ -103,6 +114,7 @@ public class DisplayDataServiceImpl extends AbstractMessageAdapter implements Di
 	public void stateChanged(final State newState) 
 	{  
 		if (newState == State.STOPPED) currentDisplayData.clear();
+		currentDisplayData.set("state", newState.toString());
 		this.notifyInternal();
 	}
 
@@ -114,6 +126,17 @@ public class DisplayDataServiceImpl extends AbstractMessageAdapter implements Di
 	{
 		final LocalFile localFile = this.localLibraryService.getFile(source);
 		currentDisplayData.set("source", localFile != null ? localFile.getShortTitle() : source.getTitle());
+		currentDisplayData.set("isSeekSupported", String.valueOf(this.mediaplayer.isSeekSupported()));
+		this.notifyInternal();
+	}
+	
+	/**
+	 * @see com.senselessweb.soundcloud.web.service.impl.AbstractMessageAdapter#durationChanged(long)
+	 */
+	@Override
+	public void durationChanged(final long duration)
+	{
+		currentDisplayData.set("duration", String.valueOf(duration));
 		this.notifyInternal();
 	}
 	

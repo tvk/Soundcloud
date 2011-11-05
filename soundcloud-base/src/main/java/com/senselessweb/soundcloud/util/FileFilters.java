@@ -24,7 +24,7 @@ public class FileFilters
 		@Override
 		public boolean accept(final File pathname)
 		{
-			return pathname != null && pathname.isDirectory();
+			return pathname != null && pathname.isDirectory() && !pathname.getName().equals("System Volume Information");
 		}
 	};
 

@@ -87,4 +87,13 @@ public class EventQueueImpl extends AbstractMessageAdapter implements EventQueue
 		this.queue.add(new Event("playlistChanged", "event", event.name(), "current", String.valueOf(current)));
 	}
 	
+	/**
+	 * @see com.senselessweb.soundcloud.web.service.impl.AbstractMessageAdapter#durationChanged(long)
+	 */
+	@Override
+	public void durationChanged(final long duration)
+	{
+		this.queue.add(new Event("durationChanged", "duration", String.valueOf(duration)));
+	}
+	
 }

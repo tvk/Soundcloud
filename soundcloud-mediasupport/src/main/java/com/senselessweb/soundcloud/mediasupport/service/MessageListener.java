@@ -48,6 +48,12 @@ public interface MessageListener
 	 */
 	public void newSource(MediaSource source);
 	
+	/**
+	 * Is called as soon as the duration of a new song is known.
+	 * 
+	 * @param duration The duration in seconds.
+	 */
+	public void durationChanged(long duration);
 	
 	/**
 	 * Is called when the playlist changes.

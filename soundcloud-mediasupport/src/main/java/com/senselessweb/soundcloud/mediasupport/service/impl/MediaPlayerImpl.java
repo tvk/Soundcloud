@@ -132,6 +132,41 @@ public class MediaPlayerImpl implements MediaPlayer, MessageListenerService
 		return this.pipeline != null ? this.pipeline.getState() : State.STOPPED;
 	}
 	
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MediaPlayer#getDuration()
+	 */
+	@Override
+	public long getDuration()
+	{
+		return this.pipeline == null ? -1 : this.pipeline.getDuration();
+	}
+
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MediaPlayer#getPosition()
+	 */
+	@Override
+	public long getPosition()
+	{
+		return this.pipeline == null ? -1 : this.pipeline.getPosition();
+	}
+	
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MediaPlayer#gotoPosition(long)
+	 */
+	@Override
+	public void gotoPosition(final long position)
+	{
+		if (this.pipeline != null) this.pipeline.gotoPosition(position);
+	}
+	
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MediaPlayer#isSeekSupported()
+	 */
+	@Override
+	public boolean isSeekSupported()
+	{
+		return this.pipeline != null && this.pipeline.isSeekSupported();
+	}
 
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListenerService#error(java.lang.String)
@@ -203,5 +238,11 @@ public class MediaPlayerImpl implements MediaPlayer, MessageListenerService
 	 */
 	@Override
 	public void playlistChanged(ChangeEvent event, int current) { /* unused */ }
+
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#durationChanged(long)
+	 */
+	@Override
+	public void durationChanged(long duration) { /* unused */ }
 
 }

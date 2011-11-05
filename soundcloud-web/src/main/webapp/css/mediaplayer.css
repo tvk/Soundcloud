@@ -1,4 +1,9 @@
 
+@font-face {
+	font-family: "Digit";
+	src: url("fonts/Digital.woff") format("woff");
+}
+
 /* The display */
 
 #display
@@ -8,6 +13,7 @@
 } 
 
 #display #display-title,
+#display #timer,
 #display #display-genre,
 #display #display-bitrate
 {
@@ -19,16 +25,32 @@
 
 #display #display-title
 {
-	width: 85%;
+	width: 94%;
 	font-weight: bold;
 	min-height: 1.4em;
 }
 
 #display #display-genre,
+#display #display-bitrate,
+#display #timer
+{
+	float:left;
+	height: 27px;
+}
+
+#display #display-genre
+{
+	width: 42%;
+}
 #display #display-bitrate
 {
-	width: 40%;
-	float:left;
+	width: 20%;
+}
+#display #timer
+{
+	width: 22%;
+	font-family: 'Digit';
+	font-size: 21px;
 }
 
 /* Playlist */

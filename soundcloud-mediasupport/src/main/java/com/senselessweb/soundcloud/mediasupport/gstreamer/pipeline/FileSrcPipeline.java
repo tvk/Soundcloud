@@ -50,4 +50,13 @@ public class FileSrcPipeline extends AbstractPipeline
 	{
 		return true;
 	}
+	
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.gstreamer.PipelineBridge#isSeekSupported()
+	 */
+	@Override
+	public boolean isSeekSupported()
+	{
+		return true;
+	}
 }

@@ -102,6 +102,16 @@ public class MessageMediator implements MessageListenerService
 	}
 
 	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#durationChanged(long)
+	 */
+	@Override
+	public void durationChanged(long duration)
+	{
+		for (final MessageListener listener : this.allMessageListeners())
+			listener.durationChanged(duration);
+	}
+	
+	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListenerService#playlistChanged(ChangeEvent, int)
 	 */
 	@Override
@@ -120,7 +130,7 @@ public class MessageMediator implements MessageListenerService
 		for (final MessageListener listener : this.allMessageListeners())
 			listener.endOfStream();
 	}
-	
+		
 	/**
 	 * Returns all {@link MessageListener}s
 	 * 
@@ -133,5 +143,6 @@ public class MessageMediator implements MessageListenerService
 		all.addAll(this.messageListenerServices);
 		return all;
 	}
+
 
 }

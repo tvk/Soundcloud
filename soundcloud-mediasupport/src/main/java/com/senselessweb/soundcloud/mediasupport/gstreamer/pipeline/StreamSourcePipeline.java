@@ -49,4 +49,13 @@ public class StreamSourcePipeline extends AbstractPipeline
 		return false;
 	}
 	
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.gstreamer.PipelineBridge#isSeekSupported()
+	 */
+	@Override
+	public boolean isSeekSupported()
+	{
+		return false;
+	}
+	
 }

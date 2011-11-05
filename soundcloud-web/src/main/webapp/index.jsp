@@ -9,6 +9,7 @@
 		<script type="text/javascript" src="js/libraries/jquery-ui-1.8.16.custom.min.js"></script>
 		<script type="text/javascript" src="js/libraries/jquery.scrollTo-1.4.2-min.js"></script>
 		<script type="text/javascript" src="js/libraries/jquery.includeMany-1.2.0.js"></script>
+		<script type="text/javascript" src="js/libraries/jquery.timer.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/dark-hive/jquery-ui-1.8.16.custom.css">
 		
 		<!-- CSS -->
@@ -22,13 +23,15 @@
 		
 		<!-- Media Player -->
 		<script type="text/javascript" src="js/mediaplayer/controls/Display.js"></script>
-		<script type="text/javascript" src="js/mediaplayer/controls/Balance.js"></script>
-		<script type="text/javascript" src="js/mediaplayer/controls/Equalizer.js"></script>
 		<script type="text/javascript" src="js/mediaplayer/controls/PlaybackControl.js"></script>
 		<script type="text/javascript" src="js/mediaplayer/controls/Playlist.js"></script>
 		<script type="text/javascript" src="js/mediaplayer/controls/VolumeControl.js"></script>
 		<script type="text/javascript" src="js/mediaplayer/MessageMediator.js"></script>
 		<script type="text/javascript" src="js/mediaplayer/MediaPlayer.js"></script>
+		
+		<!-- Settings -->
+		<script type="text/javascript" src="js/mediaplayer/controls/Balance.js"></script>
+		<script type="text/javascript" src="js/mediaplayer/controls/Equalizer.js"></script>
 				
 		<!-- Init -->
 		<script>

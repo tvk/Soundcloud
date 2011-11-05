@@ -85,4 +85,10 @@ public class AbstractMessageAdapter implements MessageListener
 	@Override
 	public void endOfStream() { /* unused */ }
 
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#durationChanged(long)
+	 */
+	@Override
+	public void durationChanged(long duration) { /* unused */ }
+
 }

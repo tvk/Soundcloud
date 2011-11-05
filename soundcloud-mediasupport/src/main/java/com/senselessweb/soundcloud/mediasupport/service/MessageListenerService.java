@@ -12,5 +12,7 @@ import com.senselessweb.soundcloud.mediasupport.service.impl.MessageMediator;
  */
 public interface MessageListenerService extends MessageListener
 {
+
+
 	// Marker interface
 }

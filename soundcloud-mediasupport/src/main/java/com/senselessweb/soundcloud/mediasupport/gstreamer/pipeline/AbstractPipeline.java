@@ -2,7 +2,9 @@ package com.senselessweb.soundcloud.mediasupport.gstreamer.pipeline;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gstreamer.Bus;
@@ -57,6 +59,16 @@ public abstract class AbstractPipeline implements PipelineBridge
 	private final PanoramaBridge panoramaBridge;
 	
 	/**
+	 * The messageListener
+	 */
+	final MessageListenerService messageListener;
+	
+	/**
+	 * The duration of this pipeline.
+	 */
+	private long duration = -1;
+	
+	/**
 	 * Constructor
 	 * 
 	 * @param pipeline The {@link Pipeline} to use.
@@ -69,6 +81,7 @@ public abstract class AbstractPipeline implements PipelineBridge
 			final PanoramaBridge panoramaBridge, final MessageListenerService messageListener)
 	{
 		this.pipeline = pipeline;
+		this.messageListener = messageListener;
 		
 		this.volume = volume;
 		this.volume.initElement(this.pipeline.getElementByName("volume"));
@@ -84,7 +97,7 @@ public abstract class AbstractPipeline implements PipelineBridge
 		this.pipeline.getBus().connect(busMessageListener.warnMessageListener);
 		this.pipeline.getBus().connect(busMessageListener.infoMessageListener);
 		this.pipeline.getBus().connect(busMessageListener.tagMessageListener);
-		this.pipeline.getBus().connect(busMessageListener.eosMessageListener);		
+		this.pipeline.getBus().connect(busMessageListener.eosMessageListener);	
 	}
 	
 	/**
@@ -114,8 +127,46 @@ public abstract class AbstractPipeline implements PipelineBridge
 	@Override
 	public void play()
 	{
+		final org.gstreamer.State previousState = this.pipeline.getState();
+		if (previousState == org.gstreamer.State.PLAYING) return;
+		
 		log.debug("Playing " + this);
 		this.pipeline.play();
+		
+		if (previousState != org.gstreamer.State.PAUSED) this.queryDuration();
+	}
+
+	/**
+	 * Queries the duration and notifies the listeners. Should be called after pipeline.play() is called. 
+	 */
+	private void queryDuration()
+	{
+		final long startTime = System.currentTimeMillis();
+		while (true)
+		{
+			final long duration = AbstractPipeline.this.pipeline.queryDuration(TimeUnit.SECONDS); 
+			if (duration > 0)
+			{
+				// If duration is successfully found, notify the listeners and break
+				this.duration = duration;
+				AbstractPipeline.this.messageListener.durationChanged(duration);
+				break;
+			}
+			else if (System.currentTimeMillis() > startTime + 1000)
+			{
+				// .. but wait outmost one second
+				break;
+			}
+			
+			try
+			{
+				Thread.sleep(20);
+			} 
+			catch (final InterruptedException e)
+			{
+				throw new RuntimeException("Error while querying duration", e);
+			}
+		}
 	}
 	
 	/**
@@ -138,6 +189,33 @@ public abstract class AbstractPipeline implements PipelineBridge
 		this.pipeline.stop();
 	}
 	
+	
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.gstreamer.PipelineBridge#getDuration()
+	 */
+	@Override
+	public long getDuration()
+	{
+		return this.duration;
+	}
+	
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.gstreamer.PipelineBridge#getPosition()
+	 */
+	@Override
+	public long getPosition()
+	{
+		return this.pipeline.queryPosition(TimeUnit.SECONDS);
+	}
+	
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.gstreamer.PipelineBridge#gotoPosition(long)
+	 */
+	@Override
+	public void gotoPosition(long position)
+	{
+		this.pipeline.seek(position, TimeUnit.SECONDS);
+	}
 	
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.gstreamer.PipelineBridge#getState()
@@ -170,7 +248,7 @@ public abstract class AbstractPipeline implements PipelineBridge
  */
 class BusMessageListener  
 {
-	
+
 	/**
 	 * The messageListener
 	 */
@@ -251,8 +329,8 @@ class BusMessageListener
 		
 		@Override
 		public void tagsFound(final GstObject source, final TagList tagList)
-		{
-			AbstractPipeline.log.info("Tags found : " + tagList);		
+		{			
+			AbstractPipeline.log.info("Tags found : " + StringUtils.abbreviate(tagList.toString(), 400));		
 			
 			for (final String tag: Sets.intersection(this.tagsToFilter, new HashSet<String>(tagList.getTagNames())))
 			{

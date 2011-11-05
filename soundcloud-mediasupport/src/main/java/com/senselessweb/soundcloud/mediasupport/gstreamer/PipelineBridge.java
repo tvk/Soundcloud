@@ -15,7 +15,7 @@ import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer.State;
  * @author thomas
  *
  */
-public interface PipelineBridge
+public interface PipelineBridge 
 {
 
 	/**
@@ -23,18 +23,46 @@ public interface PipelineBridge
 	 */
 	public void play();
 
-	
 	/**
 	 * Stops the playback.
 	 */
 	public void stop();
 
-	
 	/**
 	 * Pauses the playback.
 	 */
 	public void pause();
 	
+	/**
+	 * Returns the duration of the underlying source in seconds.
+	 * 
+	 * Important: This method should only be called after play() is called. 
+	 * 
+	 * @return The duration of the underlying source in seconds or -1 if the duration is unknown.
+	 */
+	public long getDuration();
+	
+	/**
+	 * Returns the position inside the underlying source in seconds.
+	 * 
+	 * @return The position inside the underlying source in seconds.
+	 */
+	public long getPosition();
+
+	/**
+	 * Returns whether seeking is supported by the underlying source.
+	 * 
+	 * @return True if seeking is supported, false otherwise.
+	 */
+	public boolean isSeekSupported();
+	
+	/**
+	 * Jumps to a given position in the underlying source. Use isSeekSupported() to find out
+	 * if seeking is supported.
+	 * 
+	 * @param position The position to jump to (in seconds)
+	 */
+	public void gotoPosition(long position);	
 	
 	/**
 	 * Returns the current playback state
