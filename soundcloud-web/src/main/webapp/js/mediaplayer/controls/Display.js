@@ -45,7 +45,6 @@ function Display(displayElement)
 	this.displayElement.append('<div id="display-bitrate"></div><div style="clear:both;"></div>');
 
 	this.displayElement.append('<div id="seekControl"></div>');
-	$('#seekControl', this.displayElement).slider({'disabled' : true});
 
 	$.getJSON('controller/displayData/getInitialData', function(data) {
 		_this.setData(data);

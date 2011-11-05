@@ -65,8 +65,8 @@ PlaybackControl.prototype.appendButton = function(command, icon)
  */
 PlaybackControl.prototype.appendCheckbox = function(command, icon, initalState)
 {
-	this.playbackControlElement.append('<input type="radio" name="state" id="button-' + command + '" ' + (initalState ? 'checked="true"' : '') + '/>');
 	this.playbackControlElement.append('<label for="button-' + command + '" class="playback-control-button"></label>');
+	this.playbackControlElement.append('<input type="radio" name="state" id="button-' + command + '" ' + (initalState ? 'checked="true"' : '') + '/>');
 
 	$('#button-' + command, this.playbackControlElement).button({icons: {primary: icon}, text: false}).click(function(evt) {
 			if (evt.originalEvent != undefined)

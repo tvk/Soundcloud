@@ -69,7 +69,6 @@
 					<div id="playback"></div><div id="volume"></div>
 					<div style="clear:both;"></div><hr/>
 					<div id="playlist"></div>
-					<div style="clear:both;"></div><hr/>
 				</td>
 		
 				<td id="rightPanel" class="panel">

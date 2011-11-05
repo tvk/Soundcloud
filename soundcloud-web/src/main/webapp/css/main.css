@@ -7,6 +7,16 @@
 		url("fonts/Geostar.woff") format("woff");
 }
 
+
+.ui-slider-horizontal {
+    height: 0.5em;
+}
+
+.ui-slider-horizontal .ui-slider-handle {
+    width: 0.9em;
+    height: 0.9em;
+}
+
 * {
 	position: relative;
 }
@@ -16,6 +26,11 @@ body {
 		repeat;
 	font-size: 10px;
 }
+
+hr {
+	color: #111111;
+	background-color: #111111;
+} 
 
 #mainPanel {
 	margin: auto;
@@ -37,6 +52,8 @@ body {
 
 #leftPanel {
 	width: 415px;
+	border: 1px solid #555555;
+	border-radius: 6px;
 }
 
 #rightPanel {

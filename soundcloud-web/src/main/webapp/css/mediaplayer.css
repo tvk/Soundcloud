@@ -18,7 +18,7 @@
 #display #display-bitrate
 {
 	background: #000;
-	margin: 5px;
+	margin: 1px 5px;
 	padding: 5px;
 	position: relative;
 }
@@ -57,6 +57,14 @@
 {
 	margin: 4px 11px;
 }
+
+#display #seekControl .ui-slider-range-min
+{
+	background: #fff;
+	opacity: 0.6;
+}
+
+
 
 /* Playlist */
 
