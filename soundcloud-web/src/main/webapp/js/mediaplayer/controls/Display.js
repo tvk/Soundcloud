@@ -25,6 +25,11 @@ var duration;
 var state;
 
 /**
+ * Indicates that the user is current using the seek slider. No need to update the slider programatically.
+ */
+var isSeeking;
+
+/**
  * Constructor
  * 
  * @param displayElement The display element
@@ -37,8 +42,11 @@ function Display(displayElement)
 	this.displayElement.append('<div id="display-title"></div><div style="clear:both;"></div>');
 	this.displayElement.append('<div id="timer"></div>');
 	this.displayElement.append('<div id="display-genre"></div>');
-	this.displayElement.append('<div id="display-bitrate"></div>');
-	
+	this.displayElement.append('<div id="display-bitrate"></div><div style="clear:both;"></div>');
+
+	this.displayElement.append('<div id="seekControl"></div>');
+	$('#seekControl', this.displayElement).slider({'disabled' : true});
+
 	$.getJSON('controller/displayData/getInitialData', function(data) {
 		_this.setData(data);
 		_this.waitForData();
@@ -84,29 +92,49 @@ Display.prototype.setData = function(data)
 		this.lastKnownPosition = data.position;
 		this.lastPositionUpdate = new Date().getTime();
 	}
-	if (data.duration != undefined) this.duration = data.duration;
+	if (data.duration != undefined) this.updateDuration(data.duration);
 	
 	// Update the current state
 	if (data.state != undefined) this.state = data.state;
 };
 
 /**
- * Starts the timer.
+ * Starts the timers.
  */
 Display.prototype.startTimer = function()
 {
 	var _this = this; 
+	
+	// The timer to update the clock display
 	$.timer(1000, function (timer) {
 		if (_this.state == 'PLAYING') 
 		{
 			var dt = new Date().getTime() - _this.lastPositionUpdate; 
-			_this.updateTimer(parseInt(parseInt(_this.lastKnownPosition) + dt/1000));
+			var position = parseInt(parseInt(_this.lastKnownPosition) + dt/1000);
+			_this.updateTimer(position);
 		}
 		else if (_this.state == 'STOPPED')
 		{
 			_this.updateTimer(0);
 		}
 	});
+	
+	// The timer to update the seek slider
+	$.timer(500, function (timer) {
+		if (_this.duration > 0 && _this.isSeeking != true)
+		{
+			if (_this.state == 'PLAYING') 
+			{
+				var dt = new Date().getTime() - _this.lastPositionUpdate; 
+				$('#seekControl', this.displayElement).slider({'value' : (_this.lastKnownPosition * 1000 + dt)});
+			}
+			else if (_this.state == 'STOPPED')
+			{
+				_this.updateTimer(0);
+			}
+		}
+	});
+	
 };
 
 /**
@@ -124,5 +152,45 @@ Display.prototype.updateTimer = function(time)
 	$('#timer', this.displayElement).html(formattedTime);
 };
 
-
-
+/**
+ * Recreates the duration slider whenever the duration changes.
+ * 
+ * @param newDuration The new duration.
+ */
+Display.prototype.updateDuration = function(newDuration) 
+{
+	if (newDuration == this.duration) return;
+	this.duration = newDuration;
+	var _this = this;
+	
+	if (this.duration <= 0)
+	{
+		$('#seekControl', this.displayElement).slider({
+			value : 0,
+			range: "min",
+			disabled : true
+		});
+	}
+	else
+	{
+		$('#seekControl', this.displayElement).slider({
+			disabled : false,
+			range: "min",
+			min: 0,
+			max: this.duration * 1000,
+			step: 1,
+			change: function(event, ui) {
+				if (event.originalEvent != undefined)
+				{
+					$.ajax('controller/playback/seek?position=' + parseInt(ui.value / 1000));
+				}
+			},
+			start: function(event, ui) {
+				if (event.originalEvent != undefined) _this.isSeeking = true; 
+			}, 
+			stop: function(event, ui) {
+				if (event.originalEvent != undefined) _this.isSeeking = false;
+			} 
+		});		
+	}
+};

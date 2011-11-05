@@ -56,6 +56,13 @@ public interface MessageListener
 	public void durationChanged(long duration);
 	
 	/**
+	 * Is called when the position in the current stream changes.
+	 * 
+	 * @param position The new position in seconds.
+	 */
+	public void positionChanged(long position);
+	
+	/**
 	 * Is called when the playlist changes.
 	 * 
 	 * @param event The {@link ChangeEvent}

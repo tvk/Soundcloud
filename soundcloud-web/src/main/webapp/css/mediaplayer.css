@@ -27,7 +27,7 @@
 {
 	width: 94%;
 	font-weight: bold;
-	min-height: 1.4em;
+	min-height: 27px;
 }
 
 #display #display-genre,
@@ -51,6 +51,11 @@
 	width: 22%;
 	font-family: 'Digit';
 	font-size: 21px;
+}
+
+#display #seekControl
+{
+	margin: 4px 11px;
 }
 
 /* Playlist */

@@ -127,9 +127,10 @@ public class DisplayDataServiceImpl extends AbstractMessageAdapter implements Di
 		final LocalFile localFile = this.localLibraryService.getFile(source);
 		currentDisplayData.set("source", localFile != null ? localFile.getShortTitle() : source.getTitle());
 		currentDisplayData.set("isSeekSupported", String.valueOf(this.mediaplayer.isSeekSupported()));
+		currentDisplayData.set("duration", String.valueOf(this.mediaplayer.getDuration()));
 		this.notifyInternal();
 	}
-	
+
 	/**
 	 * @see com.senselessweb.soundcloud.web.service.impl.AbstractMessageAdapter#durationChanged(long)
 	 */
@@ -137,6 +138,16 @@ public class DisplayDataServiceImpl extends AbstractMessageAdapter implements Di
 	public void durationChanged(final long duration)
 	{
 		currentDisplayData.set("duration", String.valueOf(duration));
+		this.notifyInternal();
+	}
+
+	/**
+	 * @see com.senselessweb.soundcloud.web.service.impl.AbstractMessageAdapter#positionChanged(long)
+	 */
+	@Override
+	public void positionChanged(final long position)
+	{
+		currentDisplayData.set("position", String.valueOf(position));
 		this.notifyInternal();
 	}
 	

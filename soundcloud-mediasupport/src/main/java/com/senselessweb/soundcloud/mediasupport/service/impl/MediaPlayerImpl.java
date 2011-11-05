@@ -156,7 +156,11 @@ public class MediaPlayerImpl implements MediaPlayer, MessageListenerService
 	@Override
 	public void gotoPosition(final long position)
 	{
-		if (this.pipeline != null) this.pipeline.gotoPosition(position);
+		if (this.pipeline != null)
+		{
+			this.pipeline.gotoPosition(position);
+			this.messageMediator.positionChanged(this.getPosition());
+		}
 	}
 	
 	/**
@@ -245,4 +249,9 @@ public class MediaPlayerImpl implements MediaPlayer, MessageListenerService
 	@Override
 	public void durationChanged(long duration) { /* unused */ }
 
+	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#positionChanged(long)
+	 */
+	@Override
+	public void positionChanged(long position) { /* unused */ }
 }

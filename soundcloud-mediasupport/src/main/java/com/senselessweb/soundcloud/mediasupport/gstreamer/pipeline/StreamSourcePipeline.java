@@ -26,8 +26,8 @@ public class StreamSourcePipeline extends AbstractPipeline
 	public StreamSourcePipeline(final String url, final VolumeBridge volume, final EqualizerBridge equalizer, 
 			final PanoramaBridge panoramaBridge, final MessageListenerService messageListener)
 	{
-		super(createDefaultPipeline("souphttpsrc iradio-mode=true "), volume, equalizer, panoramaBridge, messageListener);
-		this.pipeline.getElementByName("src").set("location", url);
+		super(createDefaultPipeline("souphttpsrc iradio-mode=true location="+url), volume, equalizer, panoramaBridge, messageListener);
+		//this.pipeline.getElementByName("src").set("location", url);
 	}
 	
 	

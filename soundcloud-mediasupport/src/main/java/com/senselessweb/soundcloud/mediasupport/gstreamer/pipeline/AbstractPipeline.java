@@ -9,6 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gstreamer.Bus;
 import org.gstreamer.Element;
+import org.gstreamer.Format;
 import org.gstreamer.GstObject;
 import org.gstreamer.Pipeline;
 import org.gstreamer.Tag;
@@ -97,7 +98,7 @@ public abstract class AbstractPipeline implements PipelineBridge
 		this.pipeline.getBus().connect(busMessageListener.warnMessageListener);
 		this.pipeline.getBus().connect(busMessageListener.infoMessageListener);
 		this.pipeline.getBus().connect(busMessageListener.tagMessageListener);
-		this.pipeline.getBus().connect(busMessageListener.eosMessageListener);	
+		this.pipeline.getBus().connect(busMessageListener.eosMessageListener);
 	}
 	
 	/**
@@ -111,14 +112,16 @@ public abstract class AbstractPipeline implements PipelineBridge
 	 */
 	protected static Pipeline createDefaultPipeline(final String src)
 	{
-		return Pipeline.launch(
-				src + " name=src ! " +
+		final String pipeline = src + " name=src ! " +
 				"decodebin2 buffer-duration=3 ! " +
 				"audioconvert ! " +
 				"equalizer-10bands name=equalizer ! " +
 				"audiopanorama name=audiopanorama ! " +
 				"volume name=volume ! " +
-				"alsasink");
+				"alsasink";
+		
+		log.debug("Creating pipeline: " + pipeline);
+		return Pipeline.launch(pipeline);
 	}
 	
 	/**
@@ -205,6 +208,18 @@ public abstract class AbstractPipeline implements PipelineBridge
 	@Override
 	public long getPosition()
 	{
+		if (this.getState() == State.STOPPED) return -1;
+		
+		final long startTime = System.currentTimeMillis();
+		while (this.pipeline.queryPosition(Format.TIME) == -1 && System.currentTimeMillis() > startTime + 1000)
+		{
+			try
+			{
+				Thread.sleep(5);
+			} catch (final InterruptedException e) {
+				throw new RuntimeException("Error while querying duration", e);
+			}
+		}
 		return this.pipeline.queryPosition(TimeUnit.SECONDS);
 	}
 	
@@ -212,7 +227,7 @@ public abstract class AbstractPipeline implements PipelineBridge
 	 * @see com.senselessweb.soundcloud.mediasupport.gstreamer.PipelineBridge#gotoPosition(long)
 	 */
 	@Override
-	public void gotoPosition(long position)
+	public void gotoPosition(final long position)
 	{
 		this.pipeline.seek(position, TimeUnit.SECONDS);
 	}

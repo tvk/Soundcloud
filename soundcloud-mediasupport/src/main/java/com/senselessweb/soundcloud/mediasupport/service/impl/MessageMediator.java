@@ -112,6 +112,16 @@ public class MessageMediator implements MessageListenerService
 	}
 	
 	/**
+	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListener#positionChanged(long)
+	 */
+	@Override
+	public void positionChanged(long position)
+	{
+		for (final MessageListener listener : this.allMessageListeners())
+			listener.positionChanged(position);
+	}
+	
+	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.MessageListenerService#playlistChanged(ChangeEvent, int)
 	 */
 	@Override
