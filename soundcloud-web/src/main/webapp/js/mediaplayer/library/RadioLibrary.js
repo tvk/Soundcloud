@@ -8,9 +8,14 @@ RadioLibrary.prototype.constructor = Library;
 var parent;
 
 /**
- * The parent element where to append the remote stations to
+ * The parent element where to append the shoutcast stations to
  */
-var remoteStationsParent;
+var shoutcastStationsParent;
+
+/**
+ * The parent element where to append the icecast stations to
+ */
+var icecastStationsParent;
 
 
 /**
@@ -35,8 +40,12 @@ function RadioLibrary(parent)
 				'<td class="radio-content-container">' + 
 					'<div class="radio-content scollable-content">' + 
 						
-						'<div class="remote-stations-container stations-container" style="display:none;">' +
-							'<div class="stations remote-stations"></div>' +
+						'<div class="icecast-stations-container stations-container" style="display:none;">' +
+							'<div class="stations icecast-stations"></div>' +
+						'</div>' +
+						
+						'<div class="shoutcast-stations-container stations-container" style="display:none;">' +
+							'<div class="stations shoutcast-stations"></div>' +
 						'</div>' +
 						
 						'<div class="user-stations-container stations-container">' +
@@ -50,7 +59,8 @@ function RadioLibrary(parent)
 				'</td>' +
 			'</tr></table>');
 	
-	this.remoteStationsParent = $('.stations.remote-stations', this.parent);
+	this.icecastStationsParent = $('.stations.icecast-stations', this.parent);
+	this.shoutcastStationsParent = $('.stations.shoutcast-stations', this.parent);
 	this.userStationsParent = $('.stations.user-stations', this.parent);
 	
 	// Initialize the stations and the user/remote selector
@@ -109,8 +119,11 @@ function RadioLibrary(parent)
 RadioLibrary.prototype.initStations = function(keyword) 
 {
 	var _this = this;	
-	$.getJSON('controller/library/radio/getRemoteStations' + (keyword != null ? ('?keyword=' + keyword) : ''), function(data) {
-		_this.initRemoteStations(data);
+	$.getJSON('controller/library/radio/getRemoteStations?service=icecast' + (keyword != null ? ('&keyword=' + keyword) : ''), function(data) {
+		_this.initRemoteStations(_this.icecastStationsParent, data);
+	});
+	$.getJSON('controller/library/radio/getRemoteStations?service=shoutcast' + (keyword != null ? ('&keyword=' + keyword) : ''), function(data) {
+		_this.initRemoteStations(_this.shoutcastStationsParent, data);
 	});
 	$.getJSON('controller/library/radio/getUserStations' + (keyword != null ? ('?keyword=' + keyword) : ''), function(data) {
 		_this.initUserStations(data);
@@ -127,8 +140,11 @@ RadioLibrary.prototype.initSelector = function(parent)
 	parent.append('<input id="radio-library-selector-user" type="radio" name="radio-library-selector" value="user" checked="checked"/>');
 	parent.append('<label class="radio-library-selector" for="radio-library-selector-user">My stations</label>');
 	parent.append('<div style="clear:both;"></div>');
-	parent.append('<input id="radio-library-selector-remote" type="radio" name="radio-library-selector" value="remote"/>');
-	parent.append('<label class="radio-library-selector" for="radio-library-selector-remote">Icecast</label>');
+	parent.append('<input id="radio-library-selector-shoutcast" type="radio" name="radio-library-selector" value="shoutcast"/>');
+	parent.append('<label class="radio-library-selector" for="radio-library-selector-shoutcast">Shoutcast</label>');
+	parent.append('<div style="clear:both;"></div>');
+	parent.append('<input id="radio-library-selector-icecast" type="radio" name="radio-library-selector" value="icecast"/>');
+	parent.append('<label class="radio-library-selector" for="radio-library-selector-icecast">Icecast</label>');
 	
 	parent.buttonset();
 	$('input', parent).change(function() {
@@ -139,16 +155,16 @@ RadioLibrary.prototype.initSelector = function(parent)
 };
 
 /**
- * Initializes the remote stations library.
+ * Initializes the icecast stations library.
  * 
  * @param parent The element where to appent the stations to.
  * @param data The initial data.
  */
-RadioLibrary.prototype.initRemoteStations = function(data)
+RadioLibrary.prototype.initRemoteStations = function(parent, data)
 {
 	var _this = this;
 	
-	this.remoteStationsParent.html(data.length == 0 ? '<div class="no-stations-available">No stations found</div>' : '');
+	parent.html(data.length == 0 ? '<div class="no-stations-available">No stations found</div>' : '');
 	
 	for (var i = 0; i < data.length; i++)
 	{
@@ -167,7 +183,7 @@ RadioLibrary.prototype.initRemoteStations = function(data)
 		};
 		
 		var item = new Item(data[i].id, data[i].shortTitle, data[i].genres, data[i].genres, playFunction, null, null, storeFunction);
-		item.appendAsElement(this.remoteStationsParent);
+		item.appendAsElement(parent);
 	}
 };
 

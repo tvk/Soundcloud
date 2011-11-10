@@ -1,4 +1,4 @@
-package com.senselessweb.soundcloud.library.service.radio;
+package com.senselessweb.soundcloud.library.service.radio.impl;
 
 import junit.framework.Assert;
 
@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.senselessweb.soundcloud.library.service.radio.RemoteRadioLibraryService;
 import com.senselessweb.soundcloud.library.service.radio.impl.IcecastRadioService;
 
 

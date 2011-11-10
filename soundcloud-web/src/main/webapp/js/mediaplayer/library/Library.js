@@ -4,9 +4,17 @@ $.include('js/mediaplayer/library/Folder.js');
 $.include('css/medialibrary.css');
 
 /**
+ * A timer where the window.setTimeout call is stored.
+ */
+var timer;
+
+/**
  * Abstract constructor for a library
  */
-function Library() { }
+function Library() 
+{
+	this.timer = null;
+}
 
 /**
  * Appends the search panel
@@ -16,6 +24,8 @@ function Library() { }
  */
 Library.prototype.appendSearchElement = function(parent, onSearch)
 {
+	var _this = this;
+	
 	parent.append(
 			'<div class="searchPanel">' + 
 				'<span class="title">Filter:</span>' +
@@ -31,6 +41,10 @@ Library.prototype.appendSearchElement = function(parent, onSearch)
 			
 	$('.searchPanel .search-field', parent).keyup(function()
 	{
-		onSearch($(this).val().trim());
+		if (_this.timer != null) window.clearTimeout(_this.timer);
+		_this.timer = window.setTimeout(function() {
+			_this.timer = null;
+			onSearch($('.searchPanel .search-field', parent).val().trim());
+		}, 300);
 	});			
 };

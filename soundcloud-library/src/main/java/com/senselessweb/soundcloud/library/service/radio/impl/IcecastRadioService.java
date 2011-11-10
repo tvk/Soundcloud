@@ -25,9 +25,8 @@ import com.senselessweb.soundcloud.library.service.radio.RemoteRadioLibraryServi
  * service to find radio stations.
  * 
  * @author thomas
- *
  */
-@Service
+@Service("icecastRadioService")
 public class IcecastRadioService extends AbstractRadioService implements RemoteRadioLibraryService
 {
 
@@ -108,7 +107,7 @@ public class IcecastRadioService extends AbstractRadioService implements RemoteR
 			int i = 0;		
 			for (final String serverName : urlsByServerName.keySet())
 			{
-				items.add(new RadioLibraryItem(String.valueOf(i), serverName, urlsByServerName.get(serverName), genresByServerName.get(serverName)));			
+				items.add(new RadioLibraryItem("icecast-" + i, serverName, urlsByServerName.get(serverName), genresByServerName.get(serverName)));			
 				i++;
 			}
 			

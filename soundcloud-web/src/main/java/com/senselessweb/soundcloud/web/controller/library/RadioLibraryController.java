@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,8 @@ import com.senselessweb.soundcloud.domain.library.LibraryItem;
 import com.senselessweb.soundcloud.domain.library.RadioLibraryItem;
 import com.senselessweb.soundcloud.library.service.radio.RemoteRadioLibraryService;
 import com.senselessweb.soundcloud.library.service.radio.UserRadioLibraryService;
+import com.senselessweb.soundcloud.library.service.radio.impl.IcecastRadioService;
+import com.senselessweb.soundcloud.library.service.radio.impl.ShoutcastRadioService;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
 import com.senselessweb.soundcloud.mediasupport.service.Playlist;
 
@@ -36,9 +40,14 @@ public class RadioLibraryController
 	@Autowired UserRadioLibraryService userRadioLibraryService;
 
 	/**
-	 * The RemoteRadioLibraryService
+	 * The icecastRadioService
 	 */
-	@Autowired RemoteRadioLibraryService remoteRadioLibraryService;
+	@Resource(name="icecastRadioService") RemoteRadioLibraryService icecastRadioService;
+	
+	/**
+	 * The shoutcastRadioService
+	 */
+	@Resource(name="shoutcastRadioService") RemoteRadioLibraryService shoutcastRadioService;
 	
 	/**
 	 * The mediaPlayer
@@ -67,6 +76,7 @@ public class RadioLibraryController
 	/**
 	 * Returns remote radio stations
 	 * 
+	 * @param service The service to use. Either 'shoutcast' or 'icecast'
 	 * @param limit The maximum number of radio stations to return
 	 * @param keyword A keyword to filter the radio stations
 	 * 
@@ -74,9 +84,10 @@ public class RadioLibraryController
 	 */
 	@RequestMapping("/getRemoteStations")
 	@ResponseBody
-	public Collection<? extends LibraryItem> getRemoteStations(@RequestParam(defaultValue="25") int limit, @RequestParam(required=false) String keyword)
+	public Collection<? extends LibraryItem> getRemoteStations(@RequestParam String service, @RequestParam(defaultValue="30") int limit, @RequestParam(required=false) String keyword)
 	{
-		final List<LibraryItem> items = new ArrayList<LibraryItem>(this.remoteRadioLibraryService.getItems(keyword));
+		final List<LibraryItem> items = new ArrayList<LibraryItem>(
+				service.equals("icecast") ? this.icecastRadioService.getItems(keyword) : this.shoutcastRadioService.getItems(keyword));
 		return items.subList(0, Math.min(limit, items.size()));
 	}
 	
@@ -108,7 +119,7 @@ public class RadioLibraryController
 	@ResponseBody
 	public RadioLibraryItem store(final @RequestParam String id)
 	{
-		final RadioLibraryItem item = (RadioLibraryItem) this.remoteRadioLibraryService.findById(id);
+		final RadioLibraryItem item = this.findRemoteRadioStation(id);
 		return this.userRadioLibraryService.store(item.getLongTitle(), item.getUrls(), item.getGenres().toArray(new String[0]));
 	}
 	
@@ -124,7 +135,7 @@ public class RadioLibraryController
 	{
 		final LibraryItem station;
 		
-		if (type.equals("remote")) station = this.remoteRadioLibraryService.findById(id);
+		if (type.equals("remote")) station = this.findRemoteRadioStation(id);
 		else station = this.userRadioLibraryService.findById(id);
 		
 		this.mediaPlayer.stop();
@@ -142,5 +153,18 @@ public class RadioLibraryController
 	public void delete(final @RequestParam String id)
 	{
 		this.userRadioLibraryService.delete(id);
+	}
+	
+	/**
+	 * Locates a {@link RadioLibraryItem} in {@link ShoutcastRadioService} and {@link IcecastRadioService}.
+	 * 
+	 * @param id The id
+	 * 
+	 * @return The {@link RadioLibraryItem} or null if it could not be found.
+	 */
+	private RadioLibraryItem findRemoteRadioStation(final String id)
+	{
+		final LibraryItem item = this.icecastRadioService.findById(id);
+		return (RadioLibraryItem) (item != null ? item : this.shoutcastRadioService.findById(id));
 	}
 }
