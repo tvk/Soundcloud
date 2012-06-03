@@ -35,7 +35,7 @@ public class LocalLibraryServiceImpl implements LocalLibraryService
 	 * 
 	 * TODO Make this configurable
 	 */
-	static final String root = System.getenv("SOUNDCLOUDLIBRARY");
+	static final String root = System.getProperty("soundcloud.library");
 	
 	
 	/**
