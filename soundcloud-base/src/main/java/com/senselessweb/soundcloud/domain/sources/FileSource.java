@@ -3,6 +3,8 @@ package com.senselessweb.soundcloud.domain.sources;
 import java.io.File;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.senselessweb.soundcloud.util.IdentityUtils;
 
@@ -14,6 +16,11 @@ import com.senselessweb.soundcloud.util.IdentityUtils;
  */
 public class FileSource extends AbstractMediaSource
 {
+	
+	/**
+	 * The log
+	 */
+	private static final Log log = LogFactory.getLog(FileSource.class);
 
 	/**
 	 * The file
@@ -28,8 +35,8 @@ public class FileSource extends AbstractMediaSource
 	{
 		super(title);
 		
-		if (file == null || !file.isFile()) 
-			throw new IllegalArgumentException("File \"" + file + "\" must be an existing file");
+		if (!file.isFile()) 
+			log.warn("File \"" + file + "\" does not exist!");
 		this.file = new File(file.getAbsolutePath());
 	}
 	

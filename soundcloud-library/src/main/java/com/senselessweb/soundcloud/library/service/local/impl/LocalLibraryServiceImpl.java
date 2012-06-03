@@ -71,7 +71,7 @@ public class LocalLibraryServiceImpl implements LocalLibraryService
 		}));
 		Collections.sort(files);
 		
-		return new LocalFolder(dir.getName(), dir.getAbsolutePath().substring(root.length()), 
+		return new LocalFolder(dir.getName(), StringUtils.isBlank(folder) ? "" : dir.getAbsolutePath().substring(root.length()), 
 				subfolders, files, this.localLibraryStorageService.getKeywords(root, folder));
 	}
 	
