@@ -23,12 +23,18 @@ public class UserRadioStorageServiceImpl implements UserRadioStorageService
 	/**
 	 * The mongotemplate
 	 */
-	@Autowired MongoTemplate mongoTemplate;
+	private final MongoTemplate mongoTemplate;
 	
 	/**
 	 * The collection used by this service.
 	 */
 	private static final String collectionName = "radioStationCollection";
+
+	@Autowired
+	public UserRadioStorageServiceImpl(final MongoTemplate mongoTemplate) 
+	{
+		this.mongoTemplate = mongoTemplate;
+	}
 
 	
 	/**

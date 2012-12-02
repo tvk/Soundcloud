@@ -27,7 +27,13 @@ public class EqualizerController
 	/**
 	 * The Equalizer
 	 */
-	@Autowired Equalizer equalizer;
+	private final Equalizer equalizer;
+	
+	@Autowired
+	public EqualizerController(final Equalizer equalizer) 
+	{
+		this.equalizer = equalizer;
+	}
 
 	/**
 	 * Returns the current equalizer values.

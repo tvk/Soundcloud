@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.senselessweb.soundcloud.domain.sources.MediaSource;
-import com.senselessweb.soundcloud.library.service.local.LocalLibraryService;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
 import com.senselessweb.soundcloud.mediasupport.service.Playlist;
 
@@ -29,17 +28,19 @@ public class PlaylistController
 	/**
 	 * The mediaplayer
 	 */
-	@Autowired MediaPlayer mediaPlayer;
+	private final MediaPlayer mediaPlayer;
 
 	/**
 	 * The playlist
 	 */
-	@Autowired Playlist playlist;
+	private final Playlist playlist;
 	
-	/**
-	 * The localLibraryService
-	 */
-	@Autowired LocalLibraryService localLibraryService;
+	@Autowired
+	public PlaylistController(final MediaPlayer mediaPlayer, final Playlist playlist) 
+	{
+		this.mediaPlayer = mediaPlayer;
+		this.playlist = playlist;
+	}
 	
 	/**
 	 * Returns the current playlist

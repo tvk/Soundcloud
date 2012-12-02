@@ -26,25 +26,33 @@ public class PipelineBuilder
 	/**
 	 * The volume to use
 	 */
-	@Autowired VolumeBridge volume;
+	private final VolumeBridge volume;
 
 	/**
 	 * The equalizer to use
 	 */
-	@Autowired EqualizerBridge equalizer;
+	private final EqualizerBridge equalizer;
 	
 	/**
 	 * The panorama to use
 	 */
-	@Autowired PanoramaBridge panoramaBridge;
+	private final PanoramaBridge panoramaBridge;
 	
 	/**
 	 * The messageListener to use
 	 */
-	@Autowired MessageMediator messageMediator;
+	private final MessageMediator messageMediator;
 	
+	@Autowired
+	public PipelineBuilder(final VolumeBridge volume, final EqualizerBridge equalizer, 
+			final PanoramaBridge panoramaBridge, final MessageMediator messageMediator) 
+	{
+		this.equalizer = equalizer;
+		this.messageMediator = messageMediator;
+		this.panoramaBridge = panoramaBridge;
+		this.volume = volume;
+	}
 	
-
 	/**
 	 * Returns the correct pipeline for the given {@link MediaSource}.
 	 * 

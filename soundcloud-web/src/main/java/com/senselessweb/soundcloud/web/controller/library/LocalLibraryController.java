@@ -32,17 +32,26 @@ public class LocalLibraryController
 	/**
 	 * The localLibraryService
 	 */
-	@Autowired LocalLibraryService localLibraryService;
+	private final LocalLibraryService localLibraryService;
 	
 	/**
 	 * The mediaPlayer
 	 */
-	@Autowired MediaPlayer mediaPlayer;
+	private final MediaPlayer mediaPlayer;
 
 	/**
 	 * The playlist
 	 */
-	@Autowired Playlist playlist;
+	private final Playlist playlist;
+	
+	@Autowired
+	public LocalLibraryController(final LocalLibraryService localLibraryService,
+		final MediaPlayer mediaPlayer, final Playlist playlist) 
+	{
+		this.localLibraryService = localLibraryService;
+		this.mediaPlayer = mediaPlayer;
+		this.playlist = playlist;
+	}
 		
 	/**
 	 * Returns the content of a folder

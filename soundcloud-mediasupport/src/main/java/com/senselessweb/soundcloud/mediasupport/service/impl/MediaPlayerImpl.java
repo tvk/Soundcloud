@@ -31,17 +31,17 @@ public class MediaPlayerImpl implements MediaPlayer, MessageListenerService
 	/**
 	 * The current playlist
 	 */
-	@Autowired Playlist playlist;	
+	private final Playlist playlist;	
 	
 	/**
 	 * The preconfigured pipeline builder. 
 	 */
-	@Autowired PipelineBuilder pipelineBuilder;
+	private final PipelineBuilder pipelineBuilder;
 	
 	/**
 	 * The attached {@link MessageListenerService}s.
 	 */
-	@Autowired MessageMediator messageMediator;
+	private final MessageMediator messageMediator;
 
 	/**
 	 * The currently used pipeline. Is rebuilt everytime a new song is played.  
@@ -52,6 +52,15 @@ public class MediaPlayerImpl implements MediaPlayer, MessageListenerService
 	 * The current mediasource
 	 */
 	private MediaSource current;
+	
+	@Autowired
+	public MediaPlayerImpl(final Playlist playlist, final PipelineBuilder pipelineBuilder, 
+			final MessageMediator messageMediator) 
+	{
+		this.playlist = playlist;
+		this.pipelineBuilder = pipelineBuilder;
+		this.messageMediator = messageMediator;
+	}
 	
 	/**
 	 * The timestamp when the pipeline was restarted the last time

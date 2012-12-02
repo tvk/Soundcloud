@@ -1,8 +1,10 @@
 package com.senselessweb.soundcloud.mediasupport.gstreamer.elements;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.senselessweb.soundcloud.mediasupport.service.VolumeControl;
+import com.senselessweb.storage.PersistencyService;
 
 /**
  * Bridge that forwards to the volume pipeline element.
@@ -13,6 +15,13 @@ import com.senselessweb.soundcloud.mediasupport.service.VolumeControl;
 public class VolumeBridge extends AbstractElementBridge implements VolumeControl
 {
 	
+	
+	@Autowired
+	public VolumeBridge(final PersistencyService persistencyService) 
+	{
+		super(persistencyService);
+	}
+
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.VolumeControl#setVolume(double)
 	 */

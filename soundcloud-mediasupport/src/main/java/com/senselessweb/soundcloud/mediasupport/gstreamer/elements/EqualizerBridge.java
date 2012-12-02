@@ -1,8 +1,10 @@
 package com.senselessweb.soundcloud.mediasupport.gstreamer.elements;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.senselessweb.soundcloud.mediasupport.service.Equalizer;
+import com.senselessweb.storage.PersistencyService;
 
 /**
  * Bridge that forwards to the equalizer pipeline element.
@@ -13,6 +15,11 @@ import com.senselessweb.soundcloud.mediasupport.service.Equalizer;
 public class EqualizerBridge extends AbstractElementBridge implements Equalizer
 {
 	
+	@Autowired
+	public EqualizerBridge(PersistencyService persistencyService) 
+	{
+		super(persistencyService);
+	}
 
 	/**
 	 * @see com.senselessweb.soundcloud.mediasupport.service.Equalizer#setValue(com.senselessweb.soundcloud.mediasupport.service.Equalizer.Band, double)

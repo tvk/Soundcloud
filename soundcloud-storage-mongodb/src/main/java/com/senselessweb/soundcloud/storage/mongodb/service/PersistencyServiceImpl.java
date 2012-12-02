@@ -22,13 +22,18 @@ public class PersistencyServiceImpl implements PersistencyService
 	/**
 	 * The mongotemplate
 	 */
-	@Autowired MongoTemplate mongoTemplate;
+	private final MongoTemplate mongoTemplate;
 	
 	/**
 	 * The collection used by this service.
 	 */
 	private static final String collectionName = "persistencyService";
 
+	@Autowired
+	public PersistencyServiceImpl(final MongoTemplate mongoTemplate) 
+	{
+		this.mongoTemplate = mongoTemplate;
+	}
 	
 	/**
 	 * @see com.senselessweb.storage.PersistencyService#put(String, String, Object)

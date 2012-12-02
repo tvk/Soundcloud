@@ -37,12 +37,18 @@ public class LocalLibraryScanner implements ApplicationListener<ContextRefreshed
 	/**
 	 * The localLibraryService
 	 */
-	@Autowired LocalLibraryService localLibraryService;
+	private final LocalLibraryService localLibraryService;
 	
 	/**
 	 * Indicates if the scanner is still alive.
 	 */
 	boolean alive = true;
+
+	@Autowired
+	public LocalLibraryScanner(final LocalLibraryService localLibraryService) 
+	{
+		this.localLibraryService = localLibraryService;
+	}
 	
 
 	/**

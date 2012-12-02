@@ -41,7 +41,13 @@ public class LocalLibraryServiceImpl implements LocalLibraryService
 	/**
 	 * The localLibraryStorageService
 	 */
-	@Autowired LocalLibraryStorageService localLibraryStorageService;
+	private final LocalLibraryStorageService localLibraryStorageService;
+
+	@Autowired
+	public LocalLibraryServiceImpl(final LocalLibraryStorageService localLibraryStorageService) 
+	{
+		this.localLibraryStorageService = localLibraryStorageService;
+	}
 	
 	/**
 	 * @see com.senselessweb.soundcloud.library.service.local.LocalLibraryService#getFolder(java.lang.String)

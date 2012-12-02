@@ -24,7 +24,13 @@ public class VolumeController
 	/**
 	 * The volume control
 	 */
-	@Autowired VolumeControl volumeControl;
+	private final VolumeControl volumeControl;
+	
+	@Autowired
+	public VolumeController(final VolumeControl volumeControl) 
+	{
+		this.volumeControl = volumeControl;
+	}
 
 	/**
 	 * Sets the volume.

@@ -42,7 +42,13 @@ public class LocalLibraryStorageServiceImpl implements LocalLibraryStorageServic
 	/**
 	 * The mongoTemplate
 	 */
-	@Autowired MongoTemplate mongoTemplate;
+	private final MongoTemplate mongoTemplate;
+
+	@Autowired
+	public LocalLibraryStorageServiceImpl(final MongoTemplate mongoTemplate) 
+	{
+		this.mongoTemplate = mongoTemplate;
+	}
 	
 	/**
 	 * Caches the keywords 

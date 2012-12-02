@@ -6,7 +6,6 @@ package com.senselessweb.soundcloud.web.service.impl;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.senselessweb.soundcloud.domain.sources.MediaSource;
@@ -23,14 +22,23 @@ import com.senselessweb.soundcloud.mediasupport.service.impl.MessageMediator;
  *
  * @author thomas
  */
-public class AbstractMessageAdapter implements MessageListener
+public abstract class AbstractMessageAdapter implements MessageListener
 {
 
 	/**
 	 * The messageMediator
 	 */
-	@Autowired MessageMediator messageMediator;
+	private final MessageMediator messageMediator;
 
+	/**
+	 * Constructor 
+	 * 
+	 * @param messageMediator The messageMediator
+	 */
+	public AbstractMessageAdapter(final MessageMediator messageMediator) 
+	{
+		this.messageMediator = messageMediator;
+	}
 
 	/**
 	 * Registers this controller as a message listener

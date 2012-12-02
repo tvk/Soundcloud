@@ -4,12 +4,14 @@ import java.io.Serializable;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer.State;
 import com.senselessweb.soundcloud.mediasupport.service.Playlist.ChangeEvent;
+import com.senselessweb.soundcloud.mediasupport.service.impl.MessageMediator;
 import com.senselessweb.soundcloud.web.service.Event;
 import com.senselessweb.soundcloud.web.service.EventQueue;
 
@@ -23,6 +25,12 @@ import com.senselessweb.soundcloud.web.service.EventQueue;
 public class EventQueueImpl extends AbstractMessageAdapter implements EventQueue, Serializable
 {
 	
+	@Autowired
+	public EventQueueImpl(final MessageMediator messageMediator) 
+	{
+		super(messageMediator);
+	}
+
 	/**
 	 * The serialVersionUID
 	 */

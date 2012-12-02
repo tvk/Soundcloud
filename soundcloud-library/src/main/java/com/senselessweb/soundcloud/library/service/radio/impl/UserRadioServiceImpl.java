@@ -23,8 +23,13 @@ public class UserRadioServiceImpl extends AbstractRadioService implements UserRa
 	/**
 	 * The RadioStationStorageService
 	 */
-	@Autowired UserRadioStorageService radioStationStorageService;
+	private final UserRadioStorageService radioStationStorageService;
 
+	@Autowired
+	public UserRadioServiceImpl(final UserRadioStorageService radioStationStorageService) 
+	{
+		this.radioStationStorageService = radioStationStorageService;
+	}
 	
 	/**
 	 * @see com.senselessweb.soundcloud.library.service.LibraryService#getItems()

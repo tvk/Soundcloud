@@ -32,12 +32,18 @@ public class MessageMediator implements MessageListenerService
 	/**
 	 * The autowired listeners
 	 */
-	@Autowired Collection<MessageListenerService> messageListenerServices;
+	private final Collection<MessageListenerService> messageListenerServices;
 	
 	/**
 	 * The attached listeners
 	 */
 	private final Collection<MessageListener> messageListeners = new HashSet<MessageListener>();
+	
+	@Autowired
+	public MessageMediator(final Collection<MessageListenerService> messageListenerServices) 
+	{
+		this.messageListenerServices = messageListenerServices;
+	}
 	
 	/**
 	 * Attaches a new {@link MessageListener}.

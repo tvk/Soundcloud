@@ -35,12 +35,12 @@ public class DefaultPlaylist implements Playlist
 	/**
 	 * The messageMediator
 	 */
-	@Autowired MessageMediator messageMediator;
+	private final MessageMediator messageMediator;
 	
 	/**
 	 * The persistencyService
 	 */
-	@Autowired PersistencyService persistencyService;
+	private final PersistencyService persistencyService;
 
 	/**
 	 * The list of media sources in this playlist.
@@ -52,6 +52,13 @@ public class DefaultPlaylist implements Playlist
 	 * when the playlist is empty. Otherwise this is always a valid entry inside the playlist.
 	 */
 	private int current = -1;
+	
+	@Autowired
+	public DefaultPlaylist(final MessageMediator messageMediator, final PersistencyService persistencyService) 
+	{
+		this.messageMediator = messageMediator;
+		this.persistencyService = persistencyService;
+	}
 
 
 	/**

@@ -26,8 +26,14 @@ public class BalanceController
 	/**
 	 * The panoramaBridge
 	 */
-	@Autowired PanoramaBridge panoramaBridge;
+	private final PanoramaBridge panoramaBridge;
 
+	@Autowired
+	public BalanceController(final PanoramaBridge panoramaBridge) 
+	{
+		this.panoramaBridge = panoramaBridge;
+	}
+	
 	/**
 	 * Sets the balancing value.
 	 * 

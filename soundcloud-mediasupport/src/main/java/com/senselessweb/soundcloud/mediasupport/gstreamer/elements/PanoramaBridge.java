@@ -3,7 +3,10 @@
  */
 package com.senselessweb.soundcloud.mediasupport.gstreamer.elements;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.senselessweb.storage.PersistencyService;
 
 /**
  * The panorama bridge controls the audiopanorama element. The balance can be controlled
@@ -14,6 +17,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class PanoramaBridge extends AbstractElementBridge
 {
+	@Autowired
+	public PanoramaBridge(final PersistencyService persistencyService) 
+	{
+		super(persistencyService);
+	}
 
 	/**
 	 * Sets the panorama value.

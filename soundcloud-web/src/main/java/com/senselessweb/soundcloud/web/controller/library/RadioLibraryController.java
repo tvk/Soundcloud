@@ -37,7 +37,7 @@ public class RadioLibraryController
 	/**
 	 * The UserRadioLibraryService
 	 */
-	@Autowired UserRadioLibraryService userRadioLibraryService;
+	private final UserRadioLibraryService userRadioLibraryService;
 
 	/**
 	 * The icecastRadioService
@@ -52,12 +52,21 @@ public class RadioLibraryController
 	/**
 	 * The mediaPlayer
 	 */
-	@Autowired MediaPlayer mediaPlayer;
+	private final MediaPlayer mediaPlayer;
 
 	/**
 	 * The playlist
 	 */
-	@Autowired Playlist playlist;
+	private final Playlist playlist;
+	
+	@Autowired
+	public RadioLibraryController(final UserRadioLibraryService userRadioLibraryService, 
+			final MediaPlayer mediaPlayer, final Playlist playlist) 
+	{
+		this.userRadioLibraryService = userRadioLibraryService;
+		this.mediaPlayer = mediaPlayer;
+		this.playlist = playlist;
+	}
 		
 	/**
 	 * Returns all user radio stations

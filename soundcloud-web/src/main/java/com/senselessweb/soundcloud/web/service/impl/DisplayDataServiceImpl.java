@@ -15,6 +15,7 @@ import com.senselessweb.soundcloud.domain.sources.MediaSource;
 import com.senselessweb.soundcloud.library.service.local.LocalLibraryService;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer;
 import com.senselessweb.soundcloud.mediasupport.service.MediaPlayer.State;
+import com.senselessweb.soundcloud.mediasupport.service.impl.MessageMediator;
 import com.senselessweb.soundcloud.web.service.DisplayDataService;
 
 /**
@@ -26,7 +27,8 @@ import com.senselessweb.soundcloud.web.service.DisplayDataService;
 @Scope(proxyMode=ScopedProxyMode.INTERFACES, value="session")
 public class DisplayDataServiceImpl extends AbstractMessageAdapter implements DisplayDataService, Serializable
 {
-	
+
+
 	/**
 	 * The serialVersionUID
 	 */
@@ -40,12 +42,12 @@ public class DisplayDataServiceImpl extends AbstractMessageAdapter implements Di
 	/**
 	 * The localLibraryService
 	 */
-	@Autowired LocalLibraryService localLibraryService;
+	private final LocalLibraryService localLibraryService;
 	
 	/**
 	 * The mediaplayer
 	 */
-	@Autowired MediaPlayer mediaplayer;
+	private final MediaPlayer mediaplayer;
 	
 	
 	/**
@@ -58,6 +60,15 @@ public class DisplayDataServiceImpl extends AbstractMessageAdapter implements Di
 	 */
 	private final LinkedBlockingQueue<Object> newDataAvailable = new LinkedBlockingQueue<Object>();
 
+	@Autowired
+	public DisplayDataServiceImpl(final MessageMediator messageMediator, 
+			final LocalLibraryService localLibraryService, final MediaPlayer mediaplayer) 
+	{
+		super(messageMediator);
+		this.localLibraryService = localLibraryService;
+		this.mediaplayer = mediaplayer;
+	}
+	
 	/**
 	 * @see com.senselessweb.soundcloud.web.service.DisplayDataService#getDisplayData()
 	 */

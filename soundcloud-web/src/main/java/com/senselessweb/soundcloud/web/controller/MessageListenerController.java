@@ -21,9 +21,14 @@ public class MessageListenerController
 	/**
 	 * The event queue
 	 */
-	@Autowired EventQueue eventQueue;
+	private final EventQueue eventQueue;
 	
-
+	@Autowired
+	public MessageListenerController(final EventQueue eventQueue) 
+	{
+		this.eventQueue = eventQueue;
+	}
+	
 	/**
 	 * Returns the next event as soon as it is available.
 	 * 

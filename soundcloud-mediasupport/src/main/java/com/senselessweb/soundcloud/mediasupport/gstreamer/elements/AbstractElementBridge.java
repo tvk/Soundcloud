@@ -29,13 +29,19 @@ abstract class AbstractElementBridge
 	/**
 	 * The {@link PersistencyService}
 	 */
-	@Autowired PersistencyService persistencyService;
+	private final PersistencyService persistencyService;
 
 	
 	/**
 	 * The actual element. May be null.
 	 */
 	private Element element;
+
+	@Autowired
+	public AbstractElementBridge(final PersistencyService persistencyService) 
+	{
+		this.persistencyService = persistencyService;
+	}
 	
 	/**
 	 * Initializes the element and sets all stored properties to that element.

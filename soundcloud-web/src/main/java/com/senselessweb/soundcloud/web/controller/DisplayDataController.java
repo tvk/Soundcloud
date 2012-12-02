@@ -22,7 +22,13 @@ public class DisplayDataController
 	/**
 	 * The DisplayDataService
 	 */
-	@Autowired DisplayDataService displayDataService;
+	private final DisplayDataService displayDataService;
+	
+	@Autowired
+	public DisplayDataController(final DisplayDataService displayDataService) 
+	{
+		this.displayDataService = displayDataService;
+	}
 
 	/**
 	 * Returns (immediately) the current display data.

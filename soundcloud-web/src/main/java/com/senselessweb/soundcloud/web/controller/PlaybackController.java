@@ -25,12 +25,19 @@ public class PlaybackController
 	/**
 	 * The mediaplayer
 	 */
-	@Autowired MediaPlayer mediaPlayer;
+	private final MediaPlayer mediaPlayer;
 
 	/**
 	 * The playlist
 	 */
-	@Autowired Playlist playlist;
+	private final Playlist playlist;
+
+	@Autowired
+	public PlaybackController(final MediaPlayer mediaPlayer, final Playlist playlist) 
+	{
+		this.mediaPlayer = mediaPlayer;
+		this.playlist = playlist;
+	}
 	
 	/**
 	 * Starts the playback
